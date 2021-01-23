@@ -4,7 +4,6 @@ project(zy_renderer)
 
 set(HEADERS
     src/graphics.hpp
-
     src/platform.hpp
     src/win32.hpp
 )

@@ -4,24 +4,17 @@
 #include <direct.h>
 #include <windows.h>
 #include "win32.hpp"
+#include "win32_func.hpp"
 
 
 const int LINE_SIZE = 256;
-
-#ifdef UNICODE
-    static const wchar_t *WINDOW_CLASS_NAME = L"Class";
-    static const wchar_t *WINDOW_ENTRY_NAME = L"Entry";
-#else
-    static const char *WINDOW_CLASS_NAME = "Class";
-    static const char *WINDOW_ENTRY_NAME = "Entry";
-#endif
 
 
 /*
  * for virtual-key codes, see
  * https://docs.microsoft.com/en-us/windows/desktop/inputdev/virtual-key-codes
  */
-static void handle_key_message(
+void handle_key_message(
         Win32 *window, WPARAM virtual_key, char pressed) {
     KeyCode key;
     switch (virtual_key) {
@@ -37,7 +30,7 @@ static void handle_key_message(
     }
 }
 
-static void handle_button_message(Win32 *window, Button button,
+void handle_button_message(Win32 *window, Button button,
                                   char pressed) {
     window->m_Buttons[button] = pressed;
     if (window->m_Callbacks.button_callback) {
@@ -45,13 +38,13 @@ static void handle_button_message(Win32 *window, Button button,
     }
 }
 
-static void handle_scroll_message(Win32 *window, float offset) {
+void handle_scroll_message(Win32 *window, float offset) {
     if (window->m_Callbacks.scroll_callback) {
         window->m_Callbacks.scroll_callback(window, offset);
     }
 }
 
-static LRESULT CALLBACK process_message(HWND hWnd, UINT uMsg,
+LRESULT CALLBACK process_message(HWND hWnd, UINT uMsg,
                                         WPARAM wParam, LPARAM lParam) {
     Win32 *window = (Win32*)GetProp(hWnd, WINDOW_ENTRY_NAME);
     if (window == nullptr) {
@@ -86,7 +79,7 @@ static LRESULT CALLBACK process_message(HWND hWnd, UINT uMsg,
     }
 }
 
-static double get_native_time(void) {
+double get_native_time(void) {
     static double period = -1;
     LARGE_INTEGER counter;
     if (period < 0) {
@@ -99,7 +92,7 @@ static double get_native_time(void) {
 }
 
 /* platform initialization */
-static void register_class(void) {
+void register_class(void) {
     ATOM class_atom;
     WNDCLASS window_class;
     window_class.style = CS_HREDRAW | CS_VREDRAW;
@@ -117,11 +110,11 @@ static void register_class(void) {
     (void)class_atom;
 }
 
-static void unregister_class(void) {
+void unregister_class(void) {
     UnregisterClass(WINDOW_CLASS_NAME, GetModuleHandle(nullptr));
 }
 
-static void initialize_path(void) {
+void initialize_path(void) {
 #ifdef UNICODE
     wchar_t path[MAX_PATH];
     GetModuleFileName(nullptr, path, MAX_PATH);
@@ -138,7 +131,7 @@ static void initialize_path(void) {
 }
 
 /* window related functions */
-static HWND create_window(const char *title_, int width, int height) {
+HWND create_window(const char *title_, int width, int height) {
     DWORD style = WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX;
     RECT rect;
     HWND handle;
@@ -169,18 +162,18 @@ static HWND create_window(const char *title_, int width, int height) {
  * for memory device context, see
  * https://docs.microsoft.com/en-us/windows/desktop/gdi/memory-device-contexts
  */
-static void create_surface(HWND handle, int width, int height,
+void create_surface(HWND handle, int width, int height,
                            Image **out_surface, HDC *out_memory_dc) {
     BITMAPINFOHEADER bi_header;
     HBITMAP dib_bitmap;
     HBITMAP old_bitmap;
     HDC window_dc;
     HDC memory_dc;
-    Image *surface;
 
-    surface = image_create(width, height, 4, FORMAT_LDR);
-    free(surface->ldr_buffer);
-    surface->ldr_buffer = nullptr;
+    Image *surface = new Image;
+    surface->Create(width, height, 4, FORMAT_LDR);
+    free(surface->m_LDRBuffer);
+    surface->m_LDRBuffer = nullptr;
 
     window_dc = GetDC(handle);
     memory_dc = CreateCompatibleDC(window_dc);
@@ -194,7 +187,7 @@ static void create_surface(HWND handle, int width, int height,
     bi_header.biBitCount = 32;
     bi_header.biCompression = BI_RGB;
     dib_bitmap = CreateDIBSection(memory_dc, (BITMAPINFO*)&bi_header,
-                                    DIB_RGB_COLORS, (void**)&surface->ldr_buffer,
+                                    DIB_RGB_COLORS, (void**)&surface->m_LDRBuffer,
                                     nullptr, 0);
     assert(dib_bitmap != nullptr);
     old_bitmap = (HBITMAP)SelectObject(memory_dc, dib_bitmap);

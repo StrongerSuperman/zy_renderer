@@ -3,35 +3,36 @@
 #include "maths.hpp"
 
 
-typedef enum {
+enum Format{
     FORMAT_LDR,
     FORMAT_HDR
-} Format;
-
-typedef struct {
-    Format format;
-    int width, height, channels;
-    unsigned char *ldr_buffer;
-    float *hdr_buffer;
-} Image;
-
-/* image creating/releasing */
-Image *image_create(int width, int height, int channels, Format format);
-void image_release(Image *image);
+};
 
 
-typedef struct {
-    int width, height;
-    unsigned char *color_buffer;
-    float *depth_buffer;
-} FrameBuffer;
+class Image{
+public:
+    Format m_Format;
+    int m_Width;
+    int m_Height;
+    int m_Channels;
+    unsigned char *m_LDRBuffer;
+    float *m_HDRBuffer;
 
-/* framebuffer management */
-FrameBuffer *framebuffer_create(int width, int height);
-void framebuffer_release(FrameBuffer *framebuffer);
-void framebuffer_clear_color(FrameBuffer *framebuffer, vec4_t color);
-void framebuffer_clear_depth(FrameBuffer *framebuffer, float depth);
+    void Create(int width, int height, int channels, Format format);
+    void Release();
+};
 
 
-/* framebuffer blitting */
-void blit_bgr(FrameBuffer *source, Image *target);
+class FrameBuffer{
+public:
+    int m_Width;
+    int m_Height;
+    unsigned char *m_ColorBuffer;
+    float *m_DepthBuffer;
+
+    void Create(int width, int height);
+    void Release();
+    void ClearColor(vec4_t color);
+    void ClearDepth(float depth);
+    void BlitBGR(Image *target);
+};

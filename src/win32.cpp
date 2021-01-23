@@ -3,7 +3,7 @@
 #include "graphics.hpp"
 #include "platform.hpp"
 #include "win32.hpp"
-#include "win32_func.cpp"
+#include "win32_func.hpp"
 
 
 Win32::Win32():
@@ -41,8 +41,7 @@ void Win32::Destroy(){
     DeleteDC(this->m_MemoryDC);
     DestroyWindow(this->m_Handle);
 
-    this->m_pSurface->ldr_buffer = nullptr;
-    image_release(this->m_pSurface);
+    this->m_pSurface->Release();
 
     // platform deinit
     unregister_class();
@@ -61,12 +60,12 @@ void* Win32::GetUserdata() {
 }
 
 void Win32::DrawBuffer(FrameBuffer *buffer) {
-    blit_bgr(buffer, this->m_pSurface);
+    buffer->BlitBGR(this->m_pSurface);
 
     HDC window_dc = GetDC(this->m_Handle);
     HDC memory_dc = this->m_MemoryDC;
-    int width = this->m_pSurface->width;
-    int height = this->m_pSurface->height;
+    int width = this->m_pSurface->m_Width;
+    int height = this->m_pSurface->m_Height;
     BitBlt(window_dc, 0, 0, width, height, memory_dc, 0, 0, SRCCOPY);
     ReleaseDC(this->m_Handle, window_dc);
 }
