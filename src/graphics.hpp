@@ -1,6 +1,6 @@
 #pragma once
 
-#include "maths.hpp"
+#include <glm/glm.hpp>
 
 
 enum Format{
@@ -32,7 +32,7 @@ public:
 
     void Create(int width, int height);
     void Release();
-    void ClearColor(vec4_t color);
+    void ClearColor(glm::vec4 color);
     void ClearDepth(float depth);
     void BlitBGR(Image *target);
 };

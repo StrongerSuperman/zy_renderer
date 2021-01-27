@@ -6,11 +6,13 @@ set(HEADERS
     src/graphics.hpp
     src/platform.hpp
     src/win32.hpp
+    src/camera.hpp
 )
 set(SOURCES
     src/graphics.cpp
     src/win32.cpp
     src/win32_func.cpp
+    src/camera.cpp
 )
 
 set(SOURCES ${SOURCES} src/main.cpp)
@@ -24,6 +26,8 @@ set_target_properties(zy_renderer PROPERTIES
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
+
+include_directories(${CMAKE_SOURCE_DIR}/3rd)
 
 target_compile_options(${TARGET} PRIVATE /W4 /D_CRT_SECURE_NO_WARNINGS)
 target_compile_options(${TARGET} PRIVATE /fp:fast)

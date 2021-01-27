@@ -1,8 +1,10 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include <glm/glm.hpp>
+
 #include "graphics.hpp"
-#include "maths.hpp"
 
 
 void Image::Create(int width, int height, int channels, Format format){
@@ -37,7 +39,7 @@ void Image::Release() {
 void FrameBuffer::Create(int width, int height) {
     int color_buffer_size = width * height * 4;
     int depth_buffer_size = sizeof(float) * width * height;
-    vec4_t default_color = {0, 0, 0, 1};
+    auto default_color = glm::vec4(0, 0, 0, 1);
     float default_depth = 1;
 
     this->m_Width = width;
@@ -54,7 +56,7 @@ void FrameBuffer::Release() {
     free(this->m_DepthBuffer);
 }
 
-void FrameBuffer::ClearColor(vec4_t color) {
+void FrameBuffer::ClearColor(glm::vec4 color) {
     int num_pixels = this->m_Width * this->m_Height;
     int i;
     for (i = 0; i < num_pixels; i++) {
