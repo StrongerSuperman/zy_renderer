@@ -3,16 +3,22 @@ project(zy_renderer)
 
 
 set(HEADERS
-    src/graphics.hpp
     src/platform.hpp
     src/win32.hpp
     src/camera.hpp
+    src/graphics.hpp
+    src/image.hpp
+    src/shader.hpp
+    src/texture.hpp
+    src/mathtool.hpp
 )
 set(SOURCES
-    src/graphics.cpp
     src/win32.cpp
-    src/win32_func.cpp
     src/camera.cpp
+    src/graphics.cpp
+    src/image.cpp
+    src/shader.cpp
+    src/texture.cpp
 )
 
 set(SOURCES ${SOURCES} src/main.cpp)
