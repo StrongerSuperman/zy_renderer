@@ -4,10 +4,10 @@
 #include <direct.h>
 #include <windows.h>
 
-#include "graphics.hpp"
-#include "platform.hpp"
+#include "../core/framebuffer.hpp"
+#include "../core/platform.hpp"
+#include "../core/image.hpp"
 #include "win32.hpp"
-#include "image.hpp"
 
 
 const int LINE_SIZE = 256;
@@ -174,8 +174,7 @@ void create_surface(HWND handle, int width, int height,
     HDC window_dc;
     HDC memory_dc;
 
-    Image *surface = new Image;
-    surface->Create(width, height, 4, FORMAT_LDR);
+    Image *surface = new Image(width, height, 4, FORMAT_LDR);
     free(surface->m_LDRBuffer);
     surface->m_LDRBuffer = nullptr;
 
@@ -202,16 +201,10 @@ void create_surface(HWND handle, int width, int height,
 }
 
 
-Win32::Win32():
-    m_pSurface(nullptr),
-    m_ShouldClose(false),
-    m_pUserdata(nullptr){
-}
-
-Win32::~Win32(){
-}
-
-void Win32::Create(int width, int height){
+Win32::Win32(int width, int height):
+        m_pSurface(nullptr),
+        m_ShouldClose(false),
+        m_pUserdata(nullptr){
     // platform init
     register_class();
     initialize_path();
@@ -230,14 +223,14 @@ void Win32::Create(int width, int height){
     ShowWindow(handle, SW_SHOW);
 }
 
-void Win32::Destroy(){
+Win32::~Win32(){
     ShowWindow(this->m_Handle, SW_HIDE);
     RemoveProp(this->m_Handle, WINDOW_ENTRY_NAME);
 
     DeleteDC(this->m_MemoryDC);
     DestroyWindow(this->m_Handle);
 
-    this->m_pSurface->Release();
+    delete this->m_pSurface;
 
     // platform deinit
     unregister_class();

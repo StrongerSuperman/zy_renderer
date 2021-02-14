@@ -7,24 +7,24 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 
+enum ProjectionMode
+{
+	Perspective,
+	Orthogonal,
+};
+
+struct ViewPort
+{
+	float TopLeftX;
+	float TopLeftY;
+	float Width;
+	float Height;
+	float MinDepth;
+	float MaxDepth;
+};
+
 class CameraBase
 {
-	enum ProjectionMode
-	{
-		Perspective,
-		Orthogonal,
-	};
-
-	struct ViewPort
-	{
-		float TopLeftX;
-		float TopLeftY;
-		float Width;
-		float Height;
-		float MinDepth;
-		float MaxDepth;
-	};
-
 public:
 	CameraBase();
 	virtual ~CameraBase();

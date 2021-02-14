@@ -1,25 +1,20 @@
 #pragma once
 
+#include <vector>
 #include <algorithm>
 
 #include <glm/glm.hpp>
 
-#include "texture.hpp"
+#include "../core/texture.hpp"
+#include "../core/shader.hpp"
 
-
-struct BlinnMaterial{
-    glm::vec3 diffuse;
-    glm::vec3 specular;
-    float alpha;
-    float shininess;
-    glm::vec3 normal;
-    glm::vec3 emission;
-} ;
 
 struct BlinnVSIn{
     glm::vec3 position;
     glm::vec2 texcoord;
     glm::vec3 normal;
+    glm::vec4 joint;
+    glm::vec4 weight;
 };
 
 struct BlinnFSIn{
@@ -32,14 +27,15 @@ struct BlinnFSIn{
 struct BlinnUniforms{
     glm::vec3 light_dir;
     glm::vec3 camera_pos;  
-    glm::mat4 model_mat;
-    glm::mat4 view_mat;
-    glm::mat4 proj_mat;
+    glm::mat4x4 model_mat;
+    glm::mat3x3 normal_mat;
+    glm::mat4x4 camera_vp_mat;
+    glm::mat4x4 light_vp_mat;
     float ambient_intensity;
     float punctual_intensity;
     Texture* shadow_map;
     /* surface parameters */
-    glm::vec3 basecolor;
+    glm::vec4 basecolor;
     float shininess;
     Texture *diffuse_map;
     Texture *specular_map;
@@ -49,5 +45,10 @@ struct BlinnUniforms{
     int shadow_pass;
 };
 
-glm::vec4 ExecuteBlinnVertexShader(BlinnVSIn *vs_in, BlinnFSIn *fs_in, BlinnUniforms *uniforms);
-glm::vec4 ExecuteBlinnFragmentShader(BlinnFSIn *fs_in, BlinnUniforms *uniforms, BlinnMaterial *material, int *discard);
+class BlinnShader : public Shader{
+public:
+    BlinnShader();
+    virtual ~BlinnShader();
+    virtual glm::vec4 ExecuteVertexShader(void* vs_in, void* fs_in, void* uniforms) override;
+    virtual glm::vec4 ExecuteFragmentShader(void* fs_in, void* uniforms, int *discard, int backface) override;
+};

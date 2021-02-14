@@ -3,22 +3,40 @@ project(zy_renderer)
 
 
 set(HEADERS
-    src/platform.hpp
-    src/win32.hpp
-    src/camera.hpp
-    src/graphics.hpp
-    src/image.hpp
-    src/shader.hpp
-    src/texture.hpp
-    src/mathtool.hpp
+    src/platform/win32.hpp
+
+    src/core/platform.hpp
+    src/core/camera.hpp
+    src/core/graphics.hpp
+    src/core/perframe.hpp
+    src/core/program.hpp
+    src/core/framebuffer.hpp
+    src/core/image.hpp
+    src/core/shader.hpp
+    src/core/texture.hpp
+    src/core/math_tool.hpp
+    src/core/mesh.hpp
+    src/core/scene.hpp
+
+    src/blinn/blinn_material.hpp
+    src/blinn/blinn_model.hpp
+    src/blinn/blinn_scene.hpp
+    src/blinn/blinn_shader.hpp
 )
 set(SOURCES
-    src/win32.cpp
-    src/camera.cpp
-    src/graphics.cpp
-    src/image.cpp
-    src/shader.cpp
-    src/texture.cpp
+    src/platform/win32.cpp
+
+    src/core/camera.cpp
+    src/core/graphics.cpp
+    src/core/framebuffer.cpp
+    src/core/image.cpp
+    src/core/texture.cpp
+    src/core/mesh.cpp
+
+    src/blinn/blinn_material.cpp
+    src/blinn/blinn_model.cpp
+    src/blinn/blinn_scene.cpp
+    src/blinn/blinn_shader.cpp
 )
 
 set(SOURCES ${SOURCES} src/main.cpp)

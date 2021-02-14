@@ -6,8 +6,8 @@
 #include <direct.h>
 #include <windows.h>
 
-#include "platform.hpp"
-#include "image.hpp"
+#include "../core/platform.hpp"
+#include "../core/image.hpp"
 
 
 class Win32: public Platform{
@@ -21,11 +21,9 @@ public:
     Callbacks m_Callbacks;
     void *m_pUserdata;
 
-    Win32();
+    Win32(int width, int height);
     virtual ~Win32();
 
-    virtual void Create(int width, int height) override;
-    virtual void Destroy() override;
     virtual bool ShouldClose() override;
     virtual void SetUserdata(void *userdata) override;
     virtual void* GetUserdata() override;

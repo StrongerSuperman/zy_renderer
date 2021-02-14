@@ -2,10 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "graphics.hpp"
+#include "framebuffer.hpp"
 #include "image.hpp"
 #include "texture.hpp"
-#include "mathtool.hpp"
+#include "math_tool.hpp"
 
 
 static void LDRImageToTexture(Image *image, Texture *texture) {
@@ -84,7 +84,7 @@ static void LinearToSRGB(Texture *texture) {
     }
 }
 
-void Texture::Create(int width, int height) {
+Texture::Texture(int width, int height) {
     assert(width > 0 && height > 0);
     int buffer_size = sizeof(glm::vec4) * width * height;
 
@@ -94,14 +94,17 @@ void Texture::Create(int width, int height) {
     memset(this->m_Buffer, 0, buffer_size);
 }
 
-void Texture::Release() {
+Texture::~Texture() {
     free(this->m_Buffer);
 }
 
-void Texture::CreateFromFile(std::string& filename, Usage usage) {
-    Image image;
-    image.LoadFromFile(filename);
-    this->Create(image.m_Width, image.m_Height);
+Texture::Texture(std::string& filename, Usage usage) {
+    Image image(filename);
+    int buffer_size = sizeof(glm::vec4)*image.m_Width*image.m_Height;
+    this->m_Width = image.m_Width;
+    this->m_Height = image.m_Height;
+    this->m_Buffer = (glm::vec4*)malloc(buffer_size);
+
     if (image.m_Format == FORMAT_LDR) {
         LDRImageToTexture(&image, this);
         if (usage == USAGE_HDR_COLOR) {
@@ -113,18 +116,15 @@ void Texture::CreateFromFile(std::string& filename, Usage usage) {
             LinearToSRGB(this);
         }
     }
-    image.Release();
 }
 
-void Texture::CreateFromColorBuffer(FrameBuffer *framebuffer) {
+void Texture::SetWithColorBuffer(FrameBuffer *frame_color_buffer) {
     int num_pixels = this->m_Width * this->m_Height;
-    int i;
+    assert(this->m_Width == frame_color_buffer->m_Width);
+    assert(this->m_Height == frame_color_buffer->m_Height);
 
-    assert(this->m_Width == framebuffer->m_Width);
-    assert(this->m_Height == framebuffer->m_Height);
-
-    for (i = 0; i < num_pixels; i++) {
-        unsigned char *color = &framebuffer->m_ColorBuffer[i * 4];
+    for (int i = 0; i < num_pixels; i++) {
+        unsigned char *color = &frame_color_buffer->m_ColorBuffer[i * 4];
         float r = float_from_uchar(color[0]);
         float g = float_from_uchar(color[1]);
         float b = float_from_uchar(color[2]);
@@ -133,15 +133,13 @@ void Texture::CreateFromColorBuffer(FrameBuffer *framebuffer) {
     }
 }
 
-void Texture::CreateFromDepthBuffer(FrameBuffer *framebuffer) {
+void Texture::SetWithDepthBuffer(FrameBuffer *frame_depth_buffer) {
     int num_pixels = this->m_Width * this->m_Height;
-    int i;
+    assert(this->m_Width == frame_depth_buffer->m_Width);
+    assert(this->m_Height == frame_depth_buffer->m_Height);
 
-    assert(this->m_Width == framebuffer->m_Width);
-    assert(this->m_Height == framebuffer->m_Height);
-
-    for (i = 0; i < num_pixels; i++) {
-        float depth = framebuffer->m_DepthBuffer[i];
+    for (int i = 0; i < num_pixels; i++) {
+        float depth = frame_depth_buffer->m_DepthBuffer[i];
         this->m_Buffer[i] = glm::vec4(depth, depth, depth, 1);
     }
 }
@@ -221,21 +219,21 @@ static int SelectCubemapFace(glm::vec3& direction, glm::vec2 *texcoord) {
     return face_index;
 }
 
-void Cubemap::CreateFromFile(std::string& positive_x, std::string& negative_x,
-                              std::string& positive_y, std::string& negative_y,
-                              std::string& positive_z, std::string& negative_z,
-                              Usage usage) {
-    this->m_Faces[0]->CreateFromFile(positive_x, usage);
-    this->m_Faces[1]->CreateFromFile(negative_x, usage);
-    this->m_Faces[2]->CreateFromFile(positive_y, usage);
-    this->m_Faces[3]->CreateFromFile(negative_y, usage);
-    this->m_Faces[4]->CreateFromFile(positive_z, usage);
-    this->m_Faces[5]->CreateFromFile(negative_z, usage);
+Cubemap::Cubemap(std::string& positive_x, std::string& negative_x,
+                    std::string& positive_y, std::string& negative_y,
+                    std::string& positive_z, std::string& negative_z,
+                    Usage usage) {
+    this->m_Faces[0] = new Texture(positive_x, usage);
+    this->m_Faces[1] = new Texture(negative_x, usage);
+    this->m_Faces[2] = new Texture(positive_y, usage);
+    this->m_Faces[3] = new Texture(negative_y, usage);
+    this->m_Faces[4] = new Texture(positive_z, usage);
+    this->m_Faces[5] = new Texture(negative_z, usage);
 }
 
-void Cubemap::Release() {
+Cubemap::~Cubemap() {
     for(int i = 0; i < 6; i++){
-        this->m_Faces[i]->Release();
+        delete this->m_Faces[i];
     }
 }
 

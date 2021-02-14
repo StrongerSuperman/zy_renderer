@@ -20,8 +20,8 @@ public:
     unsigned char *m_LDRBuffer;
     float *m_HDRBuffer;
 
-    void Create(int width, int height, int channels, Format format);
-    void Release();
-    void LoadFromFile(std::string& file_name);
-    void SaveToFile(std::string& file_name);
+    Image(int width, int height, int channels, Format format);
+    Image(std::string& filename);
+    ~Image();
+    void SaveToFile(std::string& filename);
 };

@@ -7,7 +7,7 @@
 #include "image.hpp"
 
 
-void Image::Create(int width, int height, int channels, Format format){
+Image::Image(int width, int height, int channels, Format format){
     int num_elems = width * height * channels;
     assert(width > 0 && height > 0 && channels >= 1 && channels <= 4);
     assert(format == FORMAT_LDR || format == FORMAT_HDR);
@@ -30,15 +30,14 @@ void Image::Create(int width, int height, int channels, Format format){
     }
 }
 
-void Image::Release() {
+Image::Image(std::string& filename) {
+}
+
+Image::~Image() {
     free(this->m_LDRBuffer);
     free(this->m_HDRBuffer);
 }
 
-
-void Image::LoadFromFile(std::string& file_name) {
-}
-
-void Image::SaveToFile(std::string& file_name) {
+void Image::SaveToFile(std::string& filename) {
 }
 

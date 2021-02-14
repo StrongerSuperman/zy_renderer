@@ -1,6 +1,6 @@
 #pragma once
 
-#include "graphics.hpp"
+#include "framebuffer.hpp"
 
 
 enum KeyCode{
@@ -25,8 +25,9 @@ struct Callbacks{
 };
 
 class Platform{
-    virtual void Create(int width, int height)=0;
-    virtual void Destroy()=0;
+public:
+    Platform(int width, int height);
+    virtual ~Platform()=0;
     virtual bool ShouldClose()=0;
     virtual void SetUserdata(void *userdata)=0;
     virtual void* GetUserdata()=0;
