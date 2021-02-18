@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="D:\G94\github\zy_renderer\engine\src\platform\win32.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\G94\github\zy_renderer\engine\src\core\camera.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\G94\github\zy_renderer\engine\src\core\graphics.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\G94\github\zy_renderer\engine\src\core\framebuffer.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\G94\github\zy_renderer\engine\src\core\image.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\G94\github\zy_renderer\engine\src\core\texture.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\G94\github\zy_renderer\engine\src\core\mesh.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\G94\github\zy_renderer\engine\src\blinn\blinn_material.cpp">
+      <Filter>blinn</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\G94\github\zy_renderer\engine\src\blinn\blinn_model.cpp">
+      <Filter>blinn</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\G94\github\zy_renderer\engine\src\blinn\blinn_scene.cpp">
+      <Filter>blinn</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\G94\github\zy_renderer\engine\src\blinn\blinn_shader.cpp">
+      <Filter>blinn</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\G94\github\zy_renderer\engine\src\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="D:\G94\github\zy_renderer\engine\src\platform\win32.hpp">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\G94\github\zy_renderer\engine\src\core\platform.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\G94\github\zy_renderer\engine\src\core\camera.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\G94\github\zy_renderer\engine\src\core\graphics.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\G94\github\zy_renderer\engine\src\core\perframe.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\G94\github\zy_renderer\engine\src\core\program.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\G94\github\zy_renderer\engine\src\core\framebuffer.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\G94\github\zy_renderer\engine\src\core\image.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\G94\github\zy_renderer\engine\src\core\shader.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\G94\github\zy_renderer\engine\src\core\texture.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\G94\github\zy_renderer\engine\src\core\math_tool.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\G94\github\zy_renderer\engine\src\core\mesh.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\G94\github\zy_renderer\engine\src\core\scene.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\G94\github\zy_renderer\engine\src\blinn\blinn_material.hpp">
+      <Filter>blinn</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\G94\github\zy_renderer\engine\src\blinn\blinn_model.hpp">
+      <Filter>blinn</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\G94\github\zy_renderer\engine\src\blinn\blinn_scene.hpp">
+      <Filter>blinn</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\G94\github\zy_renderer\engine\src\blinn\blinn_shader.hpp">
+      <Filter>blinn</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\G94\github\zy_renderer\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="blinn">
+      <UniqueIdentifier>{E03BE8B3-AF16-309D-95A8-AF4A23B08727}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core">
+      <UniqueIdentifier>{2D20282C-E34E-37F2-9C40-58AC3D53C5DD}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform">
+      <UniqueIdentifier>{C5FBC8C9-2CB4-33F7-B973-3EBDED6AEABA}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
