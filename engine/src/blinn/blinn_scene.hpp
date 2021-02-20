@@ -11,8 +11,7 @@
 
 class BlinnScene : public Scene{
 public:
-    BlinnScene();
-    virtual ~BlinnScene();
+    BlinnScene(std::string& filename);
     virtual void Update(Perframe *perframe) override;
     virtual void Render(FrameBuffer *framebuffer, Perframe *perframe) override;
 

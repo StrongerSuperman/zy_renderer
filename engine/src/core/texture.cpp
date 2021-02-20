@@ -5,7 +5,7 @@
 #include "framebuffer.hpp"
 #include "image.hpp"
 #include "texture.hpp"
-#include "math_tool.hpp"
+#include "../utility/math_tool.hpp"
 
 
 static void LDRImageToTexture(Image *image, Texture *texture) {
@@ -107,12 +107,12 @@ Texture::Texture(std::string& filename, Usage usage) {
 
     if (image.m_Format == FORMAT_LDR) {
         LDRImageToTexture(&image, this);
-        if (usage == USAGE_HDR_COLOR) {
+        if (usage == Usage::USAGE_HDR_COLOR) {
             SRGBToLinear(this);
         }
     } else {
         HDRImageToTexture(&image, this);
-        if (usage == USAGE_LDR_COLOR) {
+        if (usage == Usage::USAGE_LDR_COLOR) {
             LinearToSRGB(this);
         }
     }

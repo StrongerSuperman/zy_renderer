@@ -8,11 +8,9 @@
 #include "framebuffer.hpp"
 
 
-enum Usage{
+enum class Usage{
     USAGE_LDR_COLOR,
-    USAGE_LDR_DATA,
-    USAGE_HDR_COLOR,
-    USAGE_HDR_DATA
+    USAGE_HDR_COLOR
 };
 
 class Texture{

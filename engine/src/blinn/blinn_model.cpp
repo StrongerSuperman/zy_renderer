@@ -4,21 +4,14 @@
 #include "../core/perframe.hpp"
 #include "../core/mesh.hpp"
 #include "../core/texture.hpp"
-#include "../core/math_tool.hpp"
+#include "../utility/math_tool.hpp"
 #include "blinn_model.hpp"
+#include "blinn_program.hpp"
 #include "blinn_shader.hpp"
 
 
-BlinnModel::BlinnModel(Mesh* mesh, glm::mat4x4& transform){
-    this->mesh = mesh;
-    this->transform = transform;
-    this->program = new Program(
-        sizeof(BlinnVSIn), sizeof(BlinnFSIn), sizeof(BlinnUniforms));
-}
-
-BlinnModel::~BlinnModel(){
-    delete this->mesh;
-    delete this->program;
+BlinnModel::BlinnModel(Mesh* mesh, glm::mat4x4& transform):
+    Model(mesh, transform, new BlinnProgram()){
 }
 
 void BlinnModel::Update(Perframe *perframe){

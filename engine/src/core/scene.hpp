@@ -9,8 +9,17 @@
 #include "model.hpp"
 
 
+enum class SceneType{
+    SCENE_TYPE_BLINN,
+    SCENE_TYPE_PBR
+};
+
 class Scene{
 public:
+    std::string directory;
+    SceneType type;
+    Usage dr_mode;
+
     glm::vec4 background;
     Model* skybox;
     std::vector<Model*> models;
@@ -21,6 +30,11 @@ public:
     FrameBuffer* shadow_buffer;
     Texture* shadow_map;
 
+    Scene(){
+        this->skybox = nullptr;
+        this->shadow_buffer = nullptr;
+        this->shadow_map = nullptr;
+    }
     virtual ~Scene() {
         delete this->skybox;
         for(size_t i = 0; i < this->models.size(); i++){

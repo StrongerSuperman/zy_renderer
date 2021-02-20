@@ -1,18 +1,20 @@
 #include <stdlib.h>
 #include <algorithm>
+#include <string>
 
 #include "../core/framebuffer.hpp"
 #include "../core/perframe.hpp"
 #include "../core/texture.hpp"
+#include "../utility/scene_loader.hpp"
 #include "blinn_scene.hpp"
 
 
 class Model;
 
-BlinnScene::BlinnScene(){
-}
-
-BlinnScene::~BlinnScene(){
+BlinnScene::BlinnScene(std::string& filename){
+    this->type = SceneType::SCENE_TYPE_BLINN;
+    this->dr_mode = Usage::USAGE_LDR_COLOR;
+    LoadScene(this, filename);
 }
 
 void BlinnScene::Update(Perframe *perframe){
@@ -47,15 +49,15 @@ void BlinnScene::Render(FrameBuffer *framebuffer, Perframe *perframe){
     }
 }
 
-static int compareModels(Model* model1, Model* model2) {
+static bool compareModels(Model* model1, Model* model2) {
     if (model1->opaque && model2->opaque) {
-        return model1->distance < model2->distance ? -1 : 1;
+        return model1->distance > model2->distance;
     } else if (model1->opaque && !model2->opaque) {
-        return -1;
+        return false;
     } else if (!model1->opaque && model2->opaque) {
-        return 1;
+        return true;
     } else {
-        return model1->distance < model2->distance ? 1 : -1;
+        return model1->distance < model2->distance;
     }
 }
 

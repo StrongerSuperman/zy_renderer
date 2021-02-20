@@ -9,10 +9,10 @@
 
 class BlinnMaterial{
 public:
-    glm::vec3 diffuse;
-    glm::vec3 specular;
     float alpha;
     float shininess;
+    glm::vec3 diffuse;
+    glm::vec3 specular;
     glm::vec3 normal;
     glm::vec3 emission;
 

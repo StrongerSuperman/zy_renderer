@@ -48,8 +48,6 @@ struct BlinnUniforms{
 
 class BlinnShader : public Shader{
 public:
-    BlinnShader();
-    virtual ~BlinnShader();
     virtual glm::vec4 ExecuteVertexShader(void* vs_in, void* fs_in, void* uniforms) override;
     virtual glm::vec4 ExecuteFragmentShader(void* fs_in, void* uniforms, int *discard, int backface) override;
 };

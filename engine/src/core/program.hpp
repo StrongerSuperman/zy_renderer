@@ -24,10 +24,11 @@ public:
     void* fs_in_data[MAX_FS_IN_LEN];
     void* fs_out_data[MAX_FS_IN_LEN];
 
-    Program(int sizeof_vs_in, int sizeof_fs_in, int sizeof_uniforms){
+    Program(Shader* shader, int sizeof_vs_in, int sizeof_fs_in, int sizeof_uniforms){
         assert(sizeof_vs_in > 0 && sizeof_fs_in > 0 && sizeof_uniforms > 0);
         assert(sizeof_fs_in % sizeof(float) == 0);
 
+        this->shader = shader;
         this->sizeof_vs_in = sizeof_vs_in;
         this->sizeof_fs_in = sizeof_fs_in;
         this->sizeof_uniforms = sizeof_uniforms;
@@ -50,7 +51,8 @@ public:
     }
 
     ~Program(){
-        free(this->shader);
+        delete this->shader;
+
         for(int i=0; i<3; i++){
             free(this->vs_in[i]);
         }

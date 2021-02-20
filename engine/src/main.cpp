@@ -29,7 +29,8 @@ int main() {
     camera.SetAspectRatio((float)width/height);
 
     // scene
-    auto scene = new BlinnScene();
+    std::string filename = "D://G94//github//zy_renderer//assert//nanosuit//nanosuit.obj";
+    Scene* scene = new BlinnScene(filename);
     scene->InitShadow(width, height);
 
     float prev_time = window.GetTime();

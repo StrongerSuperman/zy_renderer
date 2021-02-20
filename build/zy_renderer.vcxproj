@@ -114,8 +114,20 @@
       <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
+    <PostBuildEvent>
+      <Message></Message>
+      <Command>setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different D:/G94/github/zy_renderer/Engine/3rd/assimp/dll/assimp-vc142-mtd.dll D:/G94/github/zy_renderer/bin/Debug
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
     <Link>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalDependencies>..\Engine\3rd\assimp\lib\assimp-vc142-mtd.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -158,8 +170,20 @@
       <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
+    <PostBuildEvent>
+      <Message></Message>
+      <Command>setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different D:/G94/github/zy_renderer/Engine/3rd/assimp/dll/assimp-vc142-mtd.dll D:/G94/github/zy_renderer/bin/Release
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
     <Link>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalDependencies>..\Engine\3rd\assimp\lib\assimp-vc142-mtd.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>false</GenerateDebugInformation>
@@ -202,8 +226,20 @@
       <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
+    <PostBuildEvent>
+      <Message></Message>
+      <Command>setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different D:/G94/github/zy_renderer/Engine/3rd/assimp/dll/assimp-vc142-mtd.dll D:/G94/github/zy_renderer/bin/MinSizeRel
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
     <Link>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalDependencies>..\Engine\3rd\assimp\lib\assimp-vc142-mtd.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>false</GenerateDebugInformation>
@@ -245,8 +281,20 @@
       <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
+    <PostBuildEvent>
+      <Message></Message>
+      <Command>setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different D:/G94/github/zy_renderer/Engine/3rd/assimp/dll/assimp-vc142-mtd.dll D:/G94/github/zy_renderer/bin/RelWithDebInfo
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
     <Link>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalDependencies>..\Engine\3rd\assimp\lib\assimp-vc142-mtd.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -318,6 +366,8 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="D:\G94\github\zy_renderer\engine\src\platform\win32.hpp" />
+    <ClInclude Include="D:\G94\github\zy_renderer\engine\src\utility\math_tool.hpp" />
+    <ClInclude Include="D:\G94\github\zy_renderer\engine\src\utility\scene_loader.hpp" />
     <ClInclude Include="D:\G94\github\zy_renderer\engine\src\core\platform.hpp" />
     <ClInclude Include="D:\G94\github\zy_renderer\engine\src\core\camera.hpp" />
     <ClInclude Include="D:\G94\github\zy_renderer\engine\src\core\graphics.hpp" />
@@ -327,24 +377,24 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClInclude Include="D:\G94\github\zy_renderer\engine\src\core\image.hpp" />
     <ClInclude Include="D:\G94\github\zy_renderer\engine\src\core\shader.hpp" />
     <ClInclude Include="D:\G94\github\zy_renderer\engine\src\core\texture.hpp" />
-    <ClInclude Include="D:\G94\github\zy_renderer\engine\src\core\math_tool.hpp" />
     <ClInclude Include="D:\G94\github\zy_renderer\engine\src\core\mesh.hpp" />
     <ClInclude Include="D:\G94\github\zy_renderer\engine\src\core\scene.hpp" />
     <ClInclude Include="D:\G94\github\zy_renderer\engine\src\blinn\blinn_material.hpp" />
     <ClInclude Include="D:\G94\github\zy_renderer\engine\src\blinn\blinn_model.hpp" />
     <ClInclude Include="D:\G94\github\zy_renderer\engine\src\blinn\blinn_scene.hpp" />
     <ClInclude Include="D:\G94\github\zy_renderer\engine\src\blinn\blinn_shader.hpp" />
+    <ClInclude Include="D:\G94\github\zy_renderer\engine\src\blinn\blinn_program.hpp" />
     <ClCompile Include="D:\G94\github\zy_renderer\engine\src\platform\win32.cpp" />
     <ClCompile Include="D:\G94\github\zy_renderer\engine\src\core\camera.cpp" />
     <ClCompile Include="D:\G94\github\zy_renderer\engine\src\core\graphics.cpp" />
     <ClCompile Include="D:\G94\github\zy_renderer\engine\src\core\framebuffer.cpp" />
     <ClCompile Include="D:\G94\github\zy_renderer\engine\src\core\image.cpp" />
     <ClCompile Include="D:\G94\github\zy_renderer\engine\src\core\texture.cpp" />
-    <ClCompile Include="D:\G94\github\zy_renderer\engine\src\core\mesh.cpp" />
     <ClCompile Include="D:\G94\github\zy_renderer\engine\src\blinn\blinn_material.cpp" />
     <ClCompile Include="D:\G94\github\zy_renderer\engine\src\blinn\blinn_model.cpp" />
     <ClCompile Include="D:\G94\github\zy_renderer\engine\src\blinn\blinn_scene.cpp" />
     <ClCompile Include="D:\G94\github\zy_renderer\engine\src\blinn\blinn_shader.cpp" />
+    <ClCompile Include="D:\G94\github\zy_renderer\engine\src\blinn\blinn_program.cpp" />
     <ClCompile Include="D:\G94\github\zy_renderer\engine\src\main.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -14,7 +14,6 @@
 class BlinnModel : public Model{
 public:
     BlinnModel(Mesh* mesh, glm::mat4x4& transform);
-    virtual ~BlinnModel();
     virtual void Update(Perframe *perframe);
     virtual void Draw(FrameBuffer *framebuffer, bool shadow_pass=false);
 };

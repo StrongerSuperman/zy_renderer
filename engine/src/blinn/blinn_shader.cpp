@@ -5,9 +5,6 @@
 #include "blinn_material.hpp"
 
 
-BlinnShader::~BlinnShader(){
-}
-
 glm::vec4 BlinnShader::ExecuteVertexShader(void* vs_in, void* fs_in, void* uniforms) {
     auto _vs_in = static_cast<BlinnVSIn*>(vs_in);
     auto _fs_in = static_cast<BlinnFSIn*>(fs_in);

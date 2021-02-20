@@ -53,6 +53,12 @@
         "xstddef": "cpp",
         "xstring": "cpp",
         "xtr1common": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "chrono": "cpp",
+        "map": "cpp",
+        "ratio": "cpp",
+        "set": "cpp",
+        "sstream": "cpp",
+        "xtree": "cpp"
     }
 }

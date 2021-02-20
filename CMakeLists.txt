@@ -1,9 +1,13 @@
 cmake_minimum_required(VERSION 3.10)
 project(zy_renderer)
+set(DEBUG_MODE 1)
 
 
 set(HEADERS
     engine/src/platform/win32.hpp
+
+    engine/src/utility/math_tool.hpp
+    engine/src/utility/scene_loader.hpp
 
     engine/src/core/platform.hpp
     engine/src/core/camera.hpp
@@ -14,7 +18,6 @@ set(HEADERS
     engine/src/core/image.hpp
     engine/src/core/shader.hpp
     engine/src/core/texture.hpp
-    engine/src/core/math_tool.hpp
     engine/src/core/mesh.hpp
     engine/src/core/scene.hpp
 
@@ -22,6 +25,7 @@ set(HEADERS
     engine/src/blinn/blinn_model.hpp
     engine/src/blinn/blinn_scene.hpp
     engine/src/blinn/blinn_shader.hpp
+    engine/src/blinn/blinn_program.hpp
 )
 set(SOURCES
     engine/src/platform/win32.cpp
@@ -31,12 +35,12 @@ set(SOURCES
     engine/src/core/framebuffer.cpp
     engine/src/core/image.cpp
     engine/src/core/texture.cpp
-    engine/src/core/mesh.cpp
 
     engine/src/blinn/blinn_material.cpp
     engine/src/blinn/blinn_model.cpp
     engine/src/blinn/blinn_scene.cpp
     engine/src/blinn/blinn_shader.cpp
+    engine/src/blinn/blinn_program.cpp
 )
 
 set(SOURCES ${SOURCES} engine/src/main.cpp)
@@ -53,6 +57,30 @@ set_target_properties(zy_renderer PROPERTIES
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
+
+if(DEBUG_MODE)
+    set(CMAKE_BUILD_TYPE "Debug")
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MDd")
+    target_link_libraries(${TARGET}
+        "${CMAKE_SOURCE_DIR}/Engine/3rd/assimp/lib/assimp-vc142-mtd.lib"
+    )
+    add_custom_command(TARGET zy_renderer POST_BUILD 
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_SOURCE_DIR}/Engine/3rd/assimp/dll/assimp-vc142-mtd.dll"
+        ${CMAKE_SOURCE_DIR}/bin/$<CONFIGURATION>
+    )
+else()
+    set(CMAKE_BUILD_TYPE "Release")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MD")
+    target_link_libraries(${TARGET}
+        "${CMAKE_SOURCE_DIR}/Engine/3rd/assimp/lib/assimp-vc142-mt.lib"
+    )
+    add_custom_command(TARGET zy_renderer POST_BUILD 
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_SOURCE_DIR}/Engine/3rd/assimp/dll/assimp-vc142-mt.dll"
+        ${CMAKE_SOURCE_DIR}/bin/$<CONFIGURATION>
+    )
+endif()
 
 target_compile_options(${TARGET} PRIVATE /W4 /D_CRT_SECURE_NO_WARNINGS)
 target_compile_options(${TARGET} PRIVATE /fp:fast)
