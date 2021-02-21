@@ -1,3 +1,3 @@
 .vs/
-/engine/bin/*
-/engine/build/*
+/bin/*
+/build/*
