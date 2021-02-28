@@ -1,6 +1,7 @@
+#include <iostream>
 #include <algorithm>
-#include <string>
 
+#include "enum.hpp"
 #include "camera.hpp"
 
 
@@ -282,92 +283,79 @@ Camera::~Camera()
 }
 
 
-void Camera::HandleMouseLeftBtnPress(int x, int y)
+void Camera::HandleMouseBtnPress(Button button, int x, int y, int pressed)
 {
 	(void)(x);
 	(void)(y);
-	m_MouseLeftBtnFirstPress = true;
+	if(button == BUTTON_L){
+		m_MouseLeftBtnFirstPress = pressed;
+	}
+	else if(button == BUTTON_L){
+		m_MouseRightBtnFirstPress = pressed;
+	}
 }
 
-void Camera::HandleMouseRightBtnPress(int x, int y)
-{
-	(void)(x);
-	(void)(y);
-	m_MouseRightBtnFirstPress = true;
-}
 
-void Camera::HandleMouseLeftBtnMove(int x, int y)
+void Camera::HandleMouseBtnMove(Button button, int x, int y)
 {
-	if (m_MouseLeftBtnFirstPress)
-	{
+	if(button == BUTTON_L){
+		if (m_MouseLeftBtnFirstPress)
+		{
+			m_MouseX = x;
+			m_MouseY = y;
+			m_MouseLeftBtnFirstPress = false;
+			return;
+		}
+
+		int dx = m_MouseX - x;
+		int dy = y - m_MouseY;
 		m_MouseX = x;
 		m_MouseY = y;
-		m_MouseLeftBtnFirstPress = false;
-		return;
+
+		auto speed = m_MouseRightSpeed * 0.001f;
+		OrbitRotate(dx*speed, -dy* speed);
 	}
+	else if(button == BUTTON_L){
+		if (m_MouseRightBtnFirstPress)
+		{
+			m_MouseX = x;
+			m_MouseY = y;
+			m_MouseRightBtnFirstPress = false;
+			return;
+		}
 
-	int dx = m_MouseX - x;
-	int dy = y - m_MouseY;
-	m_MouseX = x;
-	m_MouseY = y;
-
-	auto speed = m_MouseRightSpeed * 0.001f;
-	OrbitRotate(dx*speed, -dy* speed);
-}
-
-void Camera::HandleMouseRightBtnMove(int x, int y)
-{
-	if (m_MouseRightBtnFirstPress)
-	{
+		int dx = m_MouseX - x;
+		int dy = y - m_MouseY;
 		m_MouseX = x;
 		m_MouseY = y;
-		m_MouseRightBtnFirstPress = false;
-		return;
+
+		auto speed = m_MouseLeftSpeed * 0.0001f;
+		EulerRotate(dx*speed, dy*speed);
 	}
-
-	int dx = m_MouseX - x;
-	int dy = y - m_MouseY;
-	m_MouseX = x;
-	m_MouseY = y;
-
-	auto speed = m_MouseLeftSpeed * 0.0001f;
-	EulerRotate(dx*speed, dy*speed);
 }
 
-void Camera::HandleMouseLeftBtnRelease(int x, int y)
+void Camera::HandleMouseBtnDoubleClick(Button button, int x, int y)
 {
-	(void)(x);
-	(void)(y);
-	m_MouseLeftBtnFirstPress = false;
-}
-
-void Camera::HandleMouseRightBtnRelease(int x, int y)
-{
-	(void)(x);
-	(void)(y);
-	m_MouseRightBtnFirstPress = false;
-}
-
-void Camera::HandleMouseLeftBtnDoubleClick(int x, int y)
-{
+	(void)(button);
 	(void)(x);
 	(void)(y);
 }
 
-void Camera::HandleMouseScroll(int delta)
+void Camera::HandleMouseScroll(float delta)
 {
 	auto speed = m_MouseScrollSpeed * 0.1f;
 	ZoomByMove(delta*speed);
 }
 
-void Camera::HandleKey(unsigned char key)
+void Camera::HandleKey(KeyCode key, int pressed)
 {
+	(void)(pressed);
 	auto speed = m_KeyMoveSpeed * 0.1f;
-	switch (toupper(key))
+	switch (key)
 	{
-	case 'W':	MoveForward(speed);		break;
-	case 'S':	MoveForward(-speed);	break;
-	case 'A':	MoveRight(-speed);		break;
-	case 'D':	MoveRight(speed);		break;
+	case KEY_W:	MoveForward(speed);		break;
+	case KEY_S:	MoveForward(-speed);	break;
+	case KEY_A:	MoveRight(-speed);		break;
+	case KEY_D:	MoveRight(speed);		break;
 	}
 }

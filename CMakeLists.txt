@@ -9,6 +9,8 @@ set(HEADERS
     engine/src/utility/math_tool.hpp
     engine/src/utility/scene_loader.hpp
 
+    engine/src/core/userdata.hpp
+    engine/src/core/enum.hpp
     engine/src/core/platform.hpp
     engine/src/core/camera.hpp
     engine/src/core/graphics.hpp

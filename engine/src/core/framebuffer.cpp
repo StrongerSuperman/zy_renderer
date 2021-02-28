@@ -66,4 +66,5 @@ void FrameBuffer::BlitBGR(Image *dst) {
 }
 
 void FrameBuffer::DrawTriangle(Program* program){
+   graphics_draw_triangle(this, program);
 }

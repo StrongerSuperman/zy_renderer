@@ -1,6 +1,8 @@
 #ifndef PROGRAM_H
 #define PROGRAM_H
 
+#include <vector>
+
 #include <glm/glm.hpp>
 
 #include "shader.hpp"
@@ -10,6 +12,8 @@
 
 class Program{
 public:
+    int double_sided;
+    int enable_blend;
     /* for shader */
     Shader* shader;
     int sizeof_vs_in;
@@ -19,10 +23,10 @@ public:
     void* fs_in;
     void* uniforms;
     /* for clipping */
-    glm::vec4 vs_in_coords[MAX_FS_IN_LEN];
-    glm::vec4 vs_out_coords[MAX_FS_IN_LEN];
-    void* fs_in_data[MAX_FS_IN_LEN];
-    void* fs_out_data[MAX_FS_IN_LEN];
+    std::vector<glm::vec4> vs_in_clip_coords;
+    std::vector<glm::vec4> vs_out_clip_coords;
+    std::vector<void*> fs_in_clip_data;
+    std::vector<void*> fs_out_clip_data;
 
     Program(Shader* shader, int sizeof_vs_in, int sizeof_fs_in, int sizeof_uniforms){
         assert(sizeof_vs_in > 0 && sizeof_fs_in > 0 && sizeof_uniforms > 0);
@@ -42,12 +46,10 @@ public:
         this->uniforms = malloc(sizeof_uniforms);
         memset(this->uniforms, 0, sizeof_uniforms);
 
-        for (int i = 0; i < MAX_FS_IN_LEN; i++) {
-            this->fs_in_data[i] = malloc(sizeof_fs_in);
-            memset(this->fs_in_data[i], 0, sizeof_fs_in);
-            this->fs_out_data[i] = malloc(sizeof_fs_in);
-            memset(this->fs_out_data[i], 0, sizeof_fs_in);
-        }
+        this->vs_in_clip_coords.resize(MAX_FS_IN_LEN);
+        this->vs_out_clip_coords.resize(MAX_FS_IN_LEN);
+        this->fs_in_clip_data.resize(MAX_FS_IN_LEN);
+        this->fs_out_clip_data.resize(MAX_FS_IN_LEN);
     }
 
     ~Program(){
@@ -59,8 +61,8 @@ public:
         free(this->fs_in);
         free(this->uniforms);
         for(int i=0; i<MAX_FS_IN_LEN; i++){
-            free(this->fs_in_data[i]);
-            free(this->fs_out_data[i]);
+            free(this->fs_in_clip_data[i]);
+            free(this->fs_out_clip_data[i]);
         }
     }
 };

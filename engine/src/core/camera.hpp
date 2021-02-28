@@ -8,24 +8,24 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 
-enum ProjectionMode
-{
-	Perspective,
-	Orthogonal,
-};
-
-struct ViewPort
-{
-	float TopLeftX;
-	float TopLeftY;
-	float Width;
-	float Height;
-	float MinDepth;
-	float MaxDepth;
-};
-
 class CameraBase
 {
+	enum ProjectionMode
+	{
+		Perspective,
+		Orthogonal,
+	};
+
+	struct ViewPort
+	{
+		float TopLeftX;
+		float TopLeftY;
+		float Width;
+		float Height;
+		float MinDepth;
+		float MaxDepth;
+	};
+
 public:
 	CameraBase();
 	virtual ~CameraBase();
@@ -121,15 +121,11 @@ public:
 	Camera();
 	virtual ~Camera();
 
-	virtual void HandleMouseLeftBtnPress(int x, int y);
-	virtual void HandleMouseRightBtnPress(int x, int y);
-	virtual void HandleMouseLeftBtnMove(int x, int y);
-	virtual void HandleMouseRightBtnMove(int x, int y);
-	virtual void HandleMouseLeftBtnRelease(int x, int y);
-	virtual void HandleMouseRightBtnRelease(int x, int y);
-	virtual void HandleMouseLeftBtnDoubleClick(int x, int y);
-	virtual void HandleMouseScroll(int delta);
-	virtual void HandleKey(unsigned char key);
+	virtual void HandleMouseBtnPress(Button button, int x, int y, int pressed);
+	virtual void HandleMouseBtnMove(Button button, int x, int y);
+	virtual void HandleMouseBtnDoubleClick(Button button, int x, int y);
+	virtual void HandleMouseScroll(float delta);
+	virtual void HandleKey(KeyCode key, int pressed);
 
 	inline void SetKeyMoveSpeed(float speed) { m_KeyMoveSpeed = speed; };
 	inline void SetMouseLeftSpeed(float speed) { m_MouseLeftSpeed = speed; };
