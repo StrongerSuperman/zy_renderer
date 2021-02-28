@@ -26,23 +26,32 @@ struct BlinnFSIn{
 };
 
 struct BlinnUniforms{
+    /* scene intensity */
+    float ambient_intensity;
+    float punctual_intensity;
+    /* light/model/camera mat */
     glm::vec3 light_dir;
     glm::vec3 camera_pos;  
     glm::mat4x4 model_mat;
     glm::mat3x3 normal_mat;
     glm::mat4x4 camera_vp_mat;
     glm::mat4x4 light_vp_mat;
-    float ambient_intensity;
-    float punctual_intensity;
+    /* shadow_map */
     Texture* shadow_map;
-    /* surface parameters */
-    glm::vec4 basecolor;
-    float shininess;
+    /* surface textures */
     Texture *diffuse_map;
     Texture *specular_map;
+    Texture *ambient_map;
     Texture *emission_map;
+    Texture *height_map;
+    Texture *normal_map;
+    Texture *shininess_map;
+    Texture *opacity_map;
+    Texture *displacement_map;
+    Texture *lightmap_map;
+    Texture *reflection_map;
     /* render controls */
-    float alpha_cutoff;
+    const float alpha_cutoff = 0.02f;
     int shadow_pass;
 };
 

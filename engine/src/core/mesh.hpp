@@ -31,11 +31,11 @@ public:
     glm::vec3 GetCenter() {return this->center;};
     std::vector<Vertex> GetVertices() const {return this->vertices;};
     std::vector<unsigned int> GetIndices() const {return this->indices;};
-    std::vector<Texture> GetTexture(std::string& texture_name) {
+    std::vector<Texture>* GetTexture(std::string& texture_name) {
         if(this->textures.find(texture_name) == this->textures.end()){
-            return std::vector<Texture>();
+            return nullptr;
         }
-        return this->textures[texture_name];
+        return &this->textures[texture_name];
     };
 };
 

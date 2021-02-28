@@ -24,6 +24,8 @@ void BlinnScene::Update(Perframe *perframe){
     for each(auto &model in this->models){
         model->Update(perframe);
     }
+    this->ambient_intensity = perframe->ambient_intensity;
+    this->punctual_intensity = perframe->punctual_intensity;
 }
 
 void BlinnScene::Render(FrameBuffer *framebuffer, Perframe *perframe){
@@ -41,11 +43,24 @@ void BlinnScene::Render(FrameBuffer *framebuffer, Perframe *perframe){
 
     // nomal pass
     this->sortModels(perframe->camera_view_mat);
-    if(this->skybox){
+    framebuffer->ClearColor(this->background);
+    framebuffer->ClearDepth(1);
+    int num_opaques = 0;
+    for each(auto &model in this->models){
+        if (model->opaque) {
+            num_opaques += 1;
+        } else {
+            break;
+        }
+    }
+    for (int i = 0; i < num_opaques; i++) {
+        models[i]->Draw(framebuffer);
+    }
+    if (this->skybox){
         this->skybox->Draw(framebuffer);
     }
-    for each(auto &model in this->models){
-        model->Draw(framebuffer);
+    for (int i = num_opaques; i < this->models.size(); i++) {
+        models[i]->Draw(framebuffer);
     }
 }
 

@@ -74,6 +74,7 @@ static void processMesh(Scene* scene, Mesh* mesh, aiMesh *ai_mesh, const aiScene
 	}
 
     // indices
+	mesh->num_faces = ai_mesh->mNumFaces;
 	for (unsigned int i = 0; i < ai_mesh->mNumFaces; i++)
 	{
 		aiFace face = ai_mesh->mFaces[i];
@@ -84,13 +85,13 @@ static void processMesh(Scene* scene, Mesh* mesh, aiMesh *ai_mesh, const aiScene
 
 	// texture
 	aiMaterial* material = ai_scene->mMaterials[ai_mesh->mMaterialIndex];
-	// LEGACY API MATERIALS
+	// legacy Api Materials
 	mesh->textures.emplace("diffuse", loadTextures(scene, material, aiTextureType_DIFFUSE));
 	mesh->textures.emplace("specular", loadTextures(scene, material, aiTextureType_SPECULAR));
 	mesh->textures.emplace("ambient", loadTextures(scene, material, aiTextureType_AMBIENT));
 	mesh->textures.emplace("emissive", loadTextures(scene, material, aiTextureType_EMISSIVE));
 	mesh->textures.emplace("height", loadTextures(scene, material, aiTextureType_HEIGHT));
-	mesh->textures.emplace("nomal", loadTextures(scene, material, aiTextureType_NORMALS));
+	mesh->textures.emplace("normal", loadTextures(scene, material, aiTextureType_NORMALS));
 	mesh->textures.emplace("shininess", loadTextures(scene, material, aiTextureType_SHININESS));
 	mesh->textures.emplace("opacity", loadTextures(scene, material, aiTextureType_OPACITY));
 	mesh->textures.emplace("displacement", loadTextures(scene, material, aiTextureType_DISPLACEMENT));

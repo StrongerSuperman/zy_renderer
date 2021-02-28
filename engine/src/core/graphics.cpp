@@ -258,20 +258,19 @@ static float interpolate_depth(float screen_depths[3], glm::vec3& weights) {
  * equation 15 in reference 1 (page 2) is a simplified 2d version of
  * equation 3.5 in reference 2 (page 58) which uses barycentric coordinates
  */
-static void interpolate_varyings(
-        void *src_varyings[3], void *dst_varyings,
-        int sizeof_varyings, glm::vec3& weights, float recip_w[3]) {
-    int num_floats = sizeof_varyings / sizeof(float);
-    float *src0 = (float*)src_varyings[0];
-    float *src1 = (float*)src_varyings[1];
-    float *src2 = (float*)src_varyings[2];
-    float *dst = (float*)dst_varyings;
+static void interpolate_clip_data(
+        void *src_clip_data[3], void *dst_clip_data,
+        int sizeof_fs_in, glm::vec3& weights, float recip_w[3]) {
+    int num_floats = sizeof_fs_in / sizeof(float);
+    float *src0 = (float*)src_clip_data[0];
+    float *src1 = (float*)src_clip_data[1];
+    float *src2 = (float*)src_clip_data[2];
+    float *dst = (float*)dst_clip_data;
     float weight0 = recip_w[0] * weights.x;
     float weight1 = recip_w[1] * weights.y;
     float weight2 = recip_w[2] * weights.z;
     float normalizer = 1 / (weight0 + weight1 + weight2);
-    int i;
-    for (i = 0; i < num_floats; i++) {
+    for (int i = 0; i < num_floats; i++) {
         float sum = src0[i] * weight0 + src1[i] * weight1 + src2[i] * weight2;
         dst[i] = sum * normalizer;
     }
@@ -313,8 +312,8 @@ static int rasterize_triangle(FrameBuffer *framebuffer, Program *program,
                               glm::vec4 clip_coords[3], void *clip_data[3]) {
     int width = framebuffer->m_Width;
     int height = framebuffer->m_Height;
-    std::vector<glm::vec3> ndc_coords;
-    std::vector<glm::vec2> screen_coords;
+    std::vector<glm::vec3> ndc_coords(3);
+    std::vector<glm::vec2> screen_coords(3);
     float screen_depths[3];
     float recip_w[3];
     int backface;
@@ -358,9 +357,8 @@ static int rasterize_triangle(FrameBuffer *framebuffer, Program *program,
                 float depth = interpolate_depth(screen_depths, weights);
                 /* early depth testing */
                 if (depth <= framebuffer->m_DepthBuffer[index]) {
-                    interpolate_varyings(clip_data, program->fs_in,
-                                         program->sizeof_fs_in,
-                                         weights, recip_w);
+                    interpolate_clip_data(
+                        clip_data, program->fs_in, program->sizeof_fs_in, weights, recip_w);
                     draw_fragment(framebuffer, program, backface, index, depth);
                 }
             }

@@ -28,7 +28,8 @@ public:
     std::vector<void*> fs_in_clip_data;
     std::vector<void*> fs_out_clip_data;
 
-    Program(Shader* shader, int sizeof_vs_in, int sizeof_fs_in, int sizeof_uniforms){
+    Program(Shader* shader, int sizeof_vs_in, int sizeof_fs_in, int sizeof_uniforms):
+            double_sided(false), enable_blend(true){
         assert(sizeof_vs_in > 0 && sizeof_fs_in > 0 && sizeof_uniforms > 0);
         assert(sizeof_fs_in % sizeof(float) == 0);
 
@@ -50,6 +51,10 @@ public:
         this->vs_out_clip_coords.resize(MAX_FS_IN_LEN);
         this->fs_in_clip_data.resize(MAX_FS_IN_LEN);
         this->fs_out_clip_data.resize(MAX_FS_IN_LEN);
+        for(int i = 0; i < MAX_FS_IN_LEN; i++){
+            this->fs_in_clip_data[i] = malloc(sizeof_fs_in);
+            this->fs_out_clip_data[i] = malloc(sizeof_fs_in);
+        }
     }
 
     ~Program(){

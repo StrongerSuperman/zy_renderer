@@ -69,6 +69,19 @@ int main() {
         auto view_mat = camera->GetViewMatrix();
         auto Proj_mat = camera->GetProjectionMatrix();
 
+        perframe.light_dir = glm::vec3(100, 100, 100);
+        auto light_pos = glm::vec3(100, 100, 100);
+        auto light_dir = glm::normalize(-light_pos);
+        auto right = glm::normalize(glm::cross(-light_dir, glm::vec3(0, 1, 0)));
+	    auto up = glm::normalize(glm::cross(right, -light_dir));
+        perframe.light_view_mat = glm::lookAt(light_pos, light_pos + light_dir, up);
+        perframe.light_proj_mat = Proj_mat;
+        perframe.camera_view_mat = view_mat;
+        perframe.camera_proj_mat = Proj_mat;
+        perframe.ambient_intensity = 1.0f;
+        perframe.punctual_intensity = 1.0f;
+        perframe.shadow_map = scene->shadow_map;
+
         scene->Update(&perframe);
         scene->Render(&framebuffer, &perframe);
 
