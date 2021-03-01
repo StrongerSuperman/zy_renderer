@@ -25,13 +25,22 @@ public:
     glm::vec3 center;
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
-    std::map<std::string, std::vector<Texture>> textures;
+    std::map<std::string, std::vector<Texture*>> textures;
+
+    ~Mesh(){
+        auto iter = this->textures.begin();
+        while(iter != textures.end()) {
+            for each(auto texture in iter->second){
+                delete texture;
+            }
+        }
+    }
 
     int GetFaceNum() {return this->num_faces;};
     glm::vec3 GetCenter() {return this->center;};
-    std::vector<Vertex> GetVertices() const {return this->vertices;};
-    std::vector<unsigned int> GetIndices() const {return this->indices;};
-    std::vector<Texture>* GetTexture(std::string& texture_name) {
+    std::vector<Vertex>* GetVertices() {return &(this->vertices);};
+    std::vector<unsigned int>* GetIndices() {return &(this->indices);};
+    std::vector<Texture*>* GetTexture(std::string& texture_name) {
         if(this->textures.find(texture_name) == this->textures.end()){
             return nullptr;
         }

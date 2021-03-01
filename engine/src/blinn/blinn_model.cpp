@@ -13,12 +13,14 @@
 BlinnModel::BlinnModel(Mesh* mesh, glm::mat4x4& transform):
         Model(mesh, transform, new BlinnProgram()){
     auto uniforms = static_cast<BlinnUniforms*>(this->program->uniforms);
+
     std::vector<std::string> texture_names = {
         "diffuse", "specular", "ambient",
         "emissive", "height", "normal",
         "shininess", "opacity", "displacement",
         "lightmap", "reflection"
     };
+
     auto diffuse_textures = this->mesh->GetTexture(texture_names[0]);
     auto specular_textures = this->mesh->GetTexture(texture_names[1]);
     auto ambient_textures = this->mesh->GetTexture(texture_names[2]);
@@ -30,78 +32,79 @@ BlinnModel::BlinnModel(Mesh* mesh, glm::mat4x4& transform):
     auto displacement_textures = this->mesh->GetTexture(texture_names[8]);
     auto lightmap_textures = this->mesh->GetTexture(texture_names[9]);
     auto reflection_textures = this->mesh->GetTexture(texture_names[10]);
+
     if (diffuse_textures->size() > 0){
-        uniforms->diffuse_map = &(*diffuse_textures)[0];
+        uniforms->diffuse_map = (*diffuse_textures)[0];
     }
     else{
         uniforms->diffuse_map = nullptr;
     }
 
     if (specular_textures->size() > 0){
-        uniforms->specular_map = &(*diffuse_textures)[0];
+        uniforms->specular_map = (*specular_textures)[0];
     }
     else{
         uniforms->specular_map = nullptr;
     }
 
     if (ambient_textures->size() > 0){
-        uniforms->ambient_map = &(*diffuse_textures)[0];
+        uniforms->ambient_map = (*ambient_textures)[0];
     }
     else{
         uniforms->ambient_map = nullptr;
     }
 
     if (emissive_textures->size() > 0){
-        uniforms->emission_map = &(*diffuse_textures)[0];
+        uniforms->emission_map = (*emissive_textures)[0];
     }
     else{
         uniforms->emission_map = nullptr;
     }
 
     if (height_textures->size() > 0){
-        uniforms->height_map = &(*diffuse_textures)[0];
+        uniforms->height_map = (*height_textures)[0];
     }
     else{
         uniforms->height_map = nullptr;
     }
 
     if (normal_textures->size() > 0){
-        uniforms->normal_map = &(*diffuse_textures)[0];
+        uniforms->normal_map = (*normal_textures)[0];
     }
     else{
         uniforms->normal_map = nullptr;
     }
 
     if (shininess_textures->size() > 0){
-        uniforms->shininess_map = &(*diffuse_textures)[0];
+        uniforms->shininess_map = (*shininess_textures)[0];
     }
     else{
         uniforms->shininess_map = nullptr;
     }
 
     if (opacity_textures->size() > 0){
-        uniforms->opacity_map = &(*diffuse_textures)[0];
+        uniforms->opacity_map = (*opacity_textures)[0];
     }
     else{
         uniforms->opacity_map = nullptr;
     }
 
     if (displacement_textures->size() > 0){
-        uniforms->displacement_map = &(*diffuse_textures)[0];
+        uniforms->displacement_map = (*displacement_textures)[0];
     }
     else{
         uniforms->displacement_map = nullptr;
     }
 
     if (lightmap_textures->size() > 0){
-        uniforms->lightmap_map = &(*diffuse_textures)[0];
+        uniforms->lightmap_map = (*lightmap_textures)[0];
     }
     else{
         uniforms->lightmap_map = nullptr;
     }
 
     if (reflection_textures->size() > 0){
-        uniforms->reflection_map = &(*diffuse_textures)[0];
+        uniforms->reflection_map = (*reflection_textures)[0];
     }
     else{
         uniforms->reflection_map = nullptr;
@@ -151,12 +154,14 @@ void BlinnModel::Update(Perframe *perframe){
 void BlinnModel::Draw(FrameBuffer *framebuffer, bool shadow_pass){
     int num_faces = this->mesh->GetFaceNum();
     auto vertices = this->mesh->GetVertices();
+    auto indices = this->mesh->GetIndices();
     auto uniforms = static_cast<BlinnUniforms*>(this->program->uniforms);
 
     uniforms->shadow_pass = shadow_pass;
     for (int i = 0; i < num_faces; i++) {
         for (int j = 0; j < 3; j++) {
-            auto vertex = vertices[i * 3 + j];
+            auto index = (*indices)[i*3 + j];
+            auto vertex = (*vertices)[index];
             auto _vs_in = static_cast<BlinnVSIn*>(this->program->vs_in[j]);
             _vs_in->position = vertex.position;
             _vs_in->texcoord = vertex.texcoord;

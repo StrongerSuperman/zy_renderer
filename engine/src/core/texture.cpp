@@ -10,9 +10,8 @@
 
 static void LDRImageToTexture(Image *image, Texture *texture) {
     int num_pixels = image->m_Width * image->m_Height;
-    int i;
 
-    for (i = 0; i < num_pixels; i++) {
+    for (int i = 0; i < num_pixels; i++) {
         unsigned char *pixel = &image->m_LDRBuffer[i * image->m_Channels];
         glm::vec4 texel = {0, 0, 0, 1};
         if (image->m_Channels == 1) {             /* GL_LUMINANCE */
@@ -36,9 +35,8 @@ static void LDRImageToTexture(Image *image, Texture *texture) {
 
 static void HDRImageToTexture(Image *image, Texture *texture) {
     int num_pixels = image->m_Width * image->m_Height;
-    int i;
 
-    for (i = 0; i < num_pixels; i++) {
+    for (int i = 0; i < num_pixels; i++) {
         float *pixel = &image->m_HDRBuffer[i * image->m_Channels];
         glm::vec4 texel = {0, 0, 0, 1};
         if (image->m_Channels == 1) {             /* GL_LUMINANCE */

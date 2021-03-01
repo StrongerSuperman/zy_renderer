@@ -58,14 +58,14 @@ int main() {
 
     // scene
     std::string filename = "C://Users//bestr//Documents//Github//zy_renderer//assert//nanosuit//nanosuit.obj";
+    // std::string filename = "C://Users//bestr//Documents//Github//zy_renderer//assert//camera//camera.obj";
     Scene* scene = new BlinnScene(filename);
     scene->InitShadow(width, height);
 
+    int num_frames = 0;
     float prev_time = window.GetTime();
+    float print_time = window.GetTime();
     while (!window.ShouldClose()) {
-        float cur_time = window.GetTime();
-        float delta_time = cur_time - prev_time;
-
         auto view_mat = camera->GetViewMatrix();
         auto Proj_mat = camera->GetProjectionMatrix();
 
@@ -87,5 +87,17 @@ int main() {
 
         window.DrawBuffer(&framebuffer);
         window.PollEvents();
+
+        float cur_time = window.GetTime();
+        float delta_time = cur_time - prev_time;
+        num_frames += 1;
+        if (cur_time - print_time >= 1) {
+            int sum_millis = (int)((cur_time - print_time) * 1000);
+            int avg_millis = sum_millis / num_frames;
+            printf("fps: %3d, avg: %3d ms\n", num_frames, avg_millis);
+            num_frames = 0;
+            print_time = cur_time;
+        }
+        prev_time = cur_time;
     }
 }

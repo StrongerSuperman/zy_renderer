@@ -85,7 +85,7 @@ static glm::vec2 vec2_max(glm::vec2& a, glm::vec2& b) {
 }
 
 static glm::vec3 vec3_div(glm::vec3& v, float divisor) {
-    return glm::vec4(v, 1 / divisor);
+    return glm::vec3(v.x/divisor, v.y/divisor, v.z/divisor);
 }
 
 static glm::vec4 vec4_saturate(glm::vec4& v) {

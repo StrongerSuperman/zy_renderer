@@ -14,15 +14,15 @@
 #include "../blinn/blinn_model.hpp"
 
 
-static std::vector<Texture> loadTextures(Scene* scene, aiMaterial *mat, aiTextureType type)
+static std::vector<Texture*> loadTextures(Scene* scene, aiMaterial *mat, aiTextureType type)
 {
-	std::vector<Texture> textures;
+	std::vector<Texture*> textures;
 	for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
 	{
 		aiString str;
 		mat->GetTexture(type, i, &str);
         std::string path = str.C_Str();
-        textures.emplace_back(Texture(scene->directory + path, scene->dr_mode));
+        textures.emplace_back(new Texture(scene->directory + path, scene->dr_mode));
 	}
 	return textures;
 }
@@ -114,7 +114,7 @@ static void processNode(Scene* scene, aiNode *node, const aiScene *ai_scene)
 		aiMesh* ai_mesh = ai_scene->mMeshes[node->mMeshes[i]];
         processMesh(scene, mesh, ai_mesh, ai_scene);
         if(scene->type == SceneType::SCENE_TYPE_BLINN){
-            glm::mat4x4 transform;
+            glm::mat4x4 transform(1.0f);
             Model* model = new BlinnModel(mesh, transform);
             scene->models.emplace_back(model);
         }
