@@ -46,12 +46,10 @@ int main() {
     // perframe
     Perframe perframe;
 
-    Userdata userdata;
-    auto camera = userdata.GetCamera();
+    auto camera = window.GetUserdata()->GetCamera();
     camera->SetAspectRatio((float)width/height);
     camera->SetEyeAndDir(glm::vec3(0,8,15), glm::vec3(0,0,-1));
     camera->SetFov(45.0f);
-    window.SetUserdata(static_cast<void*>(&userdata));
 
     Callbacks callbacks;
     callbacks.key_callback = key_callback;

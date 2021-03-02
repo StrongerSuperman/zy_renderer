@@ -227,6 +227,9 @@ Win32::~Win32(){
     DeleteDC(this->m_MemoryDC);
     DestroyWindow(this->m_Handle);
 
+    // this buffer has freed by the system, so just set it to nullptr
+    this->m_pSurface->m_LDRBuffer = nullptr;
+
     // platform deinit
     unregister_class();
 }

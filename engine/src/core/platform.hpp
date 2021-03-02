@@ -2,6 +2,7 @@
 #define PLATFORM_H
 
 #include "enum.hpp"
+#include "userdata.hpp"
 #include "framebuffer.hpp"
 
 
@@ -20,13 +21,12 @@ public:
     char m_Keys[5];
     char m_Buttons[2];
     Callbacks m_Callbacks;
-    void *m_pUserdata;
+    Userdata *m_pUserdata;
 
-    Platform() {this->m_pSurface=nullptr, this->m_ShouldClose=false, this->m_pUserdata=nullptr;};
-    virtual ~Platform() {delete this->m_pSurface;};
+    Platform() {this->m_pSurface=nullptr, this->m_ShouldClose=false, this->m_pUserdata=new Userdata();};
+    virtual ~Platform() {delete this->m_pSurface; delete this->m_pUserdata;};
     virtual bool ShouldClose() {return this->m_ShouldClose;};
-    virtual void SetUserdata(void *userdata) {this->m_pUserdata = userdata;};
-    virtual void* GetUserdata() {return this->m_pUserdata;};
+    virtual Userdata* GetUserdata() {return this->m_pUserdata;};
 
     virtual void DrawBuffer(FrameBuffer *buffer)=0;
     virtual void SetInputCallbacks(Callbacks callbacks)=0;

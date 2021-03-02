@@ -24,7 +24,6 @@ public:
     Image(int width, int height, int channels, Format format=FORMAT_LDR);
     Image(std::string& filename, Format format=FORMAT_LDR);
     ~Image();
-    void SaveToFile(std::string& filename);
 };
 
 #endif //IMAGE_H

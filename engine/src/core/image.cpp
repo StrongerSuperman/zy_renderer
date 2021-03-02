@@ -53,7 +53,3 @@ Image::~Image() {
     free(this->m_LDRBuffer);
     free(this->m_HDRBuffer);
 }
-
-void Image::SaveToFile(std::string& filename) {
-}
-
