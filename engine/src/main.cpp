@@ -1,4 +1,5 @@
 #include <iostream>
+#include <direct.h>
 
 #include <glm/glm.hpp>
 
@@ -48,6 +49,8 @@ int main() {
     Userdata userdata;
     auto camera = userdata.GetCamera();
     camera->SetAspectRatio((float)width/height);
+    camera->SetEyeAndDir(glm::vec3(0,8,15), glm::vec3(0,0,-1));
+    camera->SetFov(45.0f);
     window.SetUserdata(static_cast<void*>(&userdata));
 
     Callbacks callbacks;
@@ -57,8 +60,12 @@ int main() {
     window.SetInputCallbacks(callbacks);
 
     // scene
-    std::string filename = "C://Users//bestr//Documents//Github//zy_renderer//assert//nanosuit//nanosuit.obj";
-    // std::string filename = "C://Users//bestr//Documents//Github//zy_renderer//assert//camera//camera.obj";
+	const char* assert_path = "\\..\\..\\assets\\nanosuit\\nanosuit.obj";
+#define MAX_PATH 256
+    char buffer[MAX_PATH];
+    getcwd(buffer, MAX_PATH);
+	std::string filename(buffer);
+	filename.append(assert_path);
     Scene* scene = new BlinnScene(filename);
     scene->InitShadow(width, height);
 
@@ -69,11 +76,11 @@ int main() {
         auto view_mat = camera->GetViewMatrix();
         auto Proj_mat = camera->GetProjectionMatrix();
 
-        perframe.light_dir = glm::vec3(100, 100, 100);
+        perframe.light_dir = glm::normalize(glm::vec3(100, 100, 100));
         auto light_pos = glm::vec3(100, 100, 100);
-        auto light_dir = glm::normalize(-light_pos);
-        auto right = glm::normalize(glm::cross(-light_dir, glm::vec3(0, 1, 0)));
-	    auto up = glm::normalize(glm::cross(right, -light_dir));
+        auto light_dir = -perframe.light_dir;
+        auto right = glm::normalize(glm::cross(perframe.light_dir, glm::vec3(0, 1, 0)));
+	    auto up = glm::normalize(glm::cross(right, light_dir));
         perframe.light_view_mat = glm::lookAt(light_pos, light_pos + light_dir, up);
         perframe.light_proj_mat = Proj_mat;
         perframe.camera_view_mat = view_mat;

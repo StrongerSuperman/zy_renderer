@@ -133,7 +133,11 @@ static void LoadScene(Scene* scene, std::string& filename){
 		std::cout << "ERROR::ASSIMP:: " << importer.GetErrorString();
 		return;
 	}
-	scene->directory = filename.substr(0, filename.find_last_of('//'));
+	auto dir_seg_pos1 = filename.find_last_of('/');
+	auto dir_seg_pos2 = filename.find_last_of('\\') + 1;
+	assert(dir_seg_pos1 <= filename.size() || dir_seg_pos2 <= filename.size());
+	auto dir_seg_pos = dir_seg_pos1 <= filename.size() ? dir_seg_pos1 : dir_seg_pos2;
+	scene->directory = filename.substr(0, dir_seg_pos);
 
 	processNode(scene, ai_scene->mRootNode, ai_scene);
 }

@@ -63,7 +63,8 @@ glm::vec4 BlinnShader::ExecuteFragmentShader(void* fs_in, void* uniforms, int *d
         return glm::vec4(0, 0, 0, 0);
     }
     else {
-        auto _emission = material.has_emission ? material.emission : glm::vec3(0,0,0);
+		auto _ambient = material.has_ambient ? material.ambient : glm::vec3(0, 0, 0);
+		auto _emission = material.has_emission ? material.emission : glm::vec3(0,0,0);
         auto _diffuse = material.has_diffuse ? material.diffuse : glm::vec3(0,0,0);
         auto _normal = material.has_normal ? material.normal : normal;
         auto _specular = material.has_specular ? material.specular : glm::vec3(0,0,0);
@@ -71,7 +72,7 @@ glm::vec4 BlinnShader::ExecuteFragmentShader(void* fs_in, void* uniforms, int *d
 
         auto color = _emission;
         if (ambient_intensity > 0) {
-            auto ambient = _diffuse;
+            auto ambient = _ambient;
             float intensity = ambient_intensity;
             color += ambient*intensity;
         }
