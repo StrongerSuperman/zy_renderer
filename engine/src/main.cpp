@@ -59,13 +59,14 @@ int main() {
 
     // scene
 	const char* assert_path = "\\..\\..\\assets\\nanosuit\\nanosuit.obj";
-#define MAX_PATH 256
-    char buffer[MAX_PATH];
-    getcwd(buffer, MAX_PATH);
+	const auto max_path = 256;
+    char buffer[max_path];
+    getcwd(buffer, max_path);
 	std::string filename(buffer);
 	filename.append(assert_path);
     Scene* scene = new BlinnScene(filename);
     scene->InitShadow(width, height);
+	scene->background = glm::vec4(0.4, 0.1, 0.3, 1.0);
 
     int num_frames = 0;
     float prev_time = window.GetTime();

@@ -305,6 +305,7 @@ static void draw_fragment(FrameBuffer *framebuffer, Program *program,
     framebuffer->m_ColorBuffer[index * 4 + 0] = float_to_uchar(color.x);
     framebuffer->m_ColorBuffer[index * 4 + 1] = float_to_uchar(color.y);
     framebuffer->m_ColorBuffer[index * 4 + 2] = float_to_uchar(color.z);
+    framebuffer->m_ColorBuffer[index * 4 + 3] = float_to_uchar(color.w);
     framebuffer->m_DepthBuffer[index] = depth;
 }
 

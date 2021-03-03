@@ -29,7 +29,7 @@ public:
     std::vector<void*> fs_out_clip_data;
 
     Program(Shader* shader, int sizeof_vs_in, int sizeof_fs_in, int sizeof_uniforms):
-            double_sided(false), enable_blend(true){
+            double_sided(false), enable_blend(false){
         assert(sizeof_vs_in > 0 && sizeof_fs_in > 0 && sizeof_uniforms > 0);
         assert(sizeof_fs_in % sizeof(float) == 0);
 

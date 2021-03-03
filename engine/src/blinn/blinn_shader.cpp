@@ -66,19 +66,15 @@ glm::vec4 BlinnShader::ExecuteFragmentShader(void* fs_in, void* uniforms, int *d
 		auto _ambient = material.has_ambient ? material.ambient : glm::vec3(0, 0, 0);
 		auto _emission = material.has_emission ? material.emission : glm::vec3(0,0,0);
         auto _diffuse = material.has_diffuse ? material.diffuse : glm::vec3(0,0,0);
-        auto _normal = material.has_normal ? material.normal : normal;
+		auto _normal = glm::normalize(material.has_normal ? material.normal : (material.has_height ? material.height : normal));
         auto _specular = material.has_specular ? material.specular : glm::vec3(0,0,0);
         auto _shininess = material.has_shininess ? material.shininess[0] : 32.0f;
-
         auto color = _emission;
         if (ambient_intensity > 0) {
-            auto ambient = _ambient;
             float intensity = ambient_intensity;
-            color += ambient*intensity;
+            color += _diffuse*intensity;
         }
         if (punctual_intensity > 0) {
-            glm::vec3 light_dir = -light_dir;
-            
             float n_dot_l = glm::dot(_normal, light_dir);
             bool is_in_shadow = false;
             if (shadow_map) {
@@ -92,24 +88,22 @@ glm::vec4 BlinnShader::ExecuteFragmentShader(void* fs_in, void* uniforms, int *d
                 is_in_shadow = current_depth > closest_depth;
             }
             if (n_dot_l > 0 && !is_in_shadow) {
-                glm::vec3 specular = glm::vec3(0, 0, 0);
                 if (!(_specular.x == 0 &&
                         _specular.y == 0 &&
                         _specular.z == 0)) {
-                    auto view_dir = camera_pos-world_position;
-                    view_dir = glm::normalize(view_dir);
+                    auto view_dir = glm::normalize(camera_pos-world_position);
                     auto half_dir = glm::normalize(light_dir+view_dir);
                     float n_dot_h = glm::dot(_normal, half_dir);
                     if (n_dot_h > 0) {
-                        float strength = (float)pow(n_dot_h, _shininess);
-                        specular *= strength;
+                        float strength = pow(n_dot_h, _shininess);
+                        _specular *= strength;
                     }
                 }
                 auto diffuse = _diffuse*n_dot_l;
-                auto punctual = diffuse + specular;
+                auto punctual = diffuse + _specular;
                 color += punctual*punctual_intensity;
             }
         }
-        return glm::vec4(color, alpha);
+        return glm::vec4(color, alpha) / 255.0f;
     }
 }
