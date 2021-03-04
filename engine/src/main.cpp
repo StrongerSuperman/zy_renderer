@@ -14,23 +14,22 @@
 static void key_callback(Platform *platform, KeyCode key, int pressed){
     auto userdata = static_cast<Userdata*>(platform->GetUserdata());
     userdata->GetCamera()->HandleKey(key, pressed);
-    std::cout << "key press" << std::endl;
 }
 
-static void button_callback(Platform *platform, Button button, int pressed){
+static void mouse_press_callback(Platform *platform, Button button, float x, float y, int pressed){
     auto userdata = static_cast<Userdata*>(platform->GetUserdata());
-    float posX, posY;
-    platform->GetCursor(&posX, &posY);
     userdata->GetCamera()->HandleMouseBtnPress(
-        button, static_cast<int>(posX), static_cast<int>(posY), pressed);
-    std::cout << "mouse button press" << std::endl;
+		button, static_cast<int>(x), static_cast<int>(y), pressed);
+}
+
+static void mouse_move_callback(Platform *platform, float x, float y) {
+	auto userdata = static_cast<Userdata*>(platform->GetUserdata());
+	userdata->GetCamera()->HandleMouseMove(static_cast<int>(x), static_cast<int>(y));
 }
 
 static void scroll_callback(Platform *platform, float offset){
     auto userdata = static_cast<Userdata*>(platform->GetUserdata());
     userdata->GetCamera()->HandleMouseScroll(offset);
-    printf("scroll/n");
-    std::cout << "mouse scroll" << std::endl;
 }
 
 int main() {
@@ -48,12 +47,17 @@ int main() {
 
     auto camera = window.GetUserdata()->GetCamera();
     camera->SetAspectRatio((float)width/height);
-    camera->SetEyeAndDir(glm::vec3(0,8,15), glm::vec3(0,0,-1));
+	camera->SetEyeAndTarget(glm::vec3(0, 8, 15), glm::vec3(0, 8, 0));
     camera->SetFov(45.0f);
+	camera->SetKeyMoveSpeed(0.5f);
+	camera->SetMouseLeftSpeed(0.6f);
+	camera->SetMouseRightSpeed(0.05f);
+	camera->SetMouseScrollSpeed(1.5f);
 
     Callbacks callbacks;
     callbacks.key_callback = key_callback;
-    callbacks.button_callback = button_callback;
+	callbacks.mouse_press_callback = mouse_press_callback;
+	callbacks.mouse_move_callback = mouse_move_callback;
     callbacks.scroll_callback = scroll_callback;
     window.SetInputCallbacks(callbacks);
 

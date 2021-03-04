@@ -269,8 +269,8 @@ glm::vec3 CameraFTP::rotatePointByVector(const glm::vec3& p, const glm::vec3& v,
 Camera::Camera():
 	m_MouseX(0),
 	m_MouseY(0),
-	m_MouseLeftBtnFirstPress(false),
-	m_MouseRightBtnFirstPress(false),
+	m_MouseLeftBtnPress(false),
+	m_MouseRightBtnPress(false),
 	m_KeyMoveSpeed(200.0f),
 	m_MouseLeftSpeed(200.0f),
 	m_MouseRightSpeed(100.0f),
@@ -285,51 +285,36 @@ Camera::~Camera()
 
 void Camera::HandleMouseBtnPress(Button button, int x, int y, int pressed)
 {
-	(void)(x);
-	(void)(y);
+	m_MouseX = x;
+	m_MouseY = y;
 	if(button == BUTTON_L){
-		m_MouseLeftBtnFirstPress = pressed;
+		m_MouseLeftBtnPress = pressed;
 	}
-	else if(button == BUTTON_L){
-		m_MouseRightBtnFirstPress = pressed;
+	else if(button == BUTTON_R){
+		m_MouseRightBtnPress = pressed;
 	}
 }
 
 
-void Camera::HandleMouseBtnMove(Button button, int x, int y)
+void Camera::HandleMouseMove(int x, int y)
 {
-	if(button == BUTTON_L){
-		if (m_MouseLeftBtnFirstPress)
-		{
-			m_MouseX = x;
-			m_MouseY = y;
-			m_MouseLeftBtnFirstPress = false;
-			return;
-		}
-
+	if(m_MouseLeftBtnPress){
 		int dx = m_MouseX - x;
 		int dy = y - m_MouseY;
 		m_MouseX = x;
 		m_MouseY = y;
+		printf("dx: %3d, dy: %3d \n", dx, dy);
 
-		auto speed = m_MouseRightSpeed * 0.001f;
+		auto speed = m_MouseLeftSpeed;
 		OrbitRotate(dx*speed, -dy* speed);
 	}
-	else if(button == BUTTON_L){
-		if (m_MouseRightBtnFirstPress)
-		{
-			m_MouseX = x;
-			m_MouseY = y;
-			m_MouseRightBtnFirstPress = false;
-			return;
-		}
-
+	else if(m_MouseRightBtnPress){
 		int dx = m_MouseX - x;
 		int dy = y - m_MouseY;
 		m_MouseX = x;
 		m_MouseY = y;
 
-		auto speed = m_MouseLeftSpeed * 0.0001f;
+		auto speed = m_MouseRightSpeed;
 		EulerRotate(dx*speed, dy*speed);
 	}
 }
@@ -343,14 +328,14 @@ void Camera::HandleMouseBtnDoubleClick(Button button, int x, int y)
 
 void Camera::HandleMouseScroll(float delta)
 {
-	auto speed = m_MouseScrollSpeed * 0.1f;
+	auto speed = m_MouseScrollSpeed;
 	ZoomByMove(delta*speed);
 }
 
 void Camera::HandleKey(KeyCode key, int pressed)
 {
 	(void)(pressed);
-	auto speed = m_KeyMoveSpeed * 0.1f;
+	auto speed = m_KeyMoveSpeed;
 	switch (key)
 	{
 	case KEY_W:	MoveForward(speed);		break;

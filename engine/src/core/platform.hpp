@@ -10,7 +10,8 @@ class Platform;
 
 struct Callbacks{
     void (*key_callback)(Platform *platform, KeyCode key, int pressed);
-    void (*button_callback)(Platform *platform, Button button, int pressed);
+	void (*mouse_press_callback)(Platform *platform, Button button, float x, float y, int pressed);
+	void (*mouse_move_callback)(Platform *platform, float x, float y);
     void (*scroll_callback)(Platform *platform, float offset);
 };
 

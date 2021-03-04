@@ -122,7 +122,7 @@ public:
 	virtual ~Camera();
 
 	virtual void HandleMouseBtnPress(Button button, int x, int y, int pressed);
-	virtual void HandleMouseBtnMove(Button button, int x, int y);
+	virtual void HandleMouseMove(int x, int y);
 	virtual void HandleMouseBtnDoubleClick(Button button, int x, int y);
 	virtual void HandleMouseScroll(float delta);
 	virtual void HandleKey(KeyCode key, int pressed);
@@ -135,8 +135,8 @@ public:
 private:	
 	int		m_MouseX;
 	int		m_MouseY;
-	bool    m_MouseLeftBtnFirstPress;
-	bool    m_MouseRightBtnFirstPress;
+	bool    m_MouseLeftBtnPress;
+	bool    m_MouseRightBtnPress;
 	float   m_KeyMoveSpeed;
 	float   m_MouseLeftSpeed;
 	float   m_MouseRightSpeed;

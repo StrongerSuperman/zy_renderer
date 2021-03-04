@@ -34,12 +34,21 @@ void handle_key_message(
     }
 }
 
-void handle_button_message(Win32 *window, Button button,
-                                  char pressed) {
+void handle_mouse_press_message(Win32 *window, Button button, char pressed) {
     window->m_Buttons[button] = pressed;
-    if (window->m_Callbacks.button_callback) {
-        window->m_Callbacks.button_callback(window, button, pressed);
+    if (window->m_Callbacks.mouse_press_callback) {
+		float x, y;
+		window->GetCursor(&x, &y);
+        window->m_Callbacks.mouse_press_callback(window, button, x, y, pressed);
     }
+}
+
+void handle_mouse_move_message(Win32 *window) {
+	if (window->m_Callbacks.mouse_move_callback) {
+		float x, y;
+		window->GetCursor(&x, &y);
+		window->m_Callbacks.mouse_move_callback(window, x, y);
+	}
 }
 
 void handle_scroll_message(Win32 *window, float offset) {
@@ -58,22 +67,26 @@ LRESULT CALLBACK process_message(HWND hWnd, UINT uMsg,
         return 0;
     } else if (uMsg == WM_KEYDOWN) {
         handle_key_message(window, wParam, 1);
-        return 0;
+        return 0; 
     } else if (uMsg == WM_KEYUP) {
         handle_key_message(window, wParam, 0);
         return 0;
     } else if (uMsg == WM_LBUTTONDOWN) {
-        handle_button_message(window, BUTTON_L, 1);
+		handle_mouse_press_message(window, BUTTON_L, 1);
         return 0;
     } else if (uMsg == WM_RBUTTONDOWN) {
-        handle_button_message(window, BUTTON_R, 1);
+		handle_mouse_press_message(window, BUTTON_R, 1);
         return 0;
     } else if (uMsg == WM_LBUTTONUP) {
-        handle_button_message(window, BUTTON_L, 0);
+		handle_mouse_press_message(window, BUTTON_L, 0);
         return 0;
     } else if (uMsg == WM_RBUTTONUP) {
-        handle_button_message(window, BUTTON_R, 0);
+		handle_mouse_press_message(window, BUTTON_R, 0);
         return 0;
+	}
+	else if (uMsg == WM_MOUSEMOVE) {
+		handle_mouse_move_message(window);
+		return 0;
     } else if (uMsg == WM_MOUSEWHEEL) {
         float offset = GET_WHEEL_DELTA_WPARAM(wParam) / (float)WHEEL_DELTA;
         handle_scroll_message(window, offset);
