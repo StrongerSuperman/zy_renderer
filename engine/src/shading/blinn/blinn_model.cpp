@@ -10,8 +10,8 @@
 #include "blinn_shader.hpp"
 
 
-BlinnModel::BlinnModel(Mesh* mesh, glm::mat4x4& transform):
-        Model(mesh, transform, new BlinnProgram()){
+BlinnModel::BlinnModel(Scene* scene, Mesh* mesh, glm::mat4x4& transform):
+        Model(scene, mesh, transform, new BlinnProgram()){
     auto uniforms = static_cast<BlinnUniforms*>(this->program->uniforms);
 
     std::vector<std::string> texture_names = {
@@ -111,7 +111,9 @@ BlinnModel::BlinnModel(Mesh* mesh, glm::mat4x4& transform):
     }
 }
 
-void BlinnModel::Update(Perframe *perframe){
+void BlinnModel::Update(){
+    auto perframe = this->GetScene()->GetPerframe();
+
     float ambient_intensity = perframe->ambient_intensity;
     float punctual_intensity = perframe->punctual_intensity;
     // auto skeleton = model->skeleton;

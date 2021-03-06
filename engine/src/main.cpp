@@ -1,19 +1,10 @@
-#include <iostream>
-#include <direct.h>
-
-#include <glm/glm.hpp>
-
-#include "core/define.hpp"
-#include "core/platform.hpp"
-#include "core/userdata.hpp"
-#include "platform/win32.hpp"
+#include "core/context.hpp"
 #include "app/my_userdata.hpp"
 
 
 int main() {
-    Platform* window = new Win32(WIDTH, HEIGHT);
-    Userdata* userdata = new MyUserdata(window);
-    window->SetUserdata(userdata);
+    auto window = Context::GetWindowsInstance();
+    window->SetUserdata(new MyUserdata());
 
     int num_frames = 0;
     float prev_time = window->GetTime();
@@ -36,6 +27,4 @@ int main() {
         }
         prev_time = cur_time;
     }
-
-    delete window;
 }

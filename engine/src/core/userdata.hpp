@@ -3,19 +3,12 @@
 
 #include "scene.hpp"
 
-class Platform;
-
 class Userdata{
 public:
-    Userdata(Platform* owner){this->m_Owner=owner;};
+    Userdata(){};
     virtual ~Userdata(){};
     virtual void Tick()=0;
-    virtual Scene* GetScene() const=0;
-
-    Platform* GetOwner(){return m_Owner;};
-
-private:
-    Platform* m_Owner;
+    virtual Scene* GetScene()=0;
 };
 
 #endif //USERDATA_H

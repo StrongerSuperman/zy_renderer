@@ -9,13 +9,14 @@
 #include "../../core/perframe.hpp"
 #include "../../core/mesh.hpp"
 #include "../../core/model.hpp"
+#include "../../core/scene.hpp"
 
 
 class BlinnModel : public Model{
 public:
-    BlinnModel(Mesh* mesh, glm::mat4x4& transform);
-    virtual void Update(Perframe *perframe);
-    virtual void Draw(FrameBuffer *framebuffer, bool shadow_pass=false);
+    BlinnModel(Scene* scene, Mesh* mesh, glm::mat4x4& transform);
+    void Update() override;
+    void Draw(FrameBuffer* framebuffer, bool shadow_pass=false) override;
 };
 
 #endif //BLINN_MODEL_H

@@ -11,9 +11,10 @@
 class BlinnScene : public Scene{
 public:
     BlinnScene(std::string& filename);
-    virtual void Update(Perframe *perframe) override;
-    virtual void Render(FrameBuffer *framebuffer, Perframe *perframe) override;
+    void Update() override;
+    void Render() override;
 
+private:
     void sortModels(glm::mat4x4& view_matrix);
 };
 

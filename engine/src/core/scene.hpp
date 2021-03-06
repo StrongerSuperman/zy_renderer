@@ -4,10 +4,10 @@
 #include <glm/glm.hpp>
 
 #include "framebuffer.hpp"
-#include "perframe.hpp"
 #include "texture.hpp"
-#include "model.hpp"
+#include "perframe.hpp"
 #include "camera.hpp"
+#include "model.hpp"
 
 
 enum class SceneType{
@@ -22,8 +22,6 @@ public:
     glm::vec4 background;
     /* render quality */
     Usage render_quality;
-    /* camera */
-    Camera* camera;
     /* object */
     Model* skybox;
     std::vector<Model*> models;
@@ -34,29 +32,18 @@ public:
     FrameBuffer* shadow_buffer;
     Texture* shadow_map;
 
-    Scene(){
-        this->skybox = nullptr;
-        this->shadow_buffer = nullptr;
-        this->shadow_map = nullptr;
-        this->camera = new Camera();
-    }
-    virtual ~Scene() {
-        delete this->skybox;
-        for(size_t i = 0; i < this->models.size(); i++){
-            delete this->models[i];
-        }
-        delete this->shadow_buffer;
-        delete this->shadow_map;
-        delete this->camera;
-    };
-    virtual void Update(Perframe *perframe)=0;
-    virtual void Render(FrameBuffer *framebuffer, Perframe *perframe)=0;
-    virtual Camera* GetCamera(){return this->camera;};
+    Scene();
+    virtual ~Scene();
+    virtual void Update()=0;
+    virtual void Render()=0;
 
-    void InitShadow(int shadow_width, int shadow_height) {
-        this->shadow_buffer = new FrameBuffer(shadow_width, shadow_height);
-        this->shadow_map = new Texture(shadow_width, shadow_height);
-    };
+    Camera* GetCamera(){return this->m_Camera;};
+    Perframe* GetPerframe(){return m_Perframe;};
+    void InitShadow(int shadow_width, int shadow_height);
+
+private:
+    Camera* m_Camera;
+    Perframe* m_Perframe;
 };
 
 #endif //SCENE_H

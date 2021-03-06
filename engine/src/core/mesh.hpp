@@ -7,6 +7,8 @@
 
 #include <glm/glm.hpp>
 
+#include "texture.hpp"
+
 
 class Vertex{
 public:
@@ -27,26 +29,13 @@ public:
     std::vector<unsigned int> indices;
     std::map<std::string, std::vector<Texture*>> textures;
 
-    ~Mesh(){
-        auto iter = this->textures.begin();
-        while(iter != textures.end()) {
-            for each(auto texture in iter->second){
-                delete texture;
-            }
-			iter++;
-        }
-    }
+    ~Mesh();
 
     int GetFaceNum() {return this->num_faces;};
     glm::vec3 GetCenter() {return this->center;};
     std::vector<Vertex>* GetVertices() {return &(this->vertices);};
     std::vector<unsigned int>* GetIndices() {return &(this->indices);};
-    std::vector<Texture*>* GetTexture(std::string& texture_name) {
-        if(this->textures.find(texture_name) == this->textures.end()){
-            return nullptr;
-        }
-        return &this->textures[texture_name];
-    };
+    std::vector<Texture*>* GetTexture(std::string& texture_name);
 };
 
 #endif //MESH_H

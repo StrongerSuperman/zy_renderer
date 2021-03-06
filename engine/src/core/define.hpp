@@ -1,4 +1,5 @@
-#pragma once
+#ifndef DEFINE_H
+#define DEFINE_H
 
 #include <string>
 
@@ -17,5 +18,8 @@ enum Button{
 
 #define WIDTH 1280
 #define HEIGHT 768
+#define MAX_PATH_LEN 256
+#define LINE_SIZE = 256
+#define ASSETS_PATH "\\..\\..\\assets\\nanosuit\\nanosuit.obj"
 
-const int LINE_SIZE = 256;
+#endif //DEFINE_H

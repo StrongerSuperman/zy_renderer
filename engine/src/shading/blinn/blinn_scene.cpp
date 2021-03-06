@@ -2,14 +2,12 @@
 #include <algorithm>
 #include <string>
 
-#include "../../core/framebuffer.hpp"
-#include "../../core/perframe.hpp"
+#include "../../core/context.hpp"
 #include "../../core/texture.hpp"
+#include "../../core/model.hpp"
 #include "../../utility/scene_loader.hpp"
 #include "blinn_scene.hpp"
 
-
-class Model;
 
 BlinnScene::BlinnScene(std::string& filename){
     this->type = SceneType::SCENE_TYPE_BLINN;
@@ -17,18 +15,23 @@ BlinnScene::BlinnScene(std::string& filename){
     LoadScene(this, filename);
 }
 
-void BlinnScene::Update(Perframe *perframe){
+void BlinnScene::Update(){
+    auto perframe = this->GetPerframe();
+
     if(this->skybox){
-        this->skybox->Update(perframe);
+        this->skybox->Update();
     }
     for each(auto &model in this->models){
-        model->Update(perframe);
+        model->Update();
     }
     this->ambient_intensity = perframe->ambient_intensity;
     this->punctual_intensity = perframe->punctual_intensity;
 }
 
-void BlinnScene::Render(FrameBuffer *framebuffer, Perframe *perframe){
+void BlinnScene::Render(){
+    auto perframe = this->GetPerframe();
+    auto framebuffer = Context::GetWindowsInstance()->GetFrameBuffer();
+
     // shadow pass
     if (this->shadow_buffer && this->shadow_map) {
         this->sortModels(perframe->light_view_mat);

@@ -117,7 +117,7 @@ static void processNode(Scene* scene, aiNode *node, const aiScene *ai_scene)
         processMesh(scene, mesh, ai_mesh, ai_scene);
         if(scene->type == SceneType::SCENE_TYPE_BLINN){
             glm::mat4x4 transform(1.0f);
-            Model* model = new BlinnModel(mesh, transform);
+            Model* model = new BlinnModel(scene, mesh, transform);
             scene->models.emplace_back(model);
         }
 	}

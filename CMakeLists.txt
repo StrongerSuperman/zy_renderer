@@ -9,19 +9,22 @@ set(HEADERS
     engine/src/utility/math_tool.hpp
     engine/src/utility/scene_loader.hpp
 
+    engine/src/core/perframe.hpp
     engine/src/core/userdata.hpp
     engine/src/core/define.hpp
+    engine/src/core/program.hpp
+    engine/src/core/shader.hpp
+
     engine/src/core/platform.hpp
     engine/src/core/camera.hpp
     engine/src/core/graphics.hpp
-    engine/src/core/perframe.hpp
-    engine/src/core/program.hpp
     engine/src/core/framebuffer.hpp
     engine/src/core/image.hpp
-    engine/src/core/shader.hpp
     engine/src/core/texture.hpp
     engine/src/core/mesh.hpp
+    engine/src/core/model.hpp
     engine/src/core/scene.hpp
+    engine/src/core/context.hpp
 
     engine/src/shading/blinn/blinn_material.hpp
     engine/src/shading/blinn/blinn_model.hpp
@@ -34,17 +37,24 @@ set(HEADERS
 set(SOURCES
     engine/src/platform/win32.cpp
 
+    engine/src/core/platform.cpp
     engine/src/core/camera.cpp
     engine/src/core/graphics.cpp
     engine/src/core/framebuffer.cpp
     engine/src/core/image.cpp
     engine/src/core/texture.cpp
+    engine/src/core/mesh.cpp
+    engine/src/core/model.cpp
+    engine/src/core/scene.cpp
+    engine/src/core/context.cpp
 
     engine/src/shading/blinn/blinn_material.cpp
     engine/src/shading/blinn/blinn_model.cpp
     engine/src/shading/blinn/blinn_scene.cpp
     engine/src/shading/blinn/blinn_shader.cpp
     engine/src/shading/blinn/blinn_program.cpp
+
+    engine/src/app/my_userdata.cpp
 )
 
 set(SOURCES ${SOURCES} engine/src/main.cpp)

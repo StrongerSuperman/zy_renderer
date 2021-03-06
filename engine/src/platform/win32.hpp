@@ -16,14 +16,14 @@ public:
     HDC m_MemoryDC;
 
     Win32(int width, int height);
-    virtual ~Win32();
+    ~Win32();
 
-    virtual void SwapFrameBuffer() override;
-    virtual void PollEvents() override;
-    virtual int GetKeyPressed(KeyCode key) override;
-    virtual int GetButtonPressed(Button button) override;
-    virtual void GetCursor(float *xpos, float *ypos) override;
-    virtual float GetTime() override;
+    void SwapFrameBuffer() override;
+    void PollEvents() override;
+    int GetKeyPressed(KeyCode key) override;
+    int GetButtonPressed(Button button) override;
+    void GetCursor(float *xpos, float *ypos) override;
+    float GetTime() override;
 };
 
 
