@@ -1,10 +1,10 @@
 #include <stdlib.h>
 
-#include "../core/framebuffer.hpp"
-#include "../core/perframe.hpp"
-#include "../core/mesh.hpp"
-#include "../core/texture.hpp"
-#include "../utility/math_tool.hpp"
+#include "../../core/framebuffer.hpp"
+#include "../../core/perframe.hpp"
+#include "../../core/mesh.hpp"
+#include "../../core/texture.hpp"
+#include "../../utility/math_tool.hpp"
 #include "blinn_model.hpp"
 #include "blinn_program.hpp"
 #include "blinn_shader.hpp"

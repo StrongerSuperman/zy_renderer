@@ -303,7 +303,6 @@ void Camera::HandleMouseMove(int x, int y)
 		int dy = y - m_MouseY;
 		m_MouseX = x;
 		m_MouseY = y;
-		printf("dx: %3d, dy: %3d \n", dx, dy);
 
 		auto speed = m_MouseLeftSpeed;
 		OrbitRotate(dx*speed, -dy* speed);

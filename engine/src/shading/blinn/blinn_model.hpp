@@ -5,10 +5,10 @@
 
 #include <glm/glm.hpp>
 
-#include "../core/framebuffer.hpp"
-#include "../core/perframe.hpp"
-#include "../core/mesh.hpp"
-#include "../core/model.hpp"
+#include "../../core/framebuffer.hpp"
+#include "../../core/perframe.hpp"
+#include "../../core/mesh.hpp"
+#include "../../core/model.hpp"
 
 
 class BlinnModel : public Model{

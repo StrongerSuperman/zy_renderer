@@ -8,7 +8,7 @@
 #include "core/perframe.hpp"
 #include "core/camera.hpp"
 #include "core/userdata.hpp"
-#include "blinn/blinn_scene.hpp"
+#include "shading/blinn/blinn_scene.hpp"
 
 
 static void key_callback(Platform *platform, KeyCode key, int pressed){
@@ -47,7 +47,9 @@ int main() {
 
     auto camera = window.GetUserdata()->GetCamera();
     camera->SetAspectRatio((float)width/height);
-	camera->SetEyeAndTarget(glm::vec3(0, 8, 15), glm::vec3(0, 8, 0));
+    auto eye = glm::vec3(0, 8, 15);
+    auto target  = glm::vec3(0, 8, 0);
+	camera->SetEyeAndTarget(eye, target);
     camera->SetFov(45.0f);
 	camera->SetKeyMoveSpeed(0.5f);
 	camera->SetMouseLeftSpeed(0.6f);
@@ -65,7 +67,7 @@ int main() {
 	const char* assert_path = "\\..\\..\\assets\\nanosuit\\nanosuit.obj";
 	const auto max_path = 256;
     char buffer[max_path];
-    getcwd(buffer, max_path);
+    _getcwd(buffer, max_path);
 	std::string filename(buffer);
 	filename.append(assert_path);
     Scene* scene = new BlinnScene(filename);
@@ -100,6 +102,7 @@ int main() {
 
         float cur_time = window.GetTime();
         float delta_time = cur_time - prev_time;
+        (void)(delta_time);
         num_frames += 1;
         if (cur_time - print_time >= 1) {
             int sum_millis = (int)((cur_time - print_time) * 1000);

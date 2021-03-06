@@ -6,8 +6,8 @@
 
 #include <glm/glm.hpp>
 
-#include "../core/texture.hpp"
-#include "../core/shader.hpp"
+#include "../../core/texture.hpp"
+#include "../../core/shader.hpp"
 
 
 struct BlinnVSIn{

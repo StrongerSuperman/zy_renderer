@@ -1,6 +1,6 @@
 #include <glm/glm.hpp>
 
-#include "../core/texture.hpp"
+#include "../../core/texture.hpp"
 #include "blinn_shader.hpp"
 #include "blinn_material.hpp"
 

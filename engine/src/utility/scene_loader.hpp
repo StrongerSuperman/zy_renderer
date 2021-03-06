@@ -11,7 +11,7 @@
 #include "../core/mesh.hpp"
 #include "../core/scene.hpp"
 #include "../core/image.hpp"
-#include "../blinn/blinn_model.hpp"
+#include "../shading/blinn/blinn_model.hpp"
 
 
 static std::vector<Texture*> loadTextures(Scene* scene, aiMaterial *mat, aiTextureType type)

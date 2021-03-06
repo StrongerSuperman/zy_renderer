@@ -23,11 +23,11 @@ set(HEADERS
     engine/src/core/mesh.hpp
     engine/src/core/scene.hpp
 
-    engine/src/blinn/blinn_material.hpp
-    engine/src/blinn/blinn_model.hpp
-    engine/src/blinn/blinn_scene.hpp
-    engine/src/blinn/blinn_shader.hpp
-    engine/src/blinn/blinn_program.hpp
+    engine/src/shading/blinn/blinn_material.hpp
+    engine/src/shading/blinn/blinn_model.hpp
+    engine/src/shading/blinn/blinn_scene.hpp
+    engine/src/shading/blinn/blinn_shader.hpp
+    engine/src/shading/blinn/blinn_program.hpp
 )
 set(SOURCES
     engine/src/platform/win32.cpp
@@ -38,11 +38,11 @@ set(SOURCES
     engine/src/core/image.cpp
     engine/src/core/texture.cpp
 
-    engine/src/blinn/blinn_material.cpp
-    engine/src/blinn/blinn_model.cpp
-    engine/src/blinn/blinn_scene.cpp
-    engine/src/blinn/blinn_shader.cpp
-    engine/src/blinn/blinn_program.cpp
+    engine/src/shading/blinn/blinn_material.cpp
+    engine/src/shading/blinn/blinn_model.cpp
+    engine/src/shading/blinn/blinn_scene.cpp
+    engine/src/shading/blinn/blinn_shader.cpp
+    engine/src/shading/blinn/blinn_program.cpp
 )
 
 set(SOURCES ${SOURCES} engine/src/main.cpp)

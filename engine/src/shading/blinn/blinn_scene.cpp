@@ -2,10 +2,10 @@
 #include <algorithm>
 #include <string>
 
-#include "../core/framebuffer.hpp"
-#include "../core/perframe.hpp"
-#include "../core/texture.hpp"
-#include "../utility/scene_loader.hpp"
+#include "../../core/framebuffer.hpp"
+#include "../../core/perframe.hpp"
+#include "../../core/texture.hpp"
+#include "../../utility/scene_loader.hpp"
 #include "blinn_scene.hpp"
 
 

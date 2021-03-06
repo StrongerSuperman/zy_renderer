@@ -1,7 +1,7 @@
 #ifndef BLINN_PROGRAM_H
 #define BLINN_PROGRAM_H
 
-#include "../core/program.hpp"
+#include "../../core/program.hpp"
 
 
 class BlinnProgram : public Program{
