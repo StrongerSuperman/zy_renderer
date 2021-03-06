@@ -13,7 +13,7 @@ class Model;
 
 BlinnScene::BlinnScene(std::string& filename){
     this->type = SceneType::SCENE_TYPE_BLINN;
-    this->dr_mode = Usage::USAGE_LDR_COLOR;
+    this->render_quality = Usage::USAGE_LDR_COLOR;
     LoadScene(this, filename);
 }
 

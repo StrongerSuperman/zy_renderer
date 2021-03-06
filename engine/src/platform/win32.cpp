@@ -4,13 +4,11 @@
 #include <direct.h>
 #include <windows.h>
 
+#include "../core/define.hpp"
 #include "../core/framebuffer.hpp"
 #include "../core/platform.hpp"
 #include "../core/image.hpp"
 #include "win32.hpp"
-
-
-const int LINE_SIZE = 256;
 
 
 /*
@@ -213,8 +211,27 @@ void create_surface(HWND handle, int width, int height,
     *out_memory_dc = memory_dc;
 }
 
+static void BlitBGR(FrameBuffer* framebuffer, Image *dst) {
+    assert(framebuffer->m_Width == dst->m_Width && framebuffer->m_Height == dst->m_Height);
+    assert(dst->m_Format == FORMAT_LDR && dst->m_Channels == 4);
 
-Win32::Win32(int width, int height){
+    for (int r = 0; r < dst->m_Height; r++) {
+        for (int c = 0; c < dst->m_Width; c++) {
+            int flipped_r = dst->m_Height - 1 - r;
+            int src_index = (r * dst->m_Width + c) * 4;
+            int dst_index = (flipped_r * dst->m_Width + c) * 4;
+            unsigned char *src_pixel = &framebuffer->m_ColorBuffer[src_index];
+            unsigned char *dst_pixel = &dst->m_LDRBuffer[dst_index];
+            dst_pixel[0] = src_pixel[2];  /* blue */
+            dst_pixel[1] = src_pixel[1];  /* green */
+            dst_pixel[2] = src_pixel[0];  /* red */
+        }
+    }
+}
+
+
+Win32::Win32(int width, int height):
+        Platform(width, height){
     // platform init
     register_class();
     initialize_path();
@@ -247,8 +264,9 @@ Win32::~Win32(){
     unregister_class();
 }
 
-void Win32::DrawBuffer(FrameBuffer *buffer) {
-    buffer->BlitBGR(this->m_pSurface);
+void Win32::SwapFrameBuffer() {
+    auto buffer = this->GetFrameBuffer();
+    BlitBGR(buffer, this->m_pSurface);
 
     HDC window_dc = GetDC(this->m_Handle);
     HDC memory_dc = this->m_MemoryDC;
@@ -256,10 +274,6 @@ void Win32::DrawBuffer(FrameBuffer *buffer) {
     int height = this->m_pSurface->m_Height;
     BitBlt(window_dc, 0, 0, width, height, memory_dc, 0, 0, SRCCOPY);
     ReleaseDC(this->m_Handle, window_dc);
-}
-
-void Win32::SetInputCallbacks(Callbacks callbacks) {
-    this->m_Callbacks = callbacks;
 }
 
 void Win32::PollEvents(void) {

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <algorithm>
 
-#include "enum.hpp"
+#include "define.hpp"
 #include "camera.hpp"
 
 

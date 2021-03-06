@@ -59,6 +59,8 @@
         "ratio": "cpp",
         "set": "cpp",
         "sstream": "cpp",
-        "xtree": "cpp"
+        "xtree": "cpp",
+        "mutex": "cpp",
+        "thread": "cpp"
     }
 }

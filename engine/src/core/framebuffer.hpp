@@ -18,7 +18,6 @@ public:
     ~FrameBuffer();
     void ClearColor(glm::vec4 color);
     void ClearDepth(float depth);
-    void BlitBGR(Image *target);
     void DrawTriangle(Program* program);
 };
 

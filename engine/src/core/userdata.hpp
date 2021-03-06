@@ -1,20 +1,21 @@
-#pragma once
+#ifndef USERDATA_H
+#define USERDATA_H
 
-#include <glm/glm.hpp>
+#include "scene.hpp"
 
-#include "camera.hpp"
-
+class Platform;
 
 class Userdata{
 public:
-    Userdata(){
-        m_Camera = new Camera();
-    }
-    ~Userdata(){
-        delete m_Camera;
-    }
+    Userdata(Platform* owner){this->m_Owner=owner;};
+    virtual ~Userdata(){};
+    virtual void Tick()=0;
+    virtual Scene* GetScene() const=0;
 
-    Camera* GetCamera() const {return m_Camera;};
+    Platform* GetOwner(){return m_Owner;};
+
 private:
-    Camera* m_Camera;
+    Platform* m_Owner;
 };
+
+#endif //USERDATA_H

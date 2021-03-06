@@ -18,8 +18,7 @@ public:
     Win32(int width, int height);
     virtual ~Win32();
 
-    virtual void DrawBuffer(FrameBuffer *buffer) override;
-    virtual void SetInputCallbacks(Callbacks callbacks) override;
+    virtual void SwapFrameBuffer() override;
     virtual void PollEvents() override;
     virtual int GetKeyPressed(KeyCode key) override;
     virtual int GetButtonPressed(Button button) override;

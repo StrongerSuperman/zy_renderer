@@ -33,6 +33,7 @@ public:
             for each(auto texture in iter->second){
                 delete texture;
             }
+			iter++;
         }
     }
 

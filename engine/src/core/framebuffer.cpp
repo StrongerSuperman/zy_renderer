@@ -47,24 +47,6 @@ void FrameBuffer::ClearDepth(float depth) {
     }
 }
 
-void FrameBuffer::BlitBGR(Image *dst) {
-    assert(this->m_Width == dst->m_Width && this->m_Height == dst->m_Height);
-    assert(dst->m_Format == FORMAT_LDR && dst->m_Channels == 4);
-
-    for (int r = 0; r < dst->m_Height; r++) {
-        for (int c = 0; c < dst->m_Width; c++) {
-            int flipped_r = dst->m_Height - 1 - r;
-            int src_index = (r * dst->m_Width + c) * 4;
-            int dst_index = (flipped_r * dst->m_Width + c) * 4;
-            unsigned char *src_pixel = &this->m_ColorBuffer[src_index];
-            unsigned char *dst_pixel = &dst->m_LDRBuffer[dst_index];
-            dst_pixel[0] = src_pixel[2];  /* blue */
-            dst_pixel[1] = src_pixel[1];  /* green */
-            dst_pixel[2] = src_pixel[0];  /* red */
-        }
-    }
-}
-
 void FrameBuffer::DrawTriangle(Program* program){
    graphics_draw_triangle(this, program);
 }

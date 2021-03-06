@@ -22,13 +22,8 @@ public:
         this->program = program;
     };
     virtual ~Model() {delete this->mesh; delete this->program;};
-    virtual void Update(Perframe *perframe) {
-        (void)(perframe);
-    };
-    virtual void Draw(FrameBuffer *framebuffer, bool shadow_pass=false) {
-        (void)(framebuffer);
-        (void)(shadow_pass);
-    };
+    virtual void Update(Perframe *perframe)=0;
+    virtual void Draw(FrameBuffer *framebuffer, bool shadow_pass=false)=0;
 };
 
 #endif //MODEL_H

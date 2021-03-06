@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 
 enum KeyCode{
     KEY_A,
@@ -13,3 +14,8 @@ enum Button{
     BUTTON_L,
     BUTTON_R
 };
+
+#define WIDTH 1280
+#define HEIGHT 768
+
+const int LINE_SIZE = 256;

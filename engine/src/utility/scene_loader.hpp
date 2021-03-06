@@ -19,10 +19,12 @@ static std::vector<Texture*> loadTextures(Scene* scene, aiMaterial *mat, aiTextu
 	std::vector<Texture*> textures;
 	for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
 	{
-		aiString str;
-		mat->GetTexture(type, i, &str);
-        std::string path = str.C_Str();
-        textures.emplace_back(new Texture(scene->directory + path, scene->dr_mode));
+		aiString file_name;
+		mat->GetTexture(type, i, &file_name);
+        std::string file_path(scene->directory);
+		file_path.append(file_name.C_Str());
+		auto texture = new Texture(file_path, scene->render_quality);
+        textures.emplace_back(texture);
 	}
 	return textures;
 }
