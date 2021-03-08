@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include <glm/glm.hpp>
 
 #include "../../core/texture.hpp"
@@ -13,6 +15,7 @@ glm::vec4 BlinnShader::ExecuteVertexShader(void* vs_in, void* fs_in, void* unifo
     auto position = _vs_in->position;
     auto texcoord = _vs_in->texcoord;
     auto normal = _vs_in->normal;
+
     auto model_mat = _uniforms->model_mat;
     auto normal_mat = _uniforms->normal_mat;
     auto camera_vp_mat = _uniforms->camera_vp_mat;

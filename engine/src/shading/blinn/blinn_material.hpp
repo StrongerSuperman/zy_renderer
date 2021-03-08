@@ -1,9 +1,6 @@
 #ifndef BLINN_MATERIAL_H
 #define BLINN_MATERIAL_H
 
-#include <vector>
-#include <algorithm>
-
 #include <glm/glm.hpp>
 
 

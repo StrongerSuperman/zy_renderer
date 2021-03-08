@@ -1,5 +1,5 @@
-#ifndef BLINN_SHADER_H
-#define BLINN_SHADER_H
+#ifndef PBR_SHADER_H
+#define PBR_SHADER_H
 
 #include <glm/glm.hpp>
 
@@ -7,22 +7,26 @@
 #include "../../core/shader.hpp"
 
 
-struct BlinnVSIn{
+struct PBRVSIn{
     glm::vec3 position;
     glm::vec2 texcoord;
     glm::vec3 normal;
+    glm::vec3 tangent;
     glm::vec4 joint;
     glm::vec4 weight;
 };
 
-struct BlinnFSIn{
+struct PBRFSIn{
     glm::vec3 world_position;
     glm::vec3 depth_position;
+    glm::vec3 clip_position;
+    glm::vec3 world_normal;
+    glm::vec3 world_tangent;
+    glm::vec3 world_bitangent;
     glm::vec2 texcoord;
-    glm::vec3 normal;
 };
 
-struct BlinnUniforms{
+struct PBRUniforms{
     /* scene intensity */
     float ambient_intensity;
     float punctual_intensity;
@@ -36,26 +40,21 @@ struct BlinnUniforms{
     /* shadow_map */
     Texture* shadow_map;
     /* surface textures */
-    Texture *diffuse_map;
-    Texture *specular_map;
-    Texture *ambient_map;
-    Texture *emission_map;
-    Texture *height_map;
-    Texture *normal_map;
-    Texture *shininess_map;
-    Texture *opacity_map;
-    Texture *displacement_map;
-    Texture *lightmap_map;
-    Texture *reflection_map;
+    Texture *base_color_map;
+    Texture *nomal_camera_map;
+    Texture *emission_color_map;
+    Texture *metalness_map;
+    Texture *diffuse_roughness_map;
+    Texture *ambient_occlusion_map;
     /* render controls */
     const float alpha_cutoff = 0.02f;
     int shadow_pass;
 };
 
-class BlinnShader : public Shader{
+class PBRShader : public Shader{
 public:
     glm::vec4 ExecuteVertexShader(void* vs_in, void* fs_in, void* uniforms) override;
     glm::vec4 ExecuteFragmentShader(void* fs_in, void* uniforms, int *discard, int backface) override;
 };
 
-#endif //BLINN_SHADER_H
+#endif //PBR_SHADER_H
