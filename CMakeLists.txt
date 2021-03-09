@@ -2,69 +2,22 @@ cmake_minimum_required(VERSION 3.10)
 project(zy_renderer)
 set(DEBUG_MODE 1)
 
-
-set(HEADERS
-    engine/src/platform/win32.hpp
-
-    engine/src/utility/math_tool.hpp
-    engine/src/utility/scene_loader.hpp
-
-    engine/src/core/perframe.hpp
-    engine/src/core/userdata.hpp
-    engine/src/core/define.hpp
-    engine/src/core/program.hpp
-    engine/src/core/shader.hpp
-
-    engine/src/core/platform.hpp
-    engine/src/core/camera.hpp
-    engine/src/core/graphics.hpp
-    engine/src/core/framebuffer.hpp
-    engine/src/core/image.hpp
-    engine/src/core/texture.hpp
-    engine/src/core/mesh.hpp
-    engine/src/core/model.hpp
-    engine/src/core/scene.hpp
-    engine/src/core/context.hpp
-
-    engine/src/shading/blinn/blinn_material.hpp
-    engine/src/shading/blinn/blinn_model.hpp
-    engine/src/shading/blinn/blinn_scene.hpp
-    engine/src/shading/blinn/blinn_shader.hpp
-    engine/src/shading/blinn/blinn_program.hpp
-
-    engine/src/app/my_userdata.hpp
-)
-set(SOURCES
-    engine/src/platform/win32.cpp
-
-    engine/src/core/platform.cpp
-    engine/src/core/camera.cpp
-    engine/src/core/graphics.cpp
-    engine/src/core/framebuffer.cpp
-    engine/src/core/image.cpp
-    engine/src/core/texture.cpp
-    engine/src/core/mesh.cpp
-    engine/src/core/model.cpp
-    engine/src/core/scene.cpp
-    engine/src/core/context.cpp
-
-    engine/src/shading/blinn/blinn_material.cpp
-    engine/src/shading/blinn/blinn_model.cpp
-    engine/src/shading/blinn/blinn_scene.cpp
-    engine/src/shading/blinn/blinn_shader.cpp
-    engine/src/shading/blinn/blinn_program.cpp
-
-    engine/src/app/my_userdata.cpp
-)
-
-set(SOURCES ${SOURCES} engine/src/main.cpp)
-
 set(TARGET zy_renderer)
 
+set(HEADERS)
+set(SOURCES)
+file(GLOB_RECURSE HEADERS ${CMAKE_SOURCE_DIR}/engine/include/*.hpp)
+file(GLOB_RECURSE SOURCES ${CMAKE_SOURCE_DIR}/engine/src/*.cpp)
+
 include_directories(${CMAKE_SOURCE_DIR}/engine/3rd)
+include_directories(${CMAKE_SOURCE_DIR}/engine/include)
+
+#source_group(TREE "${CMAKE_SOURCE_DIR}/engine/src" FILES ${HEADERS} ${SOURCES})
+source_group(TREE "${CMAKE_SOURCE_DIR}/engine" FILES ${HEADERS} ${SOURCES})
+
 add_executable(${TARGET} ${HEADERS} ${SOURCES})
+
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
-source_group(TREE "${CMAKE_SOURCE_DIR}/engine/src" FILES ${HEADERS} ${SOURCES})
 
 set_target_properties(zy_renderer PROPERTIES 
     CMAKE_CXX_STANDARD 11

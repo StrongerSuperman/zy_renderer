@@ -4,11 +4,11 @@
 #include <direct.h>
 #include <windows.h>
 
-#include "../core/define.hpp"
-#include "../core/framebuffer.hpp"
-#include "../core/platform.hpp"
-#include "../core/image.hpp"
-#include "win32.hpp"
+#include "platform/win32.hpp"
+#include "core/define.hpp"
+#include "core/framebuffer.hpp"
+#include "core/platform.hpp"
+#include "core/image.hpp"
 
 
 /*

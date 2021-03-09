@@ -1,9 +1,9 @@
 
 #include <mutex>
 
-#include "context.hpp"
-#include "define.hpp"
-#include "../platform/win32.hpp"
+#include "core/context.hpp"
+#include "core/define.hpp"
+#include "platform/win32.hpp"
 
 
 std::once_flag flag;

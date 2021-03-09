@@ -1,7 +1,7 @@
 #include <glm/glm.hpp>
 
-#include "blinn_shader.hpp"
-#include "blinn_material.hpp"
+#include "shading/blinn/blinn_material.hpp"
+#include "shading/blinn/blinn_shader.hpp"
 
 
 BlinnMaterial::BlinnMaterial(void* fs_in, void* uniforms, int backface){

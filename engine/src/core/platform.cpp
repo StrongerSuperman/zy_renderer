@@ -1,8 +1,8 @@
 
-#include "define.hpp"
-#include "framebuffer.hpp"
-#include "userdata.hpp"
-#include "platform.hpp"
+#include "core/platform.hpp"
+#include "core/define.hpp"
+#include "core/framebuffer.hpp"
+#include "core/userdata.hpp"
 
 
 static void key_callback(Platform *platform, KeyCode key, int pressed){

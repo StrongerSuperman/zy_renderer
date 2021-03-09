@@ -1,9 +1,9 @@
 #include <glm/glm.hpp>
 
-#include "scene.hpp"
-#include "userdata.hpp"
-#include "framebuffer.hpp"
-#include "texture.hpp"
+#include "core/scene.hpp"
+#include "core/userdata.hpp"
+#include "core/framebuffer.hpp"
+#include "core/texture.hpp"
 
 
 Scene::Scene(){

@@ -1,8 +1,8 @@
 #include <iostream>
 #include <algorithm>
 
-#include "define.hpp"
-#include "camera.hpp"
+#include "core/camera.hpp"
+#include "core/define.hpp"
 
 
 CameraBase::CameraBase():

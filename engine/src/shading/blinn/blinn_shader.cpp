@@ -2,9 +2,9 @@
 
 #include <glm/glm.hpp>
 
-#include "../../core/texture.hpp"
-#include "blinn_shader.hpp"
-#include "blinn_material.hpp"
+#include "shading/blinn/blinn_shader.hpp"
+#include "core/texture.hpp"
+#include "shading/blinn/blinn_material.hpp"
 
 
 glm::vec4 BlinnShader::ExecuteVertexShader(void* vs_in, void* fs_in, void* uniforms) {

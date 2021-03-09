@@ -1,5 +1,5 @@
-#include "pbr_program.hpp"
-#include "pbr_shader.hpp"
+#include "shading/pbr/pbr_program.hpp"
+#include "shading/pbr/pbr_shader.hpp"
 
 
 PBRProgram::PBRProgram():

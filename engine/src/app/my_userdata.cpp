@@ -2,9 +2,9 @@
 
 #include <glm/glm.hpp>
 
-#include "../core/define.hpp"
-#include "../shading/blinn/blinn_scene.hpp"
-#include "my_userdata.hpp"
+#include "app/my_userdata.hpp"
+#include "core/define.hpp"
+#include "shading/blinn/blinn_scene.hpp"
 
 
 MyUserdata::MyUserdata(){

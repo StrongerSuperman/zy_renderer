@@ -2,11 +2,11 @@
 #include <algorithm>
 #include <string>
 
-#include "../../core/context.hpp"
-#include "../../core/texture.hpp"
-#include "../../core/model.hpp"
-#include "../../utility/scene_loader.hpp"
-#include "pbr_scene.hpp"
+#include "shading/pbr/pbr_scene.hpp"
+#include "core/context.hpp"
+#include "core/texture.hpp"
+#include "core/model.hpp"
+#include "utility/scene_loader.hpp"
 
 
 PBRScene::PBRScene(std::string& filename){

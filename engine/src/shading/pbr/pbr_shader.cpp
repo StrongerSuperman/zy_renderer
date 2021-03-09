@@ -1,8 +1,8 @@
 #include <glm/glm.hpp>
 
-#include "../../core/texture.hpp"
-#include "pbr_shader.hpp"
-#include "pbr_material.hpp"
+#include "shading/pbr/pbr_shader.hpp"
+#include "shading/pbr/pbr_material.hpp"
+#include "core/texture.hpp"
 
 
 glm::vec4 PBRShader::ExecuteVertexShader(void* vs_in, void* fs_in, void* uniforms) {

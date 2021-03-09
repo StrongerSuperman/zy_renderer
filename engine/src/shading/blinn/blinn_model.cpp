@@ -1,12 +1,13 @@
 #include <stdlib.h>
 
-#include "../../core/framebuffer.hpp"
-#include "../../core/mesh.hpp"
-#include "../../core/texture.hpp"
-#include "../../utility/math_tool.hpp"
-#include "blinn_model.hpp"
-#include "blinn_program.hpp"
-#include "blinn_shader.hpp"
+#include "shading/blinn/blinn_model.hpp"
+#include "shading/blinn/blinn_program.hpp"
+#include "shading/blinn/blinn_shader.hpp"
+#include "core/framebuffer.hpp"
+#include "core/mesh.hpp"
+#include "core/texture.hpp"
+#include "utility/math_tool.hpp"
+
 
 
 BlinnModel::BlinnModel(Scene* scene, Mesh* mesh, glm::mat4x4& transform):

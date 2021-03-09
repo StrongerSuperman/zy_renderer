@@ -2,11 +2,11 @@
 #include <algorithm>
 #include <string>
 
-#include "../../core/context.hpp"
-#include "../../core/texture.hpp"
-#include "../../core/model.hpp"
-#include "../../utility/scene_loader.hpp"
-#include "blinn_scene.hpp"
+#include "shading/blinn/blinn_scene.hpp"
+#include "core/context.hpp"
+#include "core/texture.hpp"
+#include "core/model.hpp"
+#include "utility/scene_loader.hpp"
 
 
 BlinnScene::BlinnScene(std::string& filename){

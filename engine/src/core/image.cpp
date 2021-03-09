@@ -9,7 +9,7 @@
 #include <stb/stb_image.h>
 #include <stb/stb_image_write.h>
 
-#include "image.hpp"
+#include "core/image.hpp"
 
 
 Image::Image(int width, int height, int channels, Format format):

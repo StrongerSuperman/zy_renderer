@@ -2,10 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "framebuffer.hpp"
-#include "image.hpp"
-#include "texture.hpp"
-#include "../utility/math_tool.hpp"
+#include "core/texture.hpp"
+#include "core/framebuffer.hpp"
+#include "core/image.hpp"
+#include "utility/math_tool.hpp"
 
 
 static void LDRImageToTexture(Image *image, Texture *texture) {

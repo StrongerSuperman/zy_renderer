@@ -2,8 +2,8 @@
 
 #include <glm/glm.hpp>
 
-#include "graphics.hpp"
-#include "../utility/math_tool.hpp"
+#include "core/graphics.hpp"
+#include "utility/math_tool.hpp"
 
 
 #define EPSILON 1e-5f

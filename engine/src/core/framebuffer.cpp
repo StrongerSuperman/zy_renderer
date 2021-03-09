@@ -4,10 +4,10 @@
 
 #include <glm/glm.hpp>
 
-#include "framebuffer.hpp"
-#include "graphics.hpp"
-#include "program.hpp"
-#include "image.hpp"
+#include "core/framebuffer.hpp"
+#include "core/graphics.hpp"
+#include "core/program.hpp"
+#include "core/image.hpp"
 
 
 FrameBuffer::FrameBuffer(int width, int height) {

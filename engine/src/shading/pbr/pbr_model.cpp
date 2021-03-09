@@ -1,13 +1,13 @@
 #include <stdlib.h>
 
-#include "../../core/framebuffer.hpp"
-#include "../../core/perframe.hpp"
-#include "../../core/mesh.hpp"
-#include "../../core/texture.hpp"
-#include "../../utility/math_tool.hpp"
-#include "pbr_model.hpp"
-#include "pbr_program.hpp"
-#include "pbr_shader.hpp"
+#include "shading/pbr/pbr_model.hpp"
+#include "shading/pbr/pbr_program.hpp"
+#include "shading/pbr/pbr_shader.hpp"
+#include "core/framebuffer.hpp"
+#include "core/perframe.hpp"
+#include "core/mesh.hpp"
+#include "core/texture.hpp"
+#include "utility/math_tool.hpp"
 
 
 PBRModel::PBRModel(Scene* scene, Mesh* mesh, glm::mat4x4& transform):
@@ -34,7 +34,7 @@ PBRModel::PBRModel(Scene* scene, Mesh* mesh, glm::mat4x4& transform):
     }
 
     if (nomal_camera_textures->size() > 0){
-        uniforms->nomal_camera_map = (*specular_textures)[0];
+        uniforms->nomal_camera_map = (*nomal_camera_textures)[0];
     }
     else{
         uniforms->nomal_camera_map = nullptr;

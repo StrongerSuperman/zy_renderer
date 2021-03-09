@@ -2,8 +2,8 @@
 #include <string>
 #include <vector>
 
-#include "mesh.hpp"
-#include "texture.hpp"
+#include "core/mesh.hpp"
+#include "core/texture.hpp"
 
 
 Mesh::~Mesh(){
