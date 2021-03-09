@@ -3,17 +3,17 @@
 
 #include <glm/glm.hpp>
 
-#include "../../core/scene.hpp"
+#include "core/scene.hpp"
 
 
 class BlinnScene : public Scene{
 public:
-    BlinnScene(std::string& filename);
+    BlinnScene(const std::string& filename);
     void Update() override;
     void Render() override;
 
 private:
-    void sortModels(glm::mat4x4& view_matrix);
+    void sortModels(const glm::mat4x4& view_matrix);
 };
 
 #endif //BLINN_SCENE_H

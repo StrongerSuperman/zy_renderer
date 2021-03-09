@@ -21,8 +21,8 @@ public:
     unsigned char *m_LDRBuffer;
     float *m_HDRBuffer;
 
-    Image(int width, int height, int channels, Format format=FORMAT_LDR);
-    Image(std::string& filename, Format format=FORMAT_LDR);
+    Image(int width, int height, int channels, const Format& format=FORMAT_LDR);
+    Image(const std::string& filename, const Format& format=FORMAT_LDR);
     ~Image();
 };
 

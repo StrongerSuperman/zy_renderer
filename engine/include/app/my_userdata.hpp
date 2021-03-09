@@ -1,7 +1,7 @@
 #ifndef MY_USERDATA_H
 #define MY_USERDATA_H
 
-#include "../core/userdata.hpp"
+#include "core/userdata.hpp"
 
 
 class MyUserdata : public Userdata{

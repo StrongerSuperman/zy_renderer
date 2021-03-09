@@ -1,7 +1,7 @@
 #ifndef PBR_PROGRAM_H
 #define PBR_PROGRAM_H
 
-#include "../../core/program.hpp"
+#include "core/program.hpp"
 
 
 class PBRProgram : public Program{

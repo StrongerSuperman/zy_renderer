@@ -9,7 +9,7 @@
 #include "utility/scene_loader.hpp"
 
 
-BlinnScene::BlinnScene(std::string& filename){
+BlinnScene::BlinnScene(const std::string& filename){
     this->type = SceneType::SCENE_TYPE_BLINN;
     this->render_quality = Usage::USAGE_LDR_COLOR;
     LoadScene(this, filename);
@@ -79,7 +79,7 @@ static bool compareModels(Model* model1, Model* model2) {
     }
 }
 
-void BlinnScene::sortModels(glm::mat4x4& view_matrix){
+void BlinnScene::sortModels(const glm::mat4x4& view_matrix){
     if(this->models.size() <= 1){
         return;
     }

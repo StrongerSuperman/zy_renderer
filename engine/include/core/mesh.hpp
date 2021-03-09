@@ -35,7 +35,7 @@ public:
     glm::vec3 GetCenter() {return this->center;};
     std::vector<Vertex>* GetVertices() {return &(this->vertices);};
     std::vector<unsigned int>* GetIndices() {return &(this->indices);};
-    std::vector<Texture*>* GetTexture(std::string& texture_name);
+    std::vector<Texture*>* GetTexture(const std::string& texture_name);
 };
 
 #endif //MESH_H

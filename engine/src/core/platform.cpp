@@ -10,7 +10,7 @@ static void key_callback(Platform *platform, KeyCode key, int pressed){
     userdata->GetScene()->GetCamera()->HandleKey(key, pressed);
 }
 
-static void mouse_press_callback(Platform *platform, Button button, float x, float y, int pressed){
+static void mouse_press_callback(Platform *platform, const Button& button, float x, float y, int pressed){
     auto userdata = static_cast<Userdata*>(platform->GetUserdata());
     userdata->GetScene()->GetCamera()->HandleMouseBtnPress(
 		button, static_cast<int>(x), static_cast<int>(y), pressed);

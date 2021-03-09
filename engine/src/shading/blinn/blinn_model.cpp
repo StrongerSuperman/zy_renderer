@@ -10,7 +10,7 @@
 
 
 
-BlinnModel::BlinnModel(Scene* scene, Mesh* mesh, glm::mat4x4& transform):
+BlinnModel::BlinnModel(Scene* scene, Mesh* mesh, const glm::mat4x4& transform):
         Model(scene, mesh, transform, new BlinnProgram()){
     auto uniforms = static_cast<BlinnUniforms*>(this->program->uniforms);
 

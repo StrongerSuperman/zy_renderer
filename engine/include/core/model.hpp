@@ -18,7 +18,7 @@ public:
     int opaque;
     float distance;
 
-    Model(Scene* scene, Mesh* mesh, glm::mat4x4& transform, Program* program);
+    Model(Scene* scene, Mesh* mesh, const glm::mat4x4& transform, Program* program);
     virtual ~Model() {delete this->mesh; delete this->program;};
     virtual void Update()=0;
     virtual void Draw(FrameBuffer* framebuffer, bool shadow_pass=false)=0;

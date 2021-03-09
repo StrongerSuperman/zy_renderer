@@ -12,7 +12,7 @@
 #include "core/image.hpp"
 
 
-Image::Image(int width, int height, int channels, Format format):
+Image::Image(int width, int height, int channels, const Format& format):
         m_Format(format),
         m_Width(width),
         m_Height(height),
@@ -39,7 +39,7 @@ Image::Image(int width, int height, int channels, Format format):
     }
 }
 
-Image::Image(std::string& filename, Format format):
+Image::Image(const std::string& filename, const Format& format):
         m_Format(format),
         m_LDRBuffer(nullptr),
         m_HDRBuffer(nullptr){

@@ -96,7 +96,7 @@ Texture::~Texture() {
     free(this->m_Buffer);
 }
 
-Texture::Texture(std::string& filename, Usage usage) {
+Texture::Texture(const std::string& filename, const Usage& usage) {
     Image image(filename);
     int buffer_size = sizeof(glm::vec4)*image.m_Width*image.m_Height;
     this->m_Width = image.m_Width;
@@ -142,7 +142,7 @@ void Texture::SetWithDepthBuffer(FrameBuffer *frame_depth_buffer) {
     }
 }
 
-glm::vec4 Texture::RepeatSample(glm::vec2& texcoord) {
+glm::vec4 Texture::RepeatSample(const glm::vec2& texcoord) {
     float u = texcoord.x - (float)floor(texcoord.x);
     float v = texcoord.y - (float)floor(texcoord.y);
     int c = (int)((this->m_Width - 1) * u);
@@ -151,7 +151,7 @@ glm::vec4 Texture::RepeatSample(glm::vec2& texcoord) {
     return this->m_Buffer[index];
 }
 
-glm::vec4 Texture::ClampSample(glm::vec2& texcoord) {
+glm::vec4 Texture::ClampSample(const glm::vec2& texcoord) {
     float u = float_saturate(texcoord.x);
     float v = float_saturate(texcoord.y);
     int c = (int)((this->m_Width - 1) * u);
@@ -160,7 +160,7 @@ glm::vec4 Texture::ClampSample(glm::vec2& texcoord) {
     return this->m_Buffer[index];
 }
 
-glm::vec4 Texture::Sample(glm::vec2& texcoord) {
+glm::vec4 Texture::Sample(const glm::vec2& texcoord) {
     return RepeatSample(texcoord);
 }
 
@@ -170,7 +170,7 @@ glm::vec4 Texture::Sample(glm::vec2& texcoord) {
  * for cubemap sampling, see subsection 3.7.5 of
  * https://www.khronos.org/registry/OpenGL/specs/es/2.0/es_full_spec_2.0.pdf
  */
-static int SelectCubemapFace(glm::vec3& direction, glm::vec2 *texcoord) {
+static int SelectCubemapFace(const glm::vec3& direction, glm::vec2 *texcoord) {
     float abs_x = (float)fabs(direction.x);
     float abs_y = (float)fabs(direction.y);
     float abs_z = (float)fabs(direction.z);
@@ -217,10 +217,10 @@ static int SelectCubemapFace(glm::vec3& direction, glm::vec2 *texcoord) {
     return face_index;
 }
 
-Cubemap::Cubemap(std::string& positive_x, std::string& negative_x,
-                    std::string& positive_y, std::string& negative_y,
-                    std::string& positive_z, std::string& negative_z,
-                    Usage usage) {
+Cubemap::Cubemap(const std::string& positive_x, const std::string& negative_x,
+		const std::string& positive_y, const std::string& negative_y,
+		const std::string& positive_z, const std::string& negative_z,
+		const Usage& usage) {
     this->m_Faces[0] = new Texture(positive_x, usage);
     this->m_Faces[1] = new Texture(negative_x, usage);
     this->m_Faces[2] = new Texture(positive_y, usage);
@@ -235,20 +235,20 @@ Cubemap::~Cubemap() {
     }
 }
 
-glm::vec4 Cubemap::RepeatSample(glm::vec3& direction) {
+glm::vec4 Cubemap::RepeatSample(const glm::vec3& direction) {
     glm::vec2 texcoord;
     int face_index = SelectCubemapFace(direction, &texcoord);
     texcoord.y = 1 - texcoord.y;
     return this->m_Faces[face_index]->RepeatSample(texcoord);
 }
 
-glm::vec4 Cubemap::ClampSample(glm::vec3& direction) {
+glm::vec4 Cubemap::ClampSample(const glm::vec3& direction) {
     glm::vec2 texcoord;
     int face_index = SelectCubemapFace(direction, &texcoord);
     texcoord.y = 1 - texcoord.y;
     return this->m_Faces[face_index]->ClampSample(texcoord);
 }
 
-glm::vec4 Cubemap::Sample(glm::vec3& direction) {
+glm::vec4 Cubemap::Sample(const glm::vec3& direction) {
     return RepeatSample(direction);
 }

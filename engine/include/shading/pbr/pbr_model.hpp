@@ -5,11 +5,11 @@
 
 #include <glm/glm.hpp>
 
-#include "../../core/framebuffer.hpp"
-#include "../../core/perframe.hpp"
-#include "../../core/mesh.hpp"
-#include "../../core/model.hpp"
-#include "../../core/scene.hpp"
+#include "core/framebuffer.hpp"
+#include "core/perframe.hpp"
+#include "core/mesh.hpp"
+#include "core/model.hpp"
+#include "core/scene.hpp"
 
 
 class PBRModel : public Model{

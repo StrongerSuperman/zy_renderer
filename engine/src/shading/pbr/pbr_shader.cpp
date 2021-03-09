@@ -49,5 +49,23 @@ glm::vec4 PBRShader::ExecuteFragmentShader(void* fs_in, void* uniforms, int *dis
     auto _fs_in = static_cast<PBRFSIn*>(fs_in);
     auto _uniforms = static_cast<PBRUniforms*>(uniforms);
 
+	auto world_position = _fs_in->world_position;
+	auto depth_position = _fs_in->depth_position;
+	auto clip_position = _fs_in->clip_position;
+	auto world_normal = _fs_in->world_normal;
+	auto world_tangent = _fs_in->world_tangent;
+	auto world_bitangent = _fs_in->world_bitangent;
+	auto texcoord = _fs_in->texcoord;
+
+	auto ambient_intensity = _uniforms->ambient_intensity;
+	auto punctual_intensity = _uniforms->punctual_intensity;
+	auto shadow_map = _uniforms->shadow_map;
+	auto camera_pos = _uniforms->camera_pos;
+	auto light_dir = _uniforms->light_dir;
+	auto shadow_pass = _uniforms->shadow_pass;
+	auto alpha_cutoff = _uniforms->alpha_cutoff;
+
+	PBRMaterial material(fs_in, uniforms, backface);
+
     return glm::vec4();
 }

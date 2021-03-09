@@ -6,8 +6,8 @@
 #include <direct.h>
 #include <windows.h>
 
-#include "../core/platform.hpp"
-#include "../core/image.hpp"
+#include "core/platform.hpp"
+#include "core/image.hpp"
 
 
 class Win32: public Platform{
@@ -21,7 +21,7 @@ public:
     void SwapFrameBuffer() override;
     void PollEvents() override;
     int GetKeyPressed(KeyCode key) override;
-    int GetButtonPressed(Button button) override;
+    int GetButtonPressed(const Button& button) override;
     void GetCursor(float *xpos, float *ypos) override;
     float GetTime() override;
 };
@@ -39,9 +39,6 @@ public:
  * for virtual-key codes, see
  * https://docs.microsoft.com/en-us/windows/desktop/inputdev/virtual-key-codes
  */
-void handle_key_message(Win32 *window, WPARAM virtual_key, char pressed);
-void handle_button_message(Win32 *window, Button button, char pressed);
-void handle_scroll_message(Win32 *window, float offset);
 LRESULT CALLBACK process_message(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 double get_native_time(void);

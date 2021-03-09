@@ -15,7 +15,7 @@
  * for virtual-key codes, see
  * https://docs.microsoft.com/en-us/windows/desktop/inputdev/virtual-key-codes
  */
-void handle_key_message(
+static void handle_key_message(
         Win32 *window, WPARAM virtual_key, char pressed) {
     KeyCode key;
     switch (virtual_key) {
@@ -32,7 +32,7 @@ void handle_key_message(
     }
 }
 
-void handle_mouse_press_message(Win32 *window, Button button, char pressed) {
+static void handle_mouse_press_message(Win32 *window, const Button& button, char pressed) {
     window->m_Buttons[button] = pressed;
     if (window->m_Callbacks.mouse_press_callback) {
 		float x, y;
@@ -41,7 +41,7 @@ void handle_mouse_press_message(Win32 *window, Button button, char pressed) {
     }
 }
 
-void handle_mouse_move_message(Win32 *window) {
+static void handle_mouse_move_message(Win32 *window) {
 	if (window->m_Callbacks.mouse_move_callback) {
 		float x, y;
 		window->GetCursor(&x, &y);
@@ -49,7 +49,7 @@ void handle_mouse_move_message(Win32 *window) {
 	}
 }
 
-void handle_scroll_message(Win32 *window, float offset) {
+static void handle_scroll_message(Win32 *window, float offset) {
     if (window->m_Callbacks.scroll_callback) {
         window->m_Callbacks.scroll_callback(window, offset);
     }
@@ -288,7 +288,7 @@ int Win32::GetKeyPressed(KeyCode key){
     return this->m_Keys[key];
 }
 
-int Win32::GetButtonPressed(Button button){
+int Win32::GetButtonPressed(const Button& button){
     return this->m_Buttons[button];
 }
 

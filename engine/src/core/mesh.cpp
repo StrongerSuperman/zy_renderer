@@ -16,7 +16,7 @@ Mesh::~Mesh(){
     }
 }
 
-std::vector<Texture*>* Mesh::GetTexture(std::string& texture_name) {
+std::vector<Texture*>* Mesh::GetTexture(const std::string& texture_name) {
     if(this->textures.find(texture_name) == this->textures.end()){
         return nullptr;
     }

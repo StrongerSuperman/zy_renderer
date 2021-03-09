@@ -18,7 +18,7 @@ typedef enum {
     NEGATIVE_Z
 } PlaneType;
 
-static int is_inside_plane(glm::vec4& coord, PlaneType plane) {
+static int is_inside_plane(const glm::vec4& coord, const PlaneType& plane) {
     switch (plane) {
         case POSITIVE_W:
             return coord.w >= EPSILON;
@@ -40,7 +40,7 @@ static int is_inside_plane(glm::vec4& coord, PlaneType plane) {
     }
 }
 
-static float get_intersect_ratio(glm::vec4& prev, glm::vec4& curr, PlaneType plane) {
+static float get_intersect_ratio(const glm::vec4& prev, const glm::vec4& curr, const PlaneType& plane) {
     switch (plane) {
         case POSITIVE_W:
             return (prev.w - EPSILON) / (prev.w - curr.w);
@@ -63,7 +63,7 @@ static float get_intersect_ratio(glm::vec4& prev, glm::vec4& curr, PlaneType pla
 }
 
 static int clip_against_plane(
-        PlaneType plane, int in_num_vertices, int fs_in_num_floats,
+		const PlaneType& plane, int in_num_vertices, int fs_in_num_floats,
         std::vector<glm::vec4>& vs_in_clip_coords, std::vector<void*>& fs_in_clip_data,
         std::vector<glm::vec4>& vs_out_clip_coords, std::vector<void*>& fs_out_clip_data) {
     int out_num_vertices = 0;
@@ -170,7 +170,7 @@ static int clip_triangle(int sizeof_fs_in,
  *     vec3 ac = vec3_sub(c, a);
  *     return vec3_cross(ab, ac).z <= 0;
  */
-static int is_back_facing(std::vector<glm::vec3>& ndc_coords) {
+static int is_back_facing(const std::vector<glm::vec3>& ndc_coords) {
     auto a = ndc_coords[0];
     auto b = ndc_coords[1];
     auto c = ndc_coords[2];

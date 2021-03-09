@@ -16,7 +16,7 @@ public:
 
     FrameBuffer(int width, int height);
     ~FrameBuffer();
-    void ClearColor(glm::vec4 color);
+    void ClearColor(const glm::vec4& color);
     void ClearDepth(float depth);
     void DrawTriangle(Program* program);
 };

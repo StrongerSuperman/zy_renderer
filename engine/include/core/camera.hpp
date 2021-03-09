@@ -32,9 +32,9 @@ public:
 	CameraBase();
 	virtual ~CameraBase();
 
-	void                   SetEyeAndDir(glm::vec3& eye, glm::vec3& dir);
-	void                   SetEye(glm::vec3& eye);
-	void                   SetDir(glm::vec3& dir);
+	void                   SetEyeAndDir(const glm::vec3& eye, const glm::vec3& dir);
+	void                   SetEye(const glm::vec3& eye);
+	void                   SetDir(const glm::vec3& dir);
 
 	void                   SetPerspectiveMode();
 	void                   SetOrthogonalMode();
@@ -93,7 +93,7 @@ public:
 	CameraFTP();
 	virtual ~CameraFTP();
 
-	void SetEyeAndTarget(glm::vec3& eye, glm::vec3& target);
+	void SetEyeAndTarget(const glm::vec3& eye, const glm::vec3& target);
 
 	inline float GetYaw() const { return m_Yaw; };
 	inline float GetPitch() const { return m_Pitch; };
@@ -123,9 +123,9 @@ public:
 	Camera();
 	virtual ~Camera();
 
-	virtual void HandleMouseBtnPress(Button button, int x, int y, int pressed);
+	virtual void HandleMouseBtnPress(const Button& button, int x, int y, int pressed);
 	virtual void HandleMouseMove(int x, int y);
-	virtual void HandleMouseBtnDoubleClick(Button button, int x, int y);
+	virtual void HandleMouseBtnDoubleClick(const Button& button, int x, int y);
 	virtual void HandleMouseScroll(float delta);
 	virtual void HandleKey(KeyCode key, int pressed);
 

@@ -16,8 +16,8 @@ enum Button{
     BUTTON_R
 };
 
-#define WIDTH 1280
-#define HEIGHT 768
+#define WIDTH 800
+#define HEIGHT 600
 #define MAX_PATH_LEN 256
 #define LINE_SIZE = 256
 #define ASSETS_PATH "\\..\\..\\assets\\nanosuit\\nanosuit.obj"

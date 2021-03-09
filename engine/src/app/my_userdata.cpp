@@ -5,6 +5,7 @@
 #include "app/my_userdata.hpp"
 #include "core/define.hpp"
 #include "shading/blinn/blinn_scene.hpp"
+#include "shading/pbr/pbr_scene.hpp"
 
 
 MyUserdata::MyUserdata(){
@@ -13,9 +14,10 @@ MyUserdata::MyUserdata(){
 	std::string filename(buffer);
 	filename.append(ASSETS_PATH);
 
-    this->m_Scene = new BlinnScene(filename);
+     this->m_Scene = new BlinnScene(filename);
+    //this->m_Scene = new PBRScene(filename);
     this->m_Scene->InitShadow(WIDTH, HEIGHT);
-	this->m_Scene->background = glm::vec4(0.4, 0.1, 0.3, 1.0);
+	this->m_Scene->background = glm::vec4(0.05f, 0.05f, 0.05f, 1.0);
 
     auto camera = this->m_Scene->GetCamera();
     camera->SetAspectRatio((float)WIDTH/HEIGHT);

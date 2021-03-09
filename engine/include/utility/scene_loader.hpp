@@ -8,10 +8,11 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-#include "../core/mesh.hpp"
-#include "../core/scene.hpp"
-#include "../core/image.hpp"
-#include "../shading/blinn/blinn_model.hpp"
+#include "core/mesh.hpp"
+#include "core/scene.hpp"
+#include "core/image.hpp"
+#include "shading/blinn/blinn_model.hpp"
+#include "shading/pbr/pbr_model.hpp"
 
 
 static std::vector<Texture*> loadTextures(Scene* scene, aiMaterial *mat, aiTextureType type)
@@ -115,11 +116,16 @@ static void processNode(Scene* scene, aiNode *node, const aiScene *ai_scene)
         Mesh* mesh = new Mesh();
 		aiMesh* ai_mesh = ai_scene->mMeshes[node->mMeshes[i]];
         processMesh(scene, mesh, ai_mesh, ai_scene);
+		Model* model;
+		glm::mat4x4 transform(1.0f);
         if(scene->type == SceneType::SCENE_TYPE_BLINN){
-            glm::mat4x4 transform(1.0f);
-            Model* model = new BlinnModel(scene, mesh, transform);
-            scene->models.emplace_back(model);
+            model = new BlinnModel(scene, mesh, transform);
         }
+		else if(scene->type == SceneType::SCENE_TYPE_PBR){
+            
+            model = new PBRModel(scene, mesh, transform);
+        }
+		scene->models.emplace_back(model);
 	}
 	for (unsigned int i = 0; i < node->mNumChildren; i++)
 	{
@@ -127,7 +133,7 @@ static void processNode(Scene* scene, aiNode *node, const aiScene *ai_scene)
 	}
 }
 
-static void LoadScene(Scene* scene, std::string& filename){
+static void LoadScene(Scene* scene, const std::string& filename){
 	Assimp::Importer importer;
 	const aiScene* ai_scene = importer.ReadFile(filename, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
 	if (!ai_scene || ai_scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !ai_scene->mRootNode)

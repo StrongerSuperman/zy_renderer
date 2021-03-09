@@ -35,7 +35,7 @@ CameraBase::~CameraBase()
 }
 
 
-void CameraBase::SetEyeAndDir(glm::vec3& eye, glm::vec3& dir)
+void CameraBase::SetEyeAndDir(const glm::vec3& eye, const glm::vec3& dir)
 {
 	m_Eye = eye;
 	m_Dir = dir;
@@ -43,13 +43,13 @@ void CameraBase::SetEyeAndDir(glm::vec3& eye, glm::vec3& dir)
 	UpdateViewMatrix();
 }
 
-void CameraBase::SetEye(glm::vec3& eye)
+void CameraBase::SetEye(const glm::vec3& eye)
 {
 	m_Eye = eye;
 	UpdateViewMatrix();
 }
 
-void CameraBase::SetDir(glm::vec3& dir)
+void CameraBase::SetDir(const glm::vec3& dir)
 {
 	m_Dir = dir;
 	UpdateViewMatrix();
@@ -143,7 +143,7 @@ CameraFTP::~CameraFTP()
 }
 
 
-void CameraFTP::SetEyeAndTarget(glm::vec3& eye, glm::vec3& target)
+void CameraFTP::SetEyeAndTarget(const glm::vec3& eye, const glm::vec3& target)
 {
 	auto dir = glm::normalize(target - eye);
 	m_RotateRadius = glm::distance(eye, target);
@@ -283,7 +283,7 @@ Camera::~Camera()
 }
 
 
-void Camera::HandleMouseBtnPress(Button button, int x, int y, int pressed)
+void Camera::HandleMouseBtnPress(const Button& button, int x, int y, int pressed)
 {
 	m_MouseX = x;
 	m_MouseY = y;
@@ -318,7 +318,7 @@ void Camera::HandleMouseMove(int x, int y)
 	}
 }
 
-void Camera::HandleMouseBtnDoubleClick(Button button, int x, int y)
+void Camera::HandleMouseBtnDoubleClick(const Button& button, int x, int y)
 {
 	(void)(button);
 	(void)(x);

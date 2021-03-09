@@ -6,7 +6,7 @@
 #include "core/Program.hpp"
 
 
-Model::Model(Scene* scene, Mesh* mesh, glm::mat4x4& transform, Program* program) {
+Model::Model(Scene* scene, Mesh* mesh, const glm::mat4x4& transform, Program* program) {
     this->mesh = mesh;
     this->transform = transform;
     this->program = program;

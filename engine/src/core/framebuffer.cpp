@@ -30,7 +30,7 @@ FrameBuffer::~FrameBuffer() {
     free(this->m_DepthBuffer);
 }
 
-void FrameBuffer::ClearColor(glm::vec4 color) {
+void FrameBuffer::ClearColor(const glm::vec4& color) {
     int num_pixels = this->m_Width * this->m_Height;
     for (int i = 0; i < num_pixels; i++) {
        this->m_ColorBuffer[i * 4 + 0] = (unsigned char)(color.x * 255);
