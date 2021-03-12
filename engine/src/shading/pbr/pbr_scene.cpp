@@ -4,7 +4,6 @@
 
 #include "shading/pbr/pbr_scene.hpp"
 #include "core/context.hpp"
-#include "core/texture.hpp"
 #include "core/model.hpp"
 #include "utility/scene_loader.hpp"
 

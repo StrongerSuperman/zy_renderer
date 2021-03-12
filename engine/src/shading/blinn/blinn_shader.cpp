@@ -3,7 +3,6 @@
 #include <glm/glm.hpp>
 
 #include "shading/blinn/blinn_shader.hpp"
-#include "core/texture.hpp"
 #include "shading/blinn/blinn_material.hpp"
 
 
@@ -58,19 +57,19 @@ glm::vec4 BlinnShader::ExecuteFragmentShader(void* fs_in, void* uniforms, int *d
     auto alpha = material.has_opacity ? material.opacity[0] : 1;
 
     if (alpha_cutoff > 0 && alpha < alpha_cutoff) {
-        *discard = 1;
-        return glm::vec4(0, 0, 0, 0);
+        *discard = 1.0f;
+        return glm::vec4(0.0f, 0.0f, 0.0f, alpha);
     } 
 
     if (shadow_pass) {
-        return glm::vec4(0, 0, 0, 0);
+        return glm::vec4(0.0f, 0.0f, 0.0f, alpha);
     }
     else {
-		auto _ambient = material.has_ambient ? material.ambient : glm::vec3(0, 0, 0);
-		auto _emission = material.has_emission ? material.emission : glm::vec3(0,0,0);
-        auto _diffuse = material.has_diffuse ? material.diffuse : glm::vec3(0,0,0);
+		auto _ambient = material.has_ambient ? material.ambient : glm::vec3(0.0f, 0.0f, 0.0f);
+		auto _emission = material.has_emission ? material.emission : glm::vec3(0.0f, 0.0f, 0.0f);
+        auto _diffuse = material.has_diffuse ? material.diffuse : glm::vec3(0.0f, 0.0f, 0.0f);
 		auto _normal = glm::normalize(material.has_normal ? material.normal : (material.has_height ? material.height : normal));
-        auto _specular = material.has_specular ? material.specular : glm::vec3(0,0,0);
+        auto _specular = material.has_specular ? material.specular : glm::vec3(0.0f, 0.0f, 0.0f);
         auto _shininess = material.has_shininess ? material.shininess[0] : 32.0f;
         auto color = _emission;
         if (ambient_intensity > 0) {

@@ -22,4 +22,6 @@ enum Button{
 #define LINE_SIZE = 256
 #define ASSETS_PATH "\\..\\..\\assets\\nanosuit\\nanosuit.obj"
 
+const float PI = 3.14159265359f;
+
 #endif //DEFINE_H

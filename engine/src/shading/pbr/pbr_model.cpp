@@ -98,6 +98,7 @@ void PBRModel::Update(){
     // }
 
     auto uniforms = static_cast<PBRUniforms*>(this->program->uniforms);
+    uniforms->light_pos = perframe->light_pos;
     uniforms->light_dir = perframe->light_dir;
     uniforms->camera_pos = perframe->camera_pos;
     uniforms->model_mat = model_matrix;

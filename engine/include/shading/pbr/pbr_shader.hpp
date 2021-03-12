@@ -31,6 +31,7 @@ struct PBRUniforms{
     float ambient_intensity;
     float punctual_intensity;
     /* light/model/camera mat */
+    glm::vec3 light_pos;
     glm::vec3 light_dir;
     glm::vec3 camera_pos;  
     glm::mat4x4 model_mat;

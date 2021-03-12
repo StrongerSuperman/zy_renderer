@@ -14,8 +14,8 @@ MyUserdata::MyUserdata(){
 	std::string filename(buffer);
 	filename.append(ASSETS_PATH);
 
-     this->m_Scene = new BlinnScene(filename);
-    //this->m_Scene = new PBRScene(filename);
+    //  this->m_Scene = new BlinnScene(filename);
+    this->m_Scene = new PBRScene(filename);
     this->m_Scene->InitShadow(WIDTH, HEIGHT);
 	this->m_Scene->background = glm::vec4(0.05f, 0.05f, 0.05f, 1.0);
 
@@ -47,6 +47,7 @@ void MyUserdata::Tick() {
     auto Proj_mat = camera->GetProjectionMatrix();
 
     auto perframe = this->m_Scene->GetPerframe();
+    perframe->light_pos = light_pos;
     perframe->light_dir = light_dir;
     perframe->light_view_mat = light_view_mat;
     perframe->light_proj_mat = Proj_mat;

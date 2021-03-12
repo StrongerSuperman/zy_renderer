@@ -64,7 +64,7 @@ static float float_aces(float value) {
     return float_saturate(value);
 }
 
-static glm::vec4 vec4_lerp(glm::vec4& a, glm::vec4& b, float t) {
+static glm::vec4 vec4_lerp(const glm::vec4& a, const glm::vec4& b, float t) {
     float x = float_lerp(a.x, b.x, t);
     float y = float_lerp(a.y, b.y, t);
     float z = float_lerp(a.z, b.z, t);
@@ -72,28 +72,32 @@ static glm::vec4 vec4_lerp(glm::vec4& a, glm::vec4& b, float t) {
     return glm::vec4(x, y, z, w);
 }
 
-static glm::vec2 vec2_min(glm::vec2& a, glm::vec2& b) {
+static glm::vec2 vec2_min(const glm::vec2& a, const glm::vec2& b) {
     float x = float_min(a.x, b.x);
     float y = float_min(a.y, b.y);
     return glm::vec2(x, y);
 }
 
-static glm::vec2 vec2_max(glm::vec2& a, glm::vec2& b) {
+static glm::vec2 vec2_max(const glm::vec2& a, const glm::vec2& b) {
     float x = float_max(a.x, b.x);
     float y = float_max(a.y, b.y);
     return glm::vec2(x, y);
 }
 
-static glm::vec3 vec3_div(glm::vec3& v, float divisor) {
+static glm::vec3 vec3_div(const glm::vec3& v, float divisor) {
     return glm::vec3(v.x/divisor, v.y/divisor, v.z/divisor);
 }
 
-static glm::vec4 vec4_saturate(glm::vec4& v) {
+static glm::vec4 vec4_saturate(const glm::vec4& v) {
     float x = float_saturate(v.x);
     float y = float_saturate(v.y);
     float z = float_saturate(v.z);
     float w = float_saturate(v.w);
     return glm::vec4(x, y, z, w);
+}
+
+static glm::vec3 float_minus_vec3(float a, const glm::vec3& v){
+    return glm::vec3(a-v.x, a-v.y, a-v.z);
 }
 
 #endif //MATHTOOL_H
