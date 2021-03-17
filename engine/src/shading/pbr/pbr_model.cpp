@@ -67,6 +67,10 @@ PBRModel::PBRModel(Scene* scene, Mesh* mesh, glm::mat4x4& transform):
     else{
         uniforms->ambient_occlusion_map = nullptr;
     }
+
+    uniforms->ka = this->mesh->ka;
+    uniforms->kd = this->mesh->kd;
+    uniforms->ks = this->mesh->ks;
 }
 
 void PBRModel::Update(){
@@ -99,12 +103,13 @@ void PBRModel::Update(){
 
     auto uniforms = static_cast<PBRUniforms*>(this->program->uniforms);
     uniforms->light_pos = perframe->light_pos;
-    uniforms->light_dir = perframe->light_dir;
     uniforms->camera_pos = perframe->camera_pos;
     uniforms->model_mat = model_matrix;
     uniforms->normal_mat = normal_matrix;
-    uniforms->light_vp_mat = perframe->light_proj_mat*perframe->light_view_mat;
-    uniforms->camera_vp_mat = perframe->camera_proj_mat*perframe->camera_view_mat;
+    uniforms->light_view_mat = perframe->light_view_mat;
+    uniforms->light_proj_mat = perframe->light_proj_mat;
+    uniforms->camera_view_mat = perframe->camera_view_mat;
+    uniforms->camera_proj_mat = perframe->camera_proj_mat;
     // uniforms->joint_matrices = joint_matrices;
     // uniforms->joint_n_matrices = joint_n_matrices;
     uniforms->ambient_intensity = float_clamp(ambient_intensity, 0, 5);

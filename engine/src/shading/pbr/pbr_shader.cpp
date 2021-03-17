@@ -1,6 +1,7 @@
 #include <algorithm>
 
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include "shading/pbr/pbr_shader.hpp"
 #include "shading/pbr/pbr_material.hpp"
@@ -20,12 +21,14 @@ glm::vec4 PBRShader::ExecuteVertexShader(void* vs_in, void* fs_in, void* uniform
 
 	auto model_mat = _uniforms->model_mat;
 	auto normal_mat = _uniforms->normal_mat;
-	auto camera_vp_mat = _uniforms->camera_vp_mat;
-	auto light_vp_mat = _uniforms->light_vp_mat;
+	auto light_view_mat = _uniforms->light_view_mat;
+	auto light_proj_mat = _uniforms->light_proj_mat;
+	auto camera_view_mat = _uniforms->camera_view_mat;
+	auto camera_proj_mat = _uniforms->camera_proj_mat;
 
 	auto world_position = model_mat*glm::vec4(position, 1);
-	auto depth_position = light_vp_mat*world_position;
-	auto clip_position = camera_vp_mat*world_position;
+	auto depth_position = light_proj_mat*light_view_mat*world_position;
+	auto clip_position = camera_proj_mat*camera_view_mat*world_position;
 
 	if (_uniforms->shadow_pass) {
 		_fs_in->texcoord = texcoord;
@@ -41,7 +44,7 @@ glm::vec4 PBRShader::ExecuteVertexShader(void* vs_in, void* fs_in, void* uniform
 		}
 		_fs_in->world_normal = world_normal;
 		_fs_in->world_position = glm::vec3(world_position);
-		_fs_in->depth_position = glm::vec3(depth_position);
+		_fs_in->depth_position = vec3_div(glm::vec3(depth_position), depth_position.w);
 		_fs_in->texcoord = texcoord;
 		_fs_in->clip_position = clip_position;
 		return clip_position;
@@ -104,12 +107,12 @@ glm::vec4 PBRShader::ExecuteFragmentShader(void* fs_in, void* uniforms, int *dis
 	auto world_bitangent = _fs_in->world_bitangent;
 	auto texcoord = _fs_in->texcoord;
 
-	auto ambient_intensity = _uniforms->ambient_intensity;
-	auto punctual_intensity = _uniforms->punctual_intensity;
+	// auto ambient_intensity = _uniforms->ambient_intensity;
+	// auto punctual_intensity = _uniforms->punctual_intensity;
 	auto shadow_map = _uniforms->shadow_map;
 	auto camera_pos = _uniforms->camera_pos;
 	auto light_pos = _uniforms->light_pos;
-	auto light_dir = _uniforms->light_dir;
+	auto light_dir = world_position - light_pos;
 	auto shadow_pass = _uniforms->shadow_pass;
 	auto alpha_cutoff = _uniforms->alpha_cutoff;
 

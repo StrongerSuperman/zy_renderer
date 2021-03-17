@@ -20,6 +20,10 @@ public:
     glm::vec3 diffuse_roughness;
     glm::vec3 ambient_occlusion;
 
+    glm::vec3 ka;
+    glm::vec3 kd;
+    glm::vec3 ks;
+
     PBRMaterial(void* fs_in, void* uniforms, int backface);
 };
 

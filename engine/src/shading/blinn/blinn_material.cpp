@@ -108,4 +108,8 @@ BlinnMaterial::BlinnMaterial(void* fs_in, void* uniforms, int backface){
     this->displacement = _displacement;
     this->lightmap = _lightmap;
     this->reflection = _reflection;
+
+    this->ka = _uniforms->ka;
+    this->kd = _uniforms->kd;
+    this->ks = _uniforms->ks;
 }

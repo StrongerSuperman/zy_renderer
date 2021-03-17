@@ -22,10 +22,10 @@ static std::vector<Texture*> loadTextures(Scene* scene, aiMaterial *mat, aiTextu
 	{
 		aiString file_name;
 		mat->GetTexture(type, i, &file_name);
-        std::string file_path(scene->directory);
+		std::string file_path(scene->directory);
 		file_path.append(file_name.C_Str());
 		auto texture = new Texture(file_path, scene->render_quality);
-        textures.emplace_back(texture);
+		textures.push_back(texture);
 	}
 	return textures;
 }
@@ -34,7 +34,7 @@ static void processMesh(Scene* scene, Mesh* mesh, aiMesh *ai_mesh, const aiScene
 {
 	for (unsigned int i = 0; i < ai_mesh->mNumVertices; i++)
 	{
-        // vertices
+		// vertices
 		Vertex vertex;
 		glm::vec3 vector;
 		vector.x = ai_mesh->mVertices[i].x;
@@ -76,7 +76,7 @@ static void processMesh(Scene* scene, Mesh* mesh, aiMesh *ai_mesh, const aiScene
 		mesh->vertices.emplace_back(vertex);
 	}
 
-    // indices
+	// indices
 	mesh->num_faces = ai_mesh->mNumFaces;
 	for (unsigned int i = 0; i < ai_mesh->mNumFaces; i++)
 	{
@@ -86,9 +86,18 @@ static void processMesh(Scene* scene, Mesh* mesh, aiMesh *ai_mesh, const aiScene
 			mesh->indices.emplace_back(face.mIndices[j]);
 	}
 
-	// texture
 	aiMaterial* material = ai_scene->mMaterials[ai_mesh->mMaterialIndex];
-	// legacy Api Materials
+
+	// Material shading param
+	aiColor3D color;
+	material->Get(AI_MATKEY_COLOR_AMBIENT, color);
+	mesh->ka = glm::vec3(color.r, color.g, color.b);
+	material->Get(AI_MATKEY_COLOR_DIFFUSE, color);
+	mesh->kd = glm::vec3(color.r, color.g, color.b);
+	material->Get(AI_MATKEY_COLOR_SPECULAR, color);
+	mesh->ks = glm::vec3(color.r, color.g, color.b);
+
+	// legacy Materials
 	mesh->textures.emplace("diffuse", loadTextures(scene, material, aiTextureType_DIFFUSE));
 	mesh->textures.emplace("specular", loadTextures(scene, material, aiTextureType_SPECULAR));
 	mesh->textures.emplace("ambient", loadTextures(scene, material, aiTextureType_AMBIENT));
@@ -100,7 +109,7 @@ static void processMesh(Scene* scene, Mesh* mesh, aiMesh *ai_mesh, const aiScene
 	mesh->textures.emplace("displacement", loadTextures(scene, material, aiTextureType_DISPLACEMENT));
 	mesh->textures.emplace("lightmap", loadTextures(scene, material, aiTextureType_LIGHTMAP));
 	mesh->textures.emplace("reflection", loadTextures(scene, material, aiTextureType_REFLECTION));
-    // PBR Materials
+	// PBR Materials
 	mesh->textures.emplace("base_color", loadTextures(scene, material, aiTextureType_BASE_COLOR));
 	mesh->textures.emplace("nomal_camera", loadTextures(scene, material, aiTextureType_NORMAL_CAMERA));
 	mesh->textures.emplace("emission_color", loadTextures(scene, material, aiTextureType_EMISSION_COLOR));
@@ -113,18 +122,18 @@ static void processNode(Scene* scene, aiNode *node, const aiScene *ai_scene)
 {
 	for (unsigned int i = 0; i < node->mNumMeshes; i++)
 	{
-        Mesh* mesh = new Mesh();
+		Mesh* mesh = new Mesh();
 		aiMesh* ai_mesh = ai_scene->mMeshes[node->mMeshes[i]];
-        processMesh(scene, mesh, ai_mesh, ai_scene);
+		processMesh(scene, mesh, ai_mesh, ai_scene);
 		Model* model;
 		glm::mat4x4 transform(1.0f);
-        if(scene->type == SceneType::SCENE_TYPE_BLINN){
-            model = new BlinnModel(scene, mesh, transform);
-        }
+		if(scene->type == SceneType::SCENE_TYPE_BLINN){
+			model = new BlinnModel(scene, mesh, transform);
+		}
 		else if(scene->type == SceneType::SCENE_TYPE_PBR){
-            
-            model = new PBRModel(scene, mesh, transform);
-        }
+			
+			model = new PBRModel(scene, mesh, transform);
+		}
 		scene->models.emplace_back(model);
 	}
 	for (unsigned int i = 0; i < node->mNumChildren; i++)

@@ -25,6 +25,9 @@ class Mesh{
 public:
     int num_faces;
     glm::vec3 center;
+    glm::vec3 ka;
+    glm::vec3 kd;
+    glm::vec3 ks;
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
     std::map<std::string, std::vector<Texture*>> textures;

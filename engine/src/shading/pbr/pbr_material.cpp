@@ -63,4 +63,8 @@ PBRMaterial::PBRMaterial(void* fs_in, void* uniforms, int backface){
     this->metalness = _metalness;
     this->diffuse_roughness = _diffuse_roughness;
     this->ambient_occlusion = _ambient_occlusion;
+
+    this->ka = _uniforms->ka;
+    this->kd = _uniforms->kd;
+    this->ks = _uniforms->ks;
 }

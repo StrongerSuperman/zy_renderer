@@ -30,6 +30,10 @@ public:
     glm::vec3 lightmap;
     glm::vec3 reflection;
 
+    glm::vec3 ka;
+    glm::vec3 kd;
+    glm::vec3 ks;
+
     BlinnMaterial(void* fs_in, void* uniforms, int backface);
 };
 

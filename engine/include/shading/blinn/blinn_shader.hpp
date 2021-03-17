@@ -27,12 +27,18 @@ struct BlinnUniforms{
     float ambient_intensity;
     float punctual_intensity;
     /* light/model/camera mat */
-    glm::vec3 light_dir;
+    glm::vec3 light_pos;
     glm::vec3 camera_pos;  
     glm::mat4x4 model_mat;
     glm::mat3x3 normal_mat;
-    glm::mat4x4 camera_vp_mat;
-    glm::mat4x4 light_vp_mat;
+    glm::mat4x4 light_view_mat;
+    glm::mat4x4 light_proj_mat;
+    glm::mat4x4 camera_view_mat;
+    glm::mat4x4 camera_proj_mat;
+    /* shading param */
+    glm::vec3 ka;
+    glm::vec3 kd;
+    glm::vec3 ks;
     /* shadow_map */
     Texture* shadow_map;
     /* surface textures */
