@@ -9,7 +9,7 @@ public:
     bool has_diffuse;
     bool has_specular;
     bool has_ambient;
-    bool has_emission;
+    bool has_emissive;
     bool has_height;
     bool has_normal;
     bool has_shininess;
@@ -21,7 +21,7 @@ public:
     glm::vec3 diffuse;
     glm::vec3 specular;
     glm::vec3 ambient;
-    glm::vec3 emission;
+    glm::vec3 emissive;
     glm::vec3 height;
     glm::vec3 normal;
     glm::vec3 shininess;

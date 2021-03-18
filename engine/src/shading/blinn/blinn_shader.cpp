@@ -49,8 +49,6 @@ glm::vec4 BlinnShader::ExecuteFragmentShader(void* fs_in, void* uniforms, int *d
 	auto world_position = _fs_in->world_position;
 	auto normal = _fs_in->normal;
 
-	auto ambient_intensity = _uniforms->ambient_intensity;
-	auto punctual_intensity = _uniforms->punctual_intensity;
 	auto shadow_map = _uniforms->shadow_map;
 	auto camera_pos = _uniforms->camera_pos;
 	auto light_pos = _uniforms->light_pos;
@@ -71,7 +69,7 @@ glm::vec4 BlinnShader::ExecuteFragmentShader(void* fs_in, void* uniforms, int *d
 	}
 	else {
 		auto _ambient = material.has_ambient ? material.ambient : glm::vec3(0.0f, 0.0f, 0.0f);
-		auto _emission = material.has_emission ? material.emission : glm::vec3(0.0f, 0.0f, 0.0f);
+		auto _emission = material.has_emissive ? material.emissive : glm::vec3(0.0f, 0.0f, 0.0f);
 		auto _diffuse = material.has_diffuse ? material.diffuse : glm::vec3(0.0f, 0.0f, 0.0f);
 		auto _normal = glm::normalize(material.has_normal ? material.normal : (material.has_height ? material.height : normal));
 		auto _specular = material.has_specular ? material.specular : glm::vec3(0.0f, 0.0f, 0.0f);
@@ -81,40 +79,34 @@ glm::vec4 BlinnShader::ExecuteFragmentShader(void* fs_in, void* uniforms, int *d
 		auto _ks = material.ks;
 
 		auto color = _emission;
-		if (ambient_intensity > 0) {
-			float intensity = ambient_intensity;
-			color += _ambient*intensity*_ka;
+		color += _ambient*_ka;
+		float n_dot_l = glm::dot(_normal, light_dir);
+		bool is_in_shadow = false;
+		if (shadow_map) {
+			float u = (depth_position.x + 1) * 0.5f;
+			float v = (depth_position.y + 1) * 0.5f;
+			float d = (depth_position.z + 1) * 0.5f;
+			float depth_bias = std::max(0.05f * (1 - n_dot_l), 0.005f);
+			float current_depth = d - depth_bias;
+			auto texcoord = glm::vec2(u, v);
+			float closest_depth = shadow_map->Sample(texcoord).x;
+			is_in_shadow = current_depth > closest_depth;
 		}
-		if (punctual_intensity > 0) {
-			float n_dot_l = glm::dot(_normal, light_dir);
-			bool is_in_shadow = false;
-			if (shadow_map) {
-				float u = (depth_position.x + 1) * 0.5f;
-				float v = (depth_position.y + 1) * 0.5f;
-				float d = (depth_position.z + 1) * 0.5f;
-				float depth_bias = std::max(0.05f * (1 - n_dot_l), 0.005f);
-				float current_depth = d - depth_bias;
-				auto texcoord = glm::vec2(u, v);
-				float closest_depth = shadow_map->Sample(texcoord).x;
-				is_in_shadow = current_depth > closest_depth;
-			}
-			if (n_dot_l > 0 && !is_in_shadow) {
-				if (!(_specular.x == 0 &&
-						_specular.y == 0 &&
-						_specular.z == 0)) {
-					auto view_dir = glm::normalize(camera_pos-world_position);
-					auto half_dir = glm::normalize(light_dir+view_dir);
-					float n_dot_h = glm::dot(_normal, half_dir);
-					if (n_dot_h > 0) {
-						float strength = pow(n_dot_h, _shininess);
-						_specular *= strength;
-						auto a = 1;
-					}
+		if (n_dot_l > 0 && !is_in_shadow) {
+			if (!(_specular.x == 0 &&
+					_specular.y == 0 &&
+					_specular.z == 0)) {
+				auto view_dir = glm::normalize(camera_pos-world_position);
+				auto half_dir = glm::normalize(light_dir+view_dir);
+				float n_dot_h = glm::dot(_normal, half_dir);
+				if (n_dot_h > 0) {
+					float strength = pow(n_dot_h, _shininess);
+					_specular *= strength;
+					auto a = 1;
 				}
-				auto diffuse = _diffuse*n_dot_l;
-				auto punctual = diffuse*_kd + _specular*_ks;
-				color += punctual*punctual_intensity;
 			}
+			auto diffuse = _diffuse*n_dot_l;
+			color += diffuse*_kd + _specular*_ks;
 		}
 		return glm::vec4(color, alpha) / 255.0f;
 	}

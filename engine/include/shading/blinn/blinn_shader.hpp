@@ -23,9 +23,6 @@ struct BlinnFSIn{
 };
 
 struct BlinnUniforms{
-    /* scene intensity */
-    float ambient_intensity;
-    float punctual_intensity;
     /* light/model/camera mat */
     glm::vec3 light_pos;
     glm::vec3 camera_pos;  
@@ -45,7 +42,7 @@ struct BlinnUniforms{
     Texture *diffuse_map;
     Texture *specular_map;
     Texture *ambient_map;
-    Texture *emission_map;
+    Texture *emissive_map;
     Texture *height_map;
     Texture *normal_map;
     Texture *shininess_map;

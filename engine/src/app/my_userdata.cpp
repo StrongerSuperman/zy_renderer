@@ -55,8 +55,6 @@ void MyUserdata::Tick() {
     perframe->light_proj_mat = Proj_mat;
     perframe->camera_view_mat = view_mat;
     perframe->camera_proj_mat = Proj_mat;
-    perframe->ambient_intensity = 1.0f;
-    perframe->punctual_intensity = 1.0f;
     perframe->shadow_map = this->m_Scene->shadow_map;
 
     this->m_Scene->Update();

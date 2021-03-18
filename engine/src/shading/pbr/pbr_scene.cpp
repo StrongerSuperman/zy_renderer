@@ -15,16 +15,12 @@ PBRScene::PBRScene(const std::string& filename){
 }
 
 void PBRScene::Update(){
-    auto perframe = this->GetPerframe();
-
     if(this->skybox){
         this->skybox->Update();
     }
     for each(auto &model in this->models){
         model->Update();
     }
-    this->ambient_intensity = perframe->ambient_intensity;
-    this->punctual_intensity = perframe->punctual_intensity;
 }
 
 void PBRScene::Render(){

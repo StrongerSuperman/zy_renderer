@@ -20,15 +20,9 @@ public:
     std::string directory;
     SceneType type;
     glm::vec4 background;
-    /* render quality */
     Usage render_quality;
-    /* object */
     Model* skybox;
     std::vector<Model*> models;
-    /* light intensity */
-    float ambient_intensity;
-    float punctual_intensity;
-    /* shadow mapping */
     FrameBuffer* shadow_buffer;
     Texture* shadow_map;
 

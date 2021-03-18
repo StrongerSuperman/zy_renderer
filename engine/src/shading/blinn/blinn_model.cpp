@@ -6,109 +6,31 @@
 #include "core/framebuffer.hpp"
 #include "core/mesh.hpp"
 #include "core/texture.hpp"
-#include "utility/math_tool.hpp"
 
-
+#define BIND_TEXTURE_BINN(name)                                     \
+    auto name##_textures = this->mesh->GetTexture(#name);           \
+    if (name##_textures->size() > 0){                               \
+        uniforms->name##_map = (*name##_textures)[0];               \
+    }                                                               \
+    else{                                                           \
+        uniforms->name##_map = nullptr;                             \
+    }                                                               \
 
 BlinnModel::BlinnModel(Scene* scene, Mesh* mesh, const glm::mat4x4& transform):
         Model(scene, mesh, transform, new BlinnProgram()){
     auto uniforms = static_cast<BlinnUniforms*>(this->program->uniforms);
 
-    std::vector<std::string> texture_names = {
-        "diffuse", "specular", "ambient",
-        "emissive", "height", "normal",
-        "shininess", "opacity", "displacement",
-        "lightmap", "reflection"
-    };
-
-    auto diffuse_textures = this->mesh->GetTexture(texture_names[0]);
-    auto specular_textures = this->mesh->GetTexture(texture_names[1]);
-    auto ambient_textures = this->mesh->GetTexture(texture_names[2]);
-    auto emissive_textures = this->mesh->GetTexture(texture_names[3]);
-    auto height_textures = this->mesh->GetTexture(texture_names[4]);
-    auto normal_textures = this->mesh->GetTexture(texture_names[5]);
-    auto shininess_textures = this->mesh->GetTexture(texture_names[6]);
-    auto opacity_textures = this->mesh->GetTexture(texture_names[7]);
-    auto displacement_textures = this->mesh->GetTexture(texture_names[8]);
-    auto lightmap_textures = this->mesh->GetTexture(texture_names[9]);
-    auto reflection_textures = this->mesh->GetTexture(texture_names[10]);
-
-    if (diffuse_textures->size() > 0){
-        uniforms->diffuse_map = (*diffuse_textures)[0];
-    }
-    else{
-        uniforms->diffuse_map = nullptr;
-    }
-
-    if (specular_textures->size() > 0){
-        uniforms->specular_map = (*specular_textures)[0];
-    }
-    else{
-        uniforms->specular_map = nullptr;
-    }
-
-    if (ambient_textures->size() > 0){
-        uniforms->ambient_map = (*ambient_textures)[0];
-    }
-    else{
-        uniforms->ambient_map = nullptr;
-    }
-
-    if (emissive_textures->size() > 0){
-        uniforms->emission_map = (*emissive_textures)[0];
-    }
-    else{
-        uniforms->emission_map = nullptr;
-    }
-
-    if (height_textures->size() > 0){
-        uniforms->height_map = (*height_textures)[0];
-    }
-    else{
-        uniforms->height_map = nullptr;
-    }
-
-    if (normal_textures->size() > 0){
-        uniforms->normal_map = (*normal_textures)[0];
-    }
-    else{
-        uniforms->normal_map = nullptr;
-    }
-
-    if (shininess_textures->size() > 0){
-        uniforms->shininess_map = (*shininess_textures)[0];
-    }
-    else{
-        uniforms->shininess_map = nullptr;
-    }
-
-    if (opacity_textures->size() > 0){
-        uniforms->opacity_map = (*opacity_textures)[0];
-    }
-    else{
-        uniforms->opacity_map = nullptr;
-    }
-
-    if (displacement_textures->size() > 0){
-        uniforms->displacement_map = (*displacement_textures)[0];
-    }
-    else{
-        uniforms->displacement_map = nullptr;
-    }
-
-    if (lightmap_textures->size() > 0){
-        uniforms->lightmap_map = (*lightmap_textures)[0];
-    }
-    else{
-        uniforms->lightmap_map = nullptr;
-    }
-
-    if (reflection_textures->size() > 0){
-        uniforms->reflection_map = (*reflection_textures)[0];
-    }
-    else{
-        uniforms->reflection_map = nullptr;
-    }
+    BIND_TEXTURE_BINN(diffuse);
+    BIND_TEXTURE_BINN(specular);
+    BIND_TEXTURE_BINN(ambient);
+    BIND_TEXTURE_BINN(emissive);
+    BIND_TEXTURE_BINN(height);
+    BIND_TEXTURE_BINN(normal);
+    BIND_TEXTURE_BINN(shininess);
+    BIND_TEXTURE_BINN(opacity);
+    BIND_TEXTURE_BINN(displacement);
+    BIND_TEXTURE_BINN(lightmap);
+    BIND_TEXTURE_BINN(reflection);
 
     uniforms->ka = this->mesh->ka;
     uniforms->kd = this->mesh->kd;
@@ -118,8 +40,6 @@ BlinnModel::BlinnModel(Scene* scene, Mesh* mesh, const glm::mat4x4& transform):
 void BlinnModel::Update(){
     auto perframe = this->GetScene()->GetPerframe();
 
-    float ambient_intensity = perframe->ambient_intensity;
-    float punctual_intensity = perframe->punctual_intensity;
     // auto skeleton = model->skeleton;
     auto model_matrix = this->transform;
 
@@ -154,8 +74,6 @@ void BlinnModel::Update(){
     uniforms->camera_proj_mat = perframe->camera_proj_mat;
     // uniforms->joint_matrices = joint_matrices;
     // uniforms->joint_n_matrices = joint_n_matrices;
-    uniforms->ambient_intensity = float_clamp(ambient_intensity, 0, 5);
-    uniforms->punctual_intensity = float_clamp(punctual_intensity, 0, 5);
     uniforms->shadow_map = perframe->shadow_map;
 }
 
