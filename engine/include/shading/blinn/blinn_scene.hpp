@@ -8,7 +8,8 @@
 
 class BlinnScene : public Scene{
 public:
-    BlinnScene(const std::string& filename);
+    BlinnScene();
+    void Load(const std::string& filename) override;
     void Update() override;
     void Render() override;
 

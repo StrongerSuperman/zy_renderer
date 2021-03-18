@@ -8,9 +8,12 @@
 #include "utility/scene_loader.hpp"
 
 
-PBRScene::PBRScene(const std::string& filename){
+PBRScene::PBRScene(){
     this->type = SceneType::SCENE_TYPE_PBR;
     this->render_quality = Usage::USAGE_LDR_COLOR;
+}
+
+void PBRScene::Load(const std::string& filename){
     LoadScene(this, filename);
 }
 

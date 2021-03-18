@@ -8,9 +8,12 @@
 #include "utility/scene_loader.hpp"
 
 
-BlinnScene::BlinnScene(const std::string& filename){
+BlinnScene::BlinnScene(){
     this->type = SceneType::SCENE_TYPE_BLINN;
     this->render_quality = Usage::USAGE_LDR_COLOR;
+}
+
+void BlinnScene::Load(const std::string& filename){
     LoadScene(this, filename);
 }
 

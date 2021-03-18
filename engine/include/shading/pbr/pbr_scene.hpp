@@ -8,7 +8,8 @@
 
 class PBRScene : public Scene{
 public:
-    PBRScene(const std::string& filename);
+    PBRScene();
+    void Load(const std::string& filename) override;
     void Update() override;
     void Render() override;
 

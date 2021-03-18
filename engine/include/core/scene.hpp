@@ -28,6 +28,7 @@ public:
 
     Scene();
     virtual ~Scene();
+    virtual void Load(const std::string& filename)=0;
     virtual void Update()=0;
     virtual void Render()=0;
 
