@@ -27,8 +27,4 @@ PBRMaterial::PBRMaterial(void* fs_in, void* uniforms, int backface){
     SET_TEXTURE_PBR(ambient_occlusion);
 
     this->nomal_camera = backface > 0 ? -this->nomal_camera : this->nomal_camera;
-
-    this->ka = _uniforms->ka;
-    this->kd = _uniforms->kd;
-    this->ks = _uniforms->ks;
 }

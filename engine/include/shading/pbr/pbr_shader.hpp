@@ -36,12 +36,9 @@ struct PBRUniforms{
     glm::mat4x4 light_proj_mat;
     glm::mat4x4 camera_view_mat;
     glm::mat4x4 camera_proj_mat;
-    /* shading param */
-    glm::vec3 ka;
-    glm::vec3 kd;
-    glm::vec3 ks;
     /* shadow_map */
     Texture* shadow_map;
+    int shadow_pass;
     /* surface textures */
     Texture *base_color_map;
     Texture *nomal_camera_map;
@@ -49,9 +46,6 @@ struct PBRUniforms{
     Texture *metalness_map;
     Texture *diffuse_roughness_map;
     Texture *ambient_occlusion_map;
-    /* render controls */
-    const float alpha_cutoff = 0.02f;
-    int shadow_pass;
 };
 
 class PBRShader : public Shader{

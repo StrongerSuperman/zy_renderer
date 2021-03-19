@@ -89,10 +89,7 @@ static float geometrySmith(const glm::vec3& N, glm::vec3& V, const glm::vec3& L,
 
 static glm::vec3 fresnelSchlick(float cosTheta, const glm::vec3& F0)
 {
-	auto a = pow(std::max(1.0f-cosTheta, 0.0f), 5.0f);
-	auto b = float_minus_vec3(1.0f, F0);
-	auto c = b*a;
-	return F0 + c;
+	return F0 + float_minus_vec3(1.0f, F0)*pow(std::max(1.0f-cosTheta, 0.0f), 5.0f);
 }
 
 glm::vec4 PBRShader::ExecuteFragmentShader(void* fs_in, void* uniforms, int *discard, int backface) {
@@ -107,19 +104,16 @@ glm::vec4 PBRShader::ExecuteFragmentShader(void* fs_in, void* uniforms, int *dis
 	auto world_bitangent = _fs_in->world_bitangent;
 	auto texcoord = _fs_in->texcoord;
 
-	// auto ambient_intensity = _uniforms->ambient_intensity;
-	// auto punctual_intensity = _uniforms->punctual_intensity;
 	auto shadow_map = _uniforms->shadow_map;
 	auto camera_pos = _uniforms->camera_pos;
 	auto light_pos = _uniforms->light_pos;
-	auto light_dir = world_position - light_pos;
+	auto light_dir = glm::normalize(light_pos - world_position);
 	auto shadow_pass = _uniforms->shadow_pass;
-	auto alpha_cutoff = _uniforms->alpha_cutoff;
 
 	PBRMaterial material(fs_in, uniforms, backface);
 	auto alpha = 1.0f;
 
-	if (alpha_cutoff > 0 && alpha < alpha_cutoff) {
+	if (alpha <= 0.0f) {
 		*discard = 1;
 		return glm::vec4(0.0f, 0.0f, 0.0f, alpha);
 	} 
@@ -129,64 +123,80 @@ glm::vec4 PBRShader::ExecuteFragmentShader(void* fs_in, void* uniforms, int *dis
 	}
 	else{
 		auto _base_color = material.has_base_color ? material.base_color : glm::vec3(0.0f, 0.0f, 0.0f);
-		auto _nomal_camera = material.has_nomal_camera ? material.nomal_camera : glm::vec3(0.0f, 0.0f, 0.0f);
+		auto _nomal_camera = material.has_nomal_camera ? material.nomal_camera : world_normal;
 		auto _emission_color = material.has_emission_color ? material.emission_color : glm::vec3(0.0f, 0.0f, 0.0f);
 		auto _metalness = material.has_metalness ? material.metalness.x : 0.0f;
 		auto _diffuse_roughness = material.has_diffuse_roughness ? material.diffuse_roughness.x : 0.0f;
 		auto _ambient_occlusion = material.has_ambient_occlusion ? material.ambient_occlusion.x : 0.0f;
 
-		auto N = world_normal;
+		auto N = _nomal_camera;
 		auto V = glm::normalize(camera_pos-world_position);
-
-		// calculate reflectance at normal incidence; if dia-electric (like plastic) use F0 
-		// of 0.04 and if it's a metal, use the albedo color as F0 (metallic workflow)    
-		auto F0 = glm::vec3(0.04); 
-		F0 = glm::mix(F0, _base_color, _metalness);
-
-		// reflectance equation
-		auto Lo = glm::vec3(0.0f);
-		// calculate light radiance
 		auto L = light_dir;
-		auto H = glm::normalize(V + L);
-		float distance = static_cast<float>((light_pos - world_position).length());
-		float attenuation = 1.0f / (distance * distance);
-		auto light_color = glm::vec3(0.3, 0.5, 0.6);
-		auto radiance = light_color * attenuation;
-		// Cook-Torrance BRDF
-		float NDF = distributionGGX(N, H, _diffuse_roughness);   
-		float G = geometrySmith(N, V, L, _diffuse_roughness);      
-		auto F = fresnelSchlick(float_clamp(glm::dot(H, V), 0.0f, 1.0f), F0);
 
-		auto nominator = NDF * G * F; 
-		float denominator = 4 * std::max(glm::dot(N, V), 0.0f) * std::max(glm::dot(N, L), 0.0f);
-		auto specular = nominator / std::max(denominator, 0.001f); // prevent divide by zero for NdotV=0.0 or NdotL=0.0
+		float n_dot_l = glm::dot(N, L);
+		bool is_in_shadow = false;
+		if (shadow_map) {
+			float u = (depth_position.x + 1) * 0.5f;
+			float v = (depth_position.y + 1) * 0.5f;
+			float d = (depth_position.z + 1) * 0.5f;
+			float depth_bias = std::max(0.05f * (1 - n_dot_l), 0.005f);
+			float current_depth = d - depth_bias;
+			auto depth_texcoord = glm::vec2(u, v);
+			float closest_depth = shadow_map->Sample(depth_texcoord).x;
+			is_in_shadow = current_depth > closest_depth;
+		}
 
-		// kS is equal to Fresnel
-		auto kS = F;
-		// for energy conservation, the diffuse and specular light can't
-		// be above 1.0 (unless the surface emits light); to preserve this
-		// relationship the diffuse component (kD) should equal 1.0 - kS.
-		auto kD = glm::vec3(1.0f) - kS;
-		// multiply kD by the inverse metalness such that only non-metals 
-		// have diffuse lighting, or a linear blend if partly metal (pure metals
-		// have no diffuse light).
-		kD *= 1.0f - _metalness;
-		// scale light by NdotL
-		float NdotL = std::max(glm::dot(N, L), 0.0f);
-		// add to outgoing radiance Lo
-		Lo += (kD * vec3_div(_base_color, PI) + specular) * radiance * NdotL;  // note that we already multiplied the BRDF by the Fresnel (kS) so we won't multiply by kS again
+		if(!is_in_shadow){
+			// calculate reflectance at normal incidence; if dia-electric (like plastic) use F0 
+			// of 0.04 and if it's a metal, use the albedo color as F0 (metallic workflow)    
+			auto F0 = glm::vec3(0.04); 
+			F0 = glm::mix(F0, _base_color, _metalness);
 
-		// ambient lighting (note that the next IBL tutorial will replace 
-		// this ambient lighting with environment lighting).
-		auto ambient = glm::vec3(0.03f) * _base_color * _ambient_occlusion;
+			// reflectance equation
+			auto Lo = glm::vec3(0.0f);
+			// calculate light radiance
+			auto H = glm::normalize(V + L);
+			float distance = static_cast<float>((light_pos - world_position).length());
+			float attenuation = 1.0f / (distance * distance);
+			auto light_color = glm::vec3(0.3, 0.5, 0.6);
+			auto radiance = light_color * attenuation;
+			// Cook-Torrance BRDF
+			float NDF = distributionGGX(N, H, _diffuse_roughness);   
+			float G = geometrySmith(N, V, L, _diffuse_roughness);      
+			auto F = fresnelSchlick(float_clamp(glm::dot(H, V), 0.0f, 1.0f), F0);
 
-		auto color = ambient + Lo;
+			auto nominator = NDF * G * F; 
+			float denominator = 4 * std::max(glm::dot(N, V), 0.0f) * std::max(glm::dot(N, L), 0.0f);
+			auto specular = nominator / std::max(denominator, 0.001f); // prevent divide by zero for NdotV=0.0 or NdotL=0.0
 
-		// HDR tonemapping
-		color = color / (color + glm::vec3(1.0f));
-		// gamma correct
-		color = pow(color, glm::vec3(1.0f/2.2)); 
+			// kS is equal to Fresnel
+			auto kS = F;
+			// for energy conservation, the diffuse and specular light can't
+			// be above 1.0 (unless the surface emits light); to preserve this
+			// relationship the diffuse component (kD) should equal 1.0 - kS.
+			auto kD = glm::vec3(1.0f) - kS;
+			// multiply kD by the inverse metalness such that only non-metals 
+			// have diffuse lighting, or a linear blend if partly metal (pure metals
+			// have no diffuse light).
+			kD *= 1.0f - _metalness;
+			// scale light by NdotL
+			float NdotL = std::max(glm::dot(N, L), 0.0f);
+			// add to outgoing radiance Lo
+			Lo += (kD * vec3_div(_base_color, PI) + specular) * radiance * NdotL;  // note that we already multiplied the BRDF by the Fresnel (kS) so we won't multiply by kS again
 
-		return glm::vec4(color, alpha);
+			// ambient lighting (note that the next IBL tutorial will replace 
+			// this ambient lighting with environment lighting).
+			auto ambient = glm::vec3(0.03f) * _base_color * _ambient_occlusion;
+
+			auto color = ambient + Lo + _emission_color;
+
+			// HDR tonemapping
+			color = color / (color + glm::vec3(1.0f));
+			// gamma correct
+			color = pow(color, glm::vec3(1.0f/2.2)); 
+
+			return glm::vec4(color, alpha);
+		}
+	return glm::vec4(_emission_color, alpha);
 	}
 }

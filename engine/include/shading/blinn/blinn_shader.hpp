@@ -38,6 +38,7 @@ struct BlinnUniforms{
     glm::vec3 ks;
     /* shadow_map */
     Texture* shadow_map;
+    int shadow_pass;
     /* surface textures */
     Texture *diffuse_map;
     Texture *specular_map;
@@ -50,9 +51,6 @@ struct BlinnUniforms{
     Texture *displacement_map;
     Texture *lightmap_map;
     Texture *reflection_map;
-    /* render controls */
-    const float alpha_cutoff = 0.02f;
-    int shadow_pass;
 };
 
 class BlinnShader : public Shader{

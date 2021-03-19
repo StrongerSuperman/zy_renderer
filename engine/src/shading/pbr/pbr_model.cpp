@@ -29,10 +29,6 @@ PBRModel::PBRModel(Scene* scene, Mesh* mesh, glm::mat4x4& transform):
     BIND_TEXTURE_PBR(metalness);
     BIND_TEXTURE_PBR(diffuse_roughness);
     BIND_TEXTURE_PBR(ambient_occlusion);
-
-    uniforms->ka = this->mesh->ka;
-    uniforms->kd = this->mesh->kd;
-    uniforms->ks = this->mesh->ks;
 }
 
 void PBRModel::Update(){

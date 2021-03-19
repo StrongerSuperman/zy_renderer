@@ -54,12 +54,11 @@ glm::vec4 BlinnShader::ExecuteFragmentShader(void* fs_in, void* uniforms, int *d
 	auto light_pos = _uniforms->light_pos;
 	auto light_dir = glm::normalize(light_pos - world_position);
 	auto shadow_pass = _uniforms->shadow_pass;
-	auto alpha_cutoff = _uniforms->alpha_cutoff;
 
 	BlinnMaterial material(fs_in, uniforms, backface);
-	auto alpha = material.has_opacity ? material.opacity[0] : 1;
+	auto alpha = material.has_opacity ? material.opacity[0] : 1.0f;
 
-	if (alpha_cutoff > 0 && alpha < alpha_cutoff) {
+	if (alpha <= 0.0f) {
 		*discard = 1;
 		return glm::vec4(0.0f, 0.0f, 0.0f, alpha);
 	} 
@@ -78,8 +77,6 @@ glm::vec4 BlinnShader::ExecuteFragmentShader(void* fs_in, void* uniforms, int *d
 		auto _kd = material.kd;
 		auto _ks = material.ks;
 
-		auto color = _emission;
-		color += _ambient*_ka;
 		float n_dot_l = glm::dot(_normal, light_dir);
 		bool is_in_shadow = false;
 		if (shadow_map) {
@@ -88,10 +85,13 @@ glm::vec4 BlinnShader::ExecuteFragmentShader(void* fs_in, void* uniforms, int *d
 			float d = (depth_position.z + 1) * 0.5f;
 			float depth_bias = std::max(0.05f * (1 - n_dot_l), 0.005f);
 			float current_depth = d - depth_bias;
-			auto texcoord = glm::vec2(u, v);
-			float closest_depth = shadow_map->Sample(texcoord).x;
+			auto depth_texcoord = glm::vec2(u, v);
+			float closest_depth = shadow_map->Sample(depth_texcoord).x;
 			is_in_shadow = current_depth > closest_depth;
 		}
+
+		auto color = _emission;
+		color += _ambient*_ka;
 		if (n_dot_l > 0 && !is_in_shadow) {
 			if (!(_specular.x == 0 &&
 					_specular.y == 0 &&
@@ -102,7 +102,6 @@ glm::vec4 BlinnShader::ExecuteFragmentShader(void* fs_in, void* uniforms, int *d
 				if (n_dot_h > 0) {
 					float strength = pow(n_dot_h, _shininess);
 					_specular *= strength;
-					auto a = 1;
 				}
 			}
 			auto diffuse = _diffuse*n_dot_l;
