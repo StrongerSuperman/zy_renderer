@@ -5,19 +5,20 @@
 #include "shading/blinn/blinn_shader.hpp"
 #include "core/framebuffer.hpp"
 #include "core/mesh.hpp"
+#include "core/material.hpp"
 #include "core/texture.hpp"
 
 #define BIND_TEXTURE_BINN(name)                                     \
-    auto name##_textures = this->mesh->GetTexture(#name);           \
-    if (name##_textures->size() > 0){                               \
-        uniforms->name##_map = (*name##_textures)[0];               \
+    auto name##_textures = this->material->name##_textures;         \
+    if (name##_textures.size() > 0){                                \
+        uniforms->name##_map = name##_textures[0];                  \
     }                                                               \
     else{                                                           \
         uniforms->name##_map = nullptr;                             \
     }                                                               \
 
-BlinnModel::BlinnModel(Scene* scene, Mesh* mesh, const glm::mat4x4& transform):
-        Model(scene, mesh, transform, new BlinnProgram()){
+BlinnModel::BlinnModel(Scene* scene, Mesh* mesh, Material* material, const glm::mat4x4& transform):
+        Model(scene, mesh, material, transform, new BlinnProgram()){
     auto uniforms = static_cast<BlinnUniforms*>(this->program->uniforms);
 
     BIND_TEXTURE_BINN(diffuse);
@@ -32,9 +33,9 @@ BlinnModel::BlinnModel(Scene* scene, Mesh* mesh, const glm::mat4x4& transform):
     BIND_TEXTURE_BINN(lightmap);
     BIND_TEXTURE_BINN(reflection);
 
-    uniforms->ka = this->mesh->ka;
-    uniforms->kd = this->mesh->kd;
-    uniforms->ks = this->mesh->ks;
+    uniforms->ka = this->material->ka;
+    uniforms->kd = this->material->kd;
+    uniforms->ks = this->material->ks;
 }
 
 void BlinnModel::Update(){

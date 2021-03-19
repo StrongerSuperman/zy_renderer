@@ -5,6 +5,7 @@
 
 #include "framebuffer.hpp"
 #include "mesh.hpp"
+#include "material.hpp"
 #include "program.hpp"
 
 class Scene;
@@ -12,13 +13,14 @@ class Scene;
 class Model{
 public:
     Mesh* mesh;
+    Material* material;
     Program* program;
     glm::mat4x4 transform;
     /* for sorting */
     int opaque;
     float distance;
 
-    Model(Scene* scene, Mesh* mesh, const glm::mat4x4& transform, Program* program);
+    Model(Scene* scene, Mesh* mesh, Material* material, const glm::mat4x4& transform, Program* program);
     virtual ~Model() {delete this->mesh; delete this->program;};
     virtual void Update()=0;
     virtual void Draw(FrameBuffer* framebuffer, bool shadow_pass=false)=0;

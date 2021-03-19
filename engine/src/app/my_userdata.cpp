@@ -15,8 +15,8 @@ MyUserdata::MyUserdata(){
 	std::string filename(buffer);
 	filename.append(ASSETS_PATH);
 
-    // this->m_Scene = new BlinnScene();
-    this->m_Scene = new PBRScene();
+    this->m_Scene = new BlinnScene();
+    // this->m_Scene = new PBRScene();
     this->m_Scene->Load(filename);
     this->m_Scene->InitShadow(WIDTH, HEIGHT);
 	this->m_Scene->background = glm::vec4(0.05f, 0.05f, 0.05f, 1.0);

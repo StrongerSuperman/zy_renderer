@@ -9,28 +9,26 @@
 #include <assimp/postprocess.h>
 
 #include "core/mesh.hpp"
+#include "core/material.hpp"
 #include "core/scene.hpp"
 #include "core/image.hpp"
 #include "shading/blinn/blinn_model.hpp"
 #include "shading/pbr/pbr_model.hpp"
 
 
-static std::vector<Texture*> loadTextures(Scene* scene, aiMaterial *mat, aiTextureType type)
+static void loadTextures(Scene* scene, std::vector<Texture*>& textures, aiMaterial *mat, aiTextureType type)
 {
-	std::vector<Texture*> textures;
 	for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
 	{
 		aiString file_name;
 		mat->GetTexture(type, i, &file_name);
 		std::string file_path(scene->directory);
 		file_path.append(file_name.C_Str());
-		auto texture = new Texture(file_path, scene->render_quality);
-		textures.push_back(texture);
+		textures.emplace_back(new Texture(file_path, scene->render_quality));
 	}
-	return textures;
 }
 
-static void processMesh(Scene* scene, Mesh* mesh, aiMesh *ai_mesh, const aiScene *ai_scene)
+static void processMesh(Scene* scene, Mesh* mesh, Material* material, aiMesh *ai_mesh, const aiScene *ai_scene)
 {
 	for (unsigned int i = 0; i < ai_mesh->mNumVertices; i++)
 	{
@@ -86,36 +84,34 @@ static void processMesh(Scene* scene, Mesh* mesh, aiMesh *ai_mesh, const aiScene
 			mesh->indices.emplace_back(face.mIndices[j]);
 	}
 
-	aiMaterial* material = ai_scene->mMaterials[ai_mesh->mMaterialIndex];
+	aiMaterial* ai_material = ai_scene->mMaterials[ai_mesh->mMaterialIndex];
 
-	// Material shading param
+	// blinn Materials
 	aiColor3D color;
-	material->Get(AI_MATKEY_COLOR_AMBIENT, color);
-	mesh->ka = glm::vec3(color.r, color.g, color.b);
-	material->Get(AI_MATKEY_COLOR_DIFFUSE, color);
-	mesh->kd = glm::vec3(color.r, color.g, color.b);
-	material->Get(AI_MATKEY_COLOR_SPECULAR, color);
-	mesh->ks = glm::vec3(color.r, color.g, color.b);
-
-	// legacy Materials
-	mesh->textures.emplace("diffuse", loadTextures(scene, material, aiTextureType_DIFFUSE));
-	mesh->textures.emplace("specular", loadTextures(scene, material, aiTextureType_SPECULAR));
-	mesh->textures.emplace("ambient", loadTextures(scene, material, aiTextureType_AMBIENT));
-	mesh->textures.emplace("emissive", loadTextures(scene, material, aiTextureType_EMISSIVE));
-	mesh->textures.emplace("height", loadTextures(scene, material, aiTextureType_HEIGHT));
-	mesh->textures.emplace("normal", loadTextures(scene, material, aiTextureType_NORMALS));
-	mesh->textures.emplace("shininess", loadTextures(scene, material, aiTextureType_SHININESS));
-	mesh->textures.emplace("opacity", loadTextures(scene, material, aiTextureType_OPACITY));
-	mesh->textures.emplace("displacement", loadTextures(scene, material, aiTextureType_DISPLACEMENT));
-	mesh->textures.emplace("lightmap", loadTextures(scene, material, aiTextureType_LIGHTMAP));
-	mesh->textures.emplace("reflection", loadTextures(scene, material, aiTextureType_REFLECTION));
+	ai_material->Get(AI_MATKEY_COLOR_AMBIENT, color);
+	material->ka = glm::vec3(color.r, color.g, color.b);
+	ai_material->Get(AI_MATKEY_COLOR_DIFFUSE, color);
+	material->kd = glm::vec3(color.r, color.g, color.b);
+	ai_material->Get(AI_MATKEY_COLOR_SPECULAR, color);
+	material->ks = glm::vec3(color.r, color.g, color.b);
+	loadTextures(scene, material->diffuse_textures, ai_material, aiTextureType_DIFFUSE);
+	loadTextures(scene, material->specular_textures, ai_material, aiTextureType_SPECULAR);
+	loadTextures(scene, material->ambient_textures, ai_material, aiTextureType_AMBIENT);
+	loadTextures(scene, material->emissive_textures, ai_material, aiTextureType_EMISSIVE);
+	loadTextures(scene, material->height_textures, ai_material, aiTextureType_HEIGHT);
+	loadTextures(scene, material->normal_textures, ai_material, aiTextureType_NORMALS);
+	loadTextures(scene, material->shininess_textures, ai_material, aiTextureType_SHININESS);
+	loadTextures(scene, material->opacity_textures, ai_material, aiTextureType_OPACITY);
+	loadTextures(scene, material->displacement_textures, ai_material, aiTextureType_DISPLACEMENT);
+	loadTextures(scene, material->lightmap_textures, ai_material, aiTextureType_LIGHTMAP);
+	loadTextures(scene, material->reflection_textures, ai_material, aiTextureType_REFLECTION);
 	// PBR Materials
-	mesh->textures.emplace("base_color", loadTextures(scene, material, aiTextureType_BASE_COLOR));
-	mesh->textures.emplace("nomal_camera", loadTextures(scene, material, aiTextureType_NORMAL_CAMERA));
-	mesh->textures.emplace("emission_color", loadTextures(scene, material, aiTextureType_EMISSION_COLOR));
-	mesh->textures.emplace("metalness", loadTextures(scene, material, aiTextureType_METALNESS));
-	mesh->textures.emplace("diffuse_roughness", loadTextures(scene, material, aiTextureType_DIFFUSE_ROUGHNESS));
-	mesh->textures.emplace("ambient_occlusion", loadTextures(scene, material, aiTextureType_AMBIENT_OCCLUSION));
+	loadTextures(scene, material->base_color_textures, ai_material, aiTextureType_BASE_COLOR);
+	loadTextures(scene, material->nomal_camera_textures, ai_material, aiTextureType_NORMAL_CAMERA);
+	loadTextures(scene, material->emission_color_textures, ai_material, aiTextureType_EMISSION_COLOR);
+	loadTextures(scene, material->metalness_textures, ai_material, aiTextureType_METALNESS);
+	loadTextures(scene, material->diffuse_roughness_textures, ai_material, aiTextureType_DIFFUSE_ROUGHNESS);
+	loadTextures(scene, material->ambient_occlusion_textures, ai_material, aiTextureType_AMBIENT_OCCLUSION);
 }
 
 static void processNode(Scene* scene, aiNode *node, const aiScene *ai_scene)
@@ -123,16 +119,17 @@ static void processNode(Scene* scene, aiNode *node, const aiScene *ai_scene)
 	for (unsigned int i = 0; i < node->mNumMeshes; i++)
 	{
 		Mesh* mesh = new Mesh();
+		Material* material = new Material();
 		aiMesh* ai_mesh = ai_scene->mMeshes[node->mMeshes[i]];
-		processMesh(scene, mesh, ai_mesh, ai_scene);
+		processMesh(scene, mesh, material, ai_mesh, ai_scene);
 		Model* model;
 		glm::mat4x4 transform(1.0f);
 		if(scene->type == SceneType::SCENE_TYPE_BLINN){
-			model = new BlinnModel(scene, mesh, transform);
+			model = new BlinnModel(scene, mesh, material, transform);
 		}
 		else if(scene->type == SceneType::SCENE_TYPE_PBR){
 			
-			model = new PBRModel(scene, mesh, transform);
+			model = new PBRModel(scene, mesh, material, transform);
 		}
 		scene->models.emplace_back(model);
 	}

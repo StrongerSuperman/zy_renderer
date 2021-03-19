@@ -25,20 +25,15 @@ class Mesh{
 public:
     int num_faces;
     glm::vec3 center;
-    glm::vec3 ka;
-    glm::vec3 kd;
-    glm::vec3 ks;
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
-    std::map<std::string, std::vector<Texture*>> textures;
 
-    ~Mesh();
+    ~Mesh(){};
 
     int GetFaceNum() {return this->num_faces;};
     glm::vec3 GetCenter() {return this->center;};
     std::vector<Vertex>* GetVertices() {return &(this->vertices);};
     std::vector<unsigned int>* GetIndices() {return &(this->indices);};
-    std::vector<Texture*>* GetTexture(const std::string& texture_name);
 };
 
 #endif //MESH_H

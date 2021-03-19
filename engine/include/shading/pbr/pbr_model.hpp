@@ -8,13 +8,14 @@
 #include "core/framebuffer.hpp"
 #include "core/perframe.hpp"
 #include "core/mesh.hpp"
+#include "core/material.hpp"
 #include "core/model.hpp"
 #include "core/scene.hpp"
 
 
 class PBRModel : public Model{
 public:
-    PBRModel(Scene* scene, Mesh* mesh, glm::mat4x4& transform);
+    PBRModel(Scene* scene, Mesh* mesh, Material* material, glm::mat4x4& transform);
     void Update() override;
     void Draw(FrameBuffer* framebuffer, bool shadow_pass=false) override;
 };

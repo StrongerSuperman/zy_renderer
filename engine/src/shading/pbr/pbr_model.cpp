@@ -6,21 +6,22 @@
 #include "core/framebuffer.hpp"
 #include "core/perframe.hpp"
 #include "core/mesh.hpp"
+#include "core/material.hpp"
 #include "core/texture.hpp"
 
 
 #define BIND_TEXTURE_PBR(name)                                      \
-    auto name##_textures = this->mesh->GetTexture(#name);           \
-    if (name##_textures->size() > 0){                               \
-        uniforms->name##_map = (*name##_textures)[0];               \
+    auto name##_textures = this->material->name##_textures;         \
+    if (name##_textures.size() > 0){                                \
+        uniforms->name##_map = name##_textures[0];                  \
     }                                                               \
     else{                                                           \
         uniforms->name##_map = nullptr;                             \
     }                                                               \
 
 
-PBRModel::PBRModel(Scene* scene, Mesh* mesh, glm::mat4x4& transform):
-        Model(scene, mesh, transform, new PBRProgram()){
+PBRModel::PBRModel(Scene* scene, Mesh* mesh, Material* material, glm::mat4x4& transform):
+        Model(scene, mesh, material, transform, new PBRProgram()){
     auto uniforms = static_cast<PBRUniforms*>(this->program->uniforms);
 
     BIND_TEXTURE_PBR(base_color);
