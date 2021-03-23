@@ -1,5 +1,6 @@
 
 #include <mutex>
+#include <memory>
 
 #include "core/context.hpp"
 #include "core/define.hpp"

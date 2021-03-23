@@ -1,6 +1,8 @@
 #ifndef CONTEXT_H
 #define CONTEXT_H
 
+#include <memory>
+
 #include "platform.hpp"
 
 
