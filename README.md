@@ -5,6 +5,7 @@ A renderer for my lover 'zy'
 ```
 mkdir build  
 cd build  
+cmake .. -DCMAKE_BUILD_TYPE=Release  
 cmake --build ./  --target zy_renderer --config Release 
 ```
 
